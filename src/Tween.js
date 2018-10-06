@@ -84,27 +84,25 @@ class Tween extends React.Component<TweenProps, {}> {
 
     // execute function calls
     if (progress !== prevProps.progress) {
-      callTweenFunction(this.tween, 'progress', [progress]);
+      this.tween.progress(progress);
     }
     if (totalProgress !== prevProps.totalProgress) {
-      callTweenFunction(this.tween, 'totalProgress', [totalProgress]);
+      this.tween.totalProgress(totalProgress);
     }
     if (playStatus !== prevProps.playStatus) {
       if (playStatus === Tween.playStatus.playing) {
         if (prevProps.playStatus === Tween.playStatus.paused) {
-          callTweenFunction(this.tween, 'resume', []);
+          this.tween.resume();
         }
         else {
-          //callTweenFunction(this.tween, 'restart', [true]);
           this.tween.play();
-          console.log(this.tween, 'restart');
         }
       }
       else if (playStatus === Tween.playStatus.stopped) {
-        callTweenFunction(this.tween, 'pause', [0]);
+        this.tween.pause(0);
       }
       else if (playStatus === Tween.playStatus.paused) {
-        callTweenFunction(this.tween, 'pause', []);
+        this.tween.pause();
       }
     }
   }
@@ -113,13 +111,8 @@ class Tween extends React.Component<TweenProps, {}> {
     if (this.tween) {
       this.tween.kill();
     }
-    const tween = getTweenFunction(this.targets, this.props);
-  
-    // if multiple tweens (stagger), wrap them in a timeline
-    let timeline = null;
-    
 
-    this.tween = timeline || tween;
+    this.tween = getTweenFunction(this.targets, this.props);
   }
 
   addTarget = (target: any) => {

@@ -44,6 +44,7 @@ const getTweenFunction = (targets, tween) => {
     tweenFunction = TweenClass.from(targets, duration$, { ...from, ...vars });
   }
 
+  // if multiple tweens (stagger), wrap them in a timeline
   if (Array.isArray(tweenFunction)) {
     tweenFunction.forEach((t) => {
       t.paused(false);
