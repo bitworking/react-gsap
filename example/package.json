@@ -8,8 +8,9 @@
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
+    "react-gsap": "file:..",
     "react-scripts": "^1.1.4",
-    "react-gsap": "file:.."
+    "styled-components": "^3.4.9"
   },
   "scripts": {
     "start": "react-scripts start",
