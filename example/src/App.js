@@ -41,6 +41,19 @@ const Particle = ({ children, ...props }) => (
   </Tween>
 );
 
+const SplitWords = React.forwardRef((props, ref) => {
+  if (typeof props.children.props.children === 'string') {
+    return props.children.props.children.split(' ').map((word) => {
+      return React.cloneElement(
+        props.children,
+        { ref: ref },
+        `${word}\u00A0`
+      );
+    });
+  }
+  return props.children;
+});
+
 export default class App extends Component {
   state = {
     progress: 0,
@@ -85,38 +98,43 @@ export default class App extends Component {
     return (
       <div>
 
-        <Timeline
-          paused={true}
-          totalProgress={totalProgress}
-          target={
-            <Fragment>
-              <div style={{ display: 'inline-block' }}>Tween</div>
-              <div style={{ display: 'inline-block' }}>nesting</div>
-            </Fragment>
-          }
-        >
-          <Tween from={{ opacity: 0 }} to={{ opacity: 1 }} />
-          <Tween to={{ x: '50px' }} />
-          <Tween to={{ x: '100px' }} position="+=2">
-            <div style={{ display: 'inline-block' }}>Inner Tween</div>
-          </Tween>
-        </Timeline>
+        <div style={{ width: '600px', height: '200px', backgroundColor: '#f0f0f0', position: 'relative', overflow: 'hidden' }}>
+          <Timeline
+            paused={false}
+            repeat={-1}
+            target={
+              <Fragment>
+                <SplitWords><div style={{ position: 'relative', fontSize: '50px', display: 'inline-block' }}>This is a Timeline</div></SplitWords>
+              </Fragment>
+            }
+          >
+            <Tween from={{ x: '-500px' }} to={{ x: '90px' }} duration={0.7} ease="Elastic.easeOut" delay={1} />
+            <Tween staggerTo={{ y: '55px' }} stagger={0.2} duration={0.1} ease="Back.easeOut" position="+=1" />
+            <Tween staggerTo={{ x: '700px' }} stagger={0.2} duration={0.7} ease="Back.easeOut" position="+=1" />
+ 
+            <Timeline
+              target={
+                <Fragment>
+                  <SplitWords><div style={{ position: 'relative', fontSize: '50px', display: 'inline-block', left: '160px' }}>AIIIIGHHT</div></SplitWords>
+                </Fragment>
+              }
+            >
+              <Tween from={{ opacity: 0 }} to={{ opacity: 1 }} position="+=1" />
+              <Tween to={{ scale: 20 }} position="+=1" />
+              <Tween to={{ opacity: 0 }} />
+            </Timeline>
 
+          </Timeline>
+        </div>
         
         <div></div>
 
         <Tween from={{ x: '100px', rotation: -360 }}>
-          <div style={{ display: 'inline-block' }}>Das&nbsp;</div>
-          <div style={{ display: 'inline-block' }}>ist&nbsp;</div>
-          <div style={{ display: 'inline-block' }}>ein&nbsp;</div>
-          <div style={{ display: 'inline-block' }}>Test</div>
+          <SplitWords><div style={{ display: 'inline-block' }}>Das ist ein Test</div></SplitWords>
         </Tween>
 
-        <Tween staggerTo={{ delay: 1, x: '100px', rotation: -360 }} duration={0.2} stagger={0.5}>
-          <div style={{ display: 'inline-block' }}>Das&nbsp;</div>
-          <div style={{ display: 'inline-block' }}>ist&nbsp;</div>
-          <div style={{ display: 'inline-block' }}>ein&nbsp;</div>
-          <div style={{ display: 'inline-block' }}>Test</div>
+        <Tween staggerTo={{ delay: 1, x: '200px', rotation: -360 }} duration={0.2} stagger={0.5}>
+          <SplitWords><div style={{ display: 'inline-block' }}>Das ist noch ein Test</div></SplitWords>
         </Tween>
 
         <ul style={{ perspective: '4000px' }}>
@@ -142,10 +160,6 @@ export default class App extends Component {
             <li>André Staltz</li>
           </Tween>
         </ul>
-
-        <Tween x="200px" rotation={-360} duration={2} paused={false}>
-          <Square />
-        </Tween>
 
         <input type="range" value={totalProgress * 100} onChange={(e) => this.onChange(e)} />
         <button type="button" onClick={(e) => this.setPlayStatus(Tween.playStatus.playing)}>Play</button>

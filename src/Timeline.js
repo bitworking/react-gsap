@@ -120,7 +120,7 @@ class Timeline extends React.Component<TimelineProps, {}> {
           ...vars
         } = child.props;
 
-        const tween = getTweenFunction(this.targets, vars);
+        const tween = getTweenFunction(this.targets, { stagger, ...vars });
         this.timeline.add(tween, position || '+=0', align || 'normal', stagger || 0);
       }
     });

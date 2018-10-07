@@ -27,8 +27,6 @@ class Example extends Component {
         </Tween>
 
         <Timeline
-          paused={true}
-          totalProgress={totalProgress}
           target={
             <Fragment>
               <div>Target element which will be visible and gets tweened</div>
