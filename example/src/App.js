@@ -112,8 +112,6 @@ export default class App extends Component {
           <div style={{ display: 'inline-block' }}>Test</div>
         </Tween>
 
-        
-
         <Tween staggerTo={{ delay: 1, x: '100px', rotation: -360 }} duration={0.2} stagger={0.5}>
           <div style={{ display: 'inline-block' }}>Das&nbsp;</div>
           <div style={{ display: 'inline-block' }}>ist&nbsp;</div>

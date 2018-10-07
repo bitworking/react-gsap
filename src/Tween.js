@@ -48,7 +48,6 @@ class Tween extends React.Component<TweenProps, {}> {
     super(props);
 
     this.targets = [];
-    this.addTarget = this.addTarget.bind(this);
   }
 
   componentDidMount() {

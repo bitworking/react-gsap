@@ -134,7 +134,6 @@ class Timeline extends React.Component<TimelineProps, {}> {
 
       this.timeline.add(child.getGSAP(), position || '+=0', align || 'normal', stagger || 0);
     });
-
   }
 
   getGSAP() {
@@ -190,7 +189,6 @@ class Timeline extends React.Component<TimelineProps, {}> {
       </Fragment>
     );
   }
-
 }
 
 export { Timeline };
