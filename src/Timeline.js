@@ -6,6 +6,7 @@ import { getTweenFunction } from './helper';
 type TimelineProps = {
   children: Node,
   target: any,
+  wrapper: any,
   progress: number,
   totalProgress: number,
   playStatus: string,  
@@ -166,9 +167,9 @@ class Timeline extends React.Component<TimelineProps, {}> {
   }
 
   render() {
-    let { target, children } = this.props;
+    let { target, children, wrapper } = this.props;
 
-    return (
+    const output = (
       <Fragment>
         {React.Children.map(target, child => {
           if (child.type.toString() === 'Symbol(react.fragment)') {
@@ -189,6 +190,16 @@ class Timeline extends React.Component<TimelineProps, {}> {
         })}
       </Fragment>
     );
+
+    if (wrapper) {
+      return React.cloneElement(
+        wrapper,
+        [],
+        output
+      );
+    }
+
+    return output;
   }
 }
 

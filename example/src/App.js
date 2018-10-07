@@ -43,11 +43,24 @@ const Particle = ({ children, ...props }) => (
 
 const SplitWords = React.forwardRef((props, ref) => {
   if (typeof props.children.props.children === 'string') {
-    return props.children.props.children.split(' ').map((word) => {
+    return props.children.props.children.split(' ').map((word, i) => {
       return React.cloneElement(
         props.children,
-        { ref: ref },
+        { ref: ref, key: i },
         `${word}\u00A0`
+      );
+    });
+  }
+  return props.children;
+});
+
+const SplitLetters = React.forwardRef((props, ref) => {
+  if (typeof props.children.props.children === 'string') {
+    return props.children.props.children.split('').map((letter, i) => {
+      return React.cloneElement(
+        props.children,
+        { ref: ref, key: i },
+        `${letter}`
       );
     });
   }
@@ -89,7 +102,6 @@ export default class App extends Component {
 
   render () {
     const {
-      progress,
       totalProgress,
       playStatus,
       particleCount
@@ -111,16 +123,19 @@ export default class App extends Component {
             <Tween from={{ x: '-500px' }} to={{ x: '90px' }} duration={0.7} ease="Elastic.easeOut" delay={1} />
             <Tween staggerTo={{ y: '55px' }} stagger={0.2} duration={0.1} ease="Back.easeOut" position="+=1" />
             <Tween staggerTo={{ x: '700px' }} stagger={0.2} duration={0.7} ease="Back.easeOut" position="+=1" />
- 
+
             <Timeline
+              wrapper={
+                <div style={{ position: 'relative', left: '100px' }} />
+              }
               target={
                 <Fragment>
-                  <SplitWords><div style={{ position: 'relative', fontSize: '50px', display: 'inline-block', left: '160px' }}>AIIIIGHHT</div></SplitWords>
+                  <SplitLetters><div style={{ fontSize: '80px', display: 'inline-block' }}>AIIIIGHHT</div></SplitLetters>
                 </Fragment>
               }
             >
-              <Tween from={{ opacity: 0 }} to={{ opacity: 1 }} position="+=1" />
-              <Tween to={{ scale: 20 }} position="+=1" />
+              <Tween staggerFrom={{ opacity: 0 }} staggerTo={{ opacity: 1 }} stagger={0.1} position="+=1" />
+              <Tween to={{ scale: 20, rotation: -180 }} position="+=1" />
               <Tween to={{ opacity: 0 }} />
             </Timeline>
 
@@ -209,7 +224,7 @@ export default class App extends Component {
           <Particle paused={false} progress={totalProgress}>
             {
               (new Array(particleCount)).fill(undefined).map((val, idx) => (
-                <div style={{ position: 'absolute', top: `${idx * 18 + 25}px` }}>Particle {idx + 1}</div>
+                <div style={{ position: 'absolute', top: `${idx * 18 + 25}px` }} key={idx}>Particle {idx + 1}</div>
               ))
             }
           </Particle>
