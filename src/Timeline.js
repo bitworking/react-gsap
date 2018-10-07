@@ -60,6 +60,7 @@ class Timeline extends React.Component<TimelineProps, {}> {
 
     // if children change create a new timeline
     // TODO: replace easy length check with fast equal check
+    // TODO: same for props.target?
     if (prevProps.children.length !== children.length) {
       this.createTimeline();
     }

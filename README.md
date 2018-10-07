@@ -13,14 +13,34 @@ npm install --save react-gsap
 ## Usage
 
 ```jsx
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react';
 
-import MyComponent from 'react-gsap'
+import { Tween, Timeline } from 'react-gsap';
 
 class Example extends Component {
   render () {
     return (
-      <MyComponent />
+      <div>
+        <Tween from={{ x: '100px', rotation: -360 }}>
+          <div>This element gets tweened</div>
+          <div>This, too</div>
+        </Tween>
+
+        <Timeline
+          paused={true}
+          totalProgress={totalProgress}
+          target={
+            <Fragment>
+              <div>Target element which will be visible and gets tweened</div>
+              <div>Another target element</div>
+            </Fragment>
+          }
+        >
+          <Tween from={{ opacity: 0 }} to={{ opacity: 1 }} />
+          <Tween to={{ x: '50px' }} />
+        </Timeline>
+      
+      </div>
     )
   }
 }
