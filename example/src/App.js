@@ -26,14 +26,16 @@ const FadeIn = ({ children }) => (
 const Particle = ({ children, ...props }) => (
   <Tween
     {...props}
-    duration={3}
-    from={{
+    duration={2}
+    staggerFrom={{
       x: 0,
     }}
-    to={{
+    staggerTo={{
       x: 100,
     }}
-    repeat={-1}
+    stagger={0.25}
+    repeat={1}
+    yoyo={true}
   >
     {children}
   </Tween>
