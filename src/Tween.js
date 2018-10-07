@@ -1,8 +1,8 @@
 // @flow
 import { default as React, Fragment } from 'react';
-import { TimelineMax as TimelineClass, TweenMax as TweenClass } from 'gsap/TweenMax';
+import { TweenMax as TweenClass } from 'gsap/TweenMax';
 import 'gsap/TextPlugin';
-import { getTweenFunction, callTweenFunction } from './helper';
+import { getTweenFunction } from './helper';
 
 // animate path
 // https://css-tricks.com/svg-line-animation-works/
@@ -31,6 +31,8 @@ type TweenProps = {
 }
 
 class Tween extends React.Component<TweenProps, {}> {
+  static displayName = 'Tween';
+
   static get playStatus() {
     return {
       playing: 'playing',
@@ -51,16 +53,10 @@ class Tween extends React.Component<TweenProps, {}> {
 
   componentDidMount() {
     this.createTween();
-
-    /*
-    if (this.targets.length === 1) {
-      console.log(this.targets[0].getTotalLength());
-    }
-    */
   }
 
   componentWillUnmount() {
-    callTweenFunction(this.tween, 'kill', []);
+    this.tween.kill();
   }
 
   getSnapshotBeforeUpdate(prevProps) {
@@ -111,13 +107,15 @@ class Tween extends React.Component<TweenProps, {}> {
     if (this.tween) {
       this.tween.kill();
     }
-
     this.tween = getTweenFunction(this.targets, this.props);
   }
 
-  addTarget = (target: any) => {
-    // callback ref is called multiple times with null??
-    // https://github.com/facebook/react/issues/4533
+  getGSAP() {
+    return this.tween;
+  }
+
+  addTarget(target: any) {
+    // target is null at unmount
     if (target !== null) {
       this.targets.push(target);
     }

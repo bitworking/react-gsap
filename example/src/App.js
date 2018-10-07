@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
-import { Tween } from 'react-gsap';
+import { Tween, Timeline } from 'react-gsap';
 
 const Square = styled.div`
   background-color: red;
@@ -84,12 +84,35 @@ export default class App extends Component {
 
     return (
       <div>
+
+        <Timeline
+          paused={true}
+          totalProgress={totalProgress}
+          target={
+            <Fragment>
+              <div style={{ display: 'inline-block' }}>Tween</div>
+              <div style={{ display: 'inline-block' }}>nesting</div>
+            </Fragment>
+          }
+        >
+          <Tween from={{ opacity: 0 }} to={{ opacity: 1 }} />
+          <Tween to={{ x: '50px' }} />
+          <Tween to={{ x: '100px' }} position="+=2">
+            <div style={{ display: 'inline-block' }}>Inner Tween</div>
+          </Tween>
+        </Timeline>
+
+        
+        <div></div>
+
         <Tween from={{ x: '100px', rotation: -360 }}>
           <div style={{ display: 'inline-block' }}>Das&nbsp;</div>
           <div style={{ display: 'inline-block' }}>ist&nbsp;</div>
           <div style={{ display: 'inline-block' }}>ein&nbsp;</div>
           <div style={{ display: 'inline-block' }}>Test</div>
         </Tween>
+
+        
 
         <Tween staggerTo={{ delay: 1, x: '100px', rotation: -360 }} duration={0.2} stagger={0.5}>
           <div style={{ display: 'inline-block' }}>Das&nbsp;</div>
@@ -184,6 +207,7 @@ export default class App extends Component {
           <button type="button" onClick={(e) => this.increaseParticleCount()}>Increase ParticleCount</button>
           <button type="button" onClick={(e) => this.decreaseParticleCount()}>Decrease ParticleCount</button>
         </div>
+        
       </div>
     )
   }
