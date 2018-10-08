@@ -3,10 +3,11 @@ import { default as React, Fragment } from 'react';
 import { TweenMax as TweenClass } from 'gsap/TweenMax';
 import 'gsap/TextPlugin';
 import { getTweenFunction } from './helper';
+import PlugInSvg from './plugins/PlugInSvg';
+PlugInSvg();
 
-// animate path
-// https://css-tricks.com/svg-line-animation-works/
-// https://codepen.io/niorad/pen/xmfza
+// svg morphing
+// https://github.com/veltman/flubber
 
 TweenClass.lagSmoothing(0);
 

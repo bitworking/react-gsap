@@ -1,7 +1,63 @@
-import React, { Component, Fragment } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { Tween, Timeline } from 'react-gsap';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import './constants/style/global';
 
+import Tween from './components/Tween';
+import Timeline from './components/Timeline';
+import Svg from './components/Svg';
+
+const AppStyled = styled.div`
+  nav {
+    ul {
+      padding: 0;
+      li {
+        display: inline-block;
+        margin-right: 20px;
+
+        a {
+          color: #555;
+        }
+      }
+    }
+  }
+`;
+
+const Home = () => (
+  <div />
+);
+
+const App = () => (
+  <AppStyled>
+    <Router basename="/react-gsap">
+      <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Tween</Link>
+            </li>
+            <li>
+              <Link to="/timeline">Timeline</Link>
+            </li>
+            <li>
+              <Link to="/svg">Svg</Link>
+            </li>
+          </ul>
+        </nav>
+
+        <hr />
+        
+        <Route exact path="/" component={Tween} />
+        <Route path="/timeline" component={Timeline} />
+        <Route path="/svg" component={Svg} />
+      </div>
+    </Router>
+  </AppStyled>
+);
+
+export default App;
+
+/*
 const Square = styled.div`
   background-color: red;
   width: 100px;
@@ -40,32 +96,6 @@ const Particle = ({ children, ...props }) => (
     {children}
   </Tween>
 );
-
-const SplitWords = React.forwardRef((props, ref) => {
-  if (typeof props.children.props.children === 'string') {
-    return props.children.props.children.split(' ').map((word, i) => {
-      return React.cloneElement(
-        props.children,
-        { ref: ref, key: i },
-        `${word}\u00A0`
-      );
-    });
-  }
-  return props.children;
-});
-
-const SplitLetters = React.forwardRef((props, ref) => {
-  if (typeof props.children.props.children === 'string') {
-    return props.children.props.children.split('').map((letter, i) => {
-      return React.cloneElement(
-        props.children,
-        { ref: ref, key: i },
-        `${letter}`
-      );
-    });
-  }
-  return props.children;
-});
 
 export default class App extends Component {
   state = {
@@ -109,7 +139,7 @@ export default class App extends Component {
 
     return (
       <div>
-
+        
         <div style={{ width: '600px', height: '200px', backgroundColor: '#f0f0f0', position: 'relative', overflow: 'hidden' }}>
           <Timeline
             paused={false}
@@ -200,25 +230,34 @@ export default class App extends Component {
           <div>FadeIn Test</div>  
         </FadeIn>
 
-        <svg width="250" height="120" viewBox="440 220 250 120" xmlns="http://www.w3.org/2000/svg">
+        <svg width="200" height="250" version="1.1" xmlns="http://www.w3.org/2000/svg">
           <Tween
             from={{
-              strokeDasharray: 511.5259094238281,
-              strokeDashoffset: 511.5259094238281,
+              svg: 0
             }}
-            to={{ strokeDashoffset: 0 }}
-            duration={5}
+            to={{
+              svg: 1
+            }}
+            duration={2}
+            delay={1}
             totalProgress={totalProgress}
           >
-            <path
-              fill="#FFFFFF"
-              stroke="#000000"
-              strokeWidth="2"
-              strokeMiterlimit="10"
-              d="M452,293c0,0,0-61,72-44c0,0-47,117,81,57s5-110,10-67s-51,77.979-50,33.989"
-            />
+            <rect x="10" y="10" width="30" height="30" stroke="black" fill="transparent" strokeWidth="5"/>
+            <rect x="60" y="10" rx="10" ry="10" width="30" height="30" stroke="black" fill="transparent" strokeWidth="5"/>
+
+            <circle cx="25" cy="75" r="20" stroke="red" fill="transparent" strokeWidth="5"/>
+            <ellipse cx="75" cy="75" rx="20" ry="5" stroke="red" fill="transparent" strokeWidth="5"/>
+
+            <line x1="10" x2="50" y1="110" y2="150" stroke="orange" strokeWidth="5"/>
+            <polyline points="60 110 65 120 70 115 75 130 80 125 85 140 90 135 95 150 100 145"
+                stroke="orange" fill="transparent" strokeWidth="5"/>
+
+            <polygon points="50 160 55 180 70 180 60 190 65 205 50 195 35 205 40 190 30 180 45 180"
+                stroke="green" fill="transparent" strokeWidth="5"/>
+
+            <path d="M20,230 Q40,205 50,230 T90,230" fill="none" stroke="blue" strokeWidth="5"/>
           </Tween>
-        </svg>    
+        </svg>
 
         <div style={{ position: 'relative' }}>
           <Particle paused={false} progress={totalProgress}>
@@ -239,3 +278,4 @@ export default class App extends Component {
     )
   }
 }
+*/
