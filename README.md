@@ -47,6 +47,7 @@ class Example extends Component {
 ## Examples
 
 https://bitworking.github.io/react-gsap/
+
 https://github.com/bitworking/react-gsap/tree/master/example/src/components
 
 ## License
