@@ -22,6 +22,7 @@ type TweenProps = {
   onCompleteAllScope?: any,
 
   children: Node,
+  wrapper: any,
   progress: number,
   totalProgress: number,
   playStatus: string,
@@ -121,9 +122,9 @@ class Tween extends React.Component<TweenProps, {}> {
   }
 
   render() {
-    let { children } = this.props;
+    let { children, wrapper } = this.props;
 
-    return (
+    const output = (
       <Fragment>
         {React.Children.map(children, child =>
           React.cloneElement(
@@ -135,6 +136,16 @@ class Tween extends React.Component<TweenProps, {}> {
         )}
       </Fragment>
     );
+
+    if (wrapper) {
+      return React.cloneElement(
+        wrapper,
+        [],
+        output
+      );
+    }
+
+    return output;
   }
 }
 
