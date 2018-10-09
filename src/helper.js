@@ -1,5 +1,39 @@
 import { TimelineMax as TimelineClass, TweenMax as TweenClass } from 'gsap/TweenMax';
 
+const playStates = {
+  playing: 'playing',
+  reverse: 'reverse',
+  stopped: 'stopped',
+  paused: 'paused',
+};
+
+const setPlayStatus = (playStatus, prevPlayStatus, tween) => {
+  if (playStatus !== prevPlayStatus) {
+    if (playStatus === playStates.playing) {
+      if (prevPlayStatus === playStates.paused || prevPlayStatus === playStates.reverse) {
+        tween.play();
+      }
+      else {
+        tween.restart(true);
+      }
+    }
+    else if (playStatus === playStates.reverse) {
+      if (prevPlayStatus === playStates.paused || prevPlayStatus === playStates.playing) {
+        tween.reverse();
+      }
+      else {
+        tween.reverse(0);
+      }
+    }
+    else if (playStatus === playStates.stopped) {
+      tween.pause(0);
+    }
+    else if (playStatus === playStates.paused) {
+      tween.pause();
+    }
+  }
+};
+
 const getTweenFunction = (targets, tween) => {
   const {
     duration,
@@ -44,8 +78,6 @@ const getTweenFunction = (targets, tween) => {
     tweenFunction = TweenClass.from(targets, duration$, { ...from, ...vars });
   }
 
-  // console.log(tweenFunction);
-
   // if multiple tweens (stagger), wrap them in a timeline
   if (Array.isArray(tweenFunction)) {
     tweenFunction.forEach((t) => {
@@ -56,6 +88,17 @@ const getTweenFunction = (targets, tween) => {
       smoothChildTiming: true,
       ...vars
     });
+  }
+
+  // props at mount
+  if (progress) {
+    tweenFunction.progress(progress);
+  }
+  if (totalProgress) {
+    tweenFunction.totalProgress(totalProgress);
+  }
+  if (playStatus) {
+    setPlayStatus(playStatus, null, tweenFunction);
   }
 
 
@@ -79,4 +122,4 @@ const callTweenFunction = (tweenFunction: any, functionName: string, params?: ?A
   }
 };
 
-export { getTweenFunction, callTweenFunction };
+export { getTweenFunction, callTweenFunction, setPlayStatus, playStates };

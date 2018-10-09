@@ -2,11 +2,12 @@ import React from 'react';
 
 export const SplitWords = React.forwardRef((props, ref) => {
   if (typeof props.children.props.children === 'string') {
-    return props.children.props.children.split(' ').map((word, i) => {
+    const words = props.children.props.children.split(' ');
+    return words.map((word, i) => {
       return React.cloneElement(
         props.children,
         { ref: ref, key: i },
-        `${word}\u00A0`
+        word + (i+1 < words.length ? '\u00A0' : '')
       );
     });
   }

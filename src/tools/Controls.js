@@ -30,6 +30,7 @@ class Controls extends Component {
   
   sliderStyle = {
     margin: '5px 20px 5px 0',
+    width: '100%',
   }
 
   playStatusStyle = {
@@ -54,6 +55,7 @@ class Controls extends Component {
       <input type="range" style={this.sliderStyle} value={totalProgress * 100} onChange={(e) => this.onChange(e)} />
       <div style={this.buttonContainerStyle}>
         <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayStatus(Tween.playStatus.playing)}>Play</button>
+        <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayStatus(Tween.playStatus.reverse)}>Reverse</button>
         <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayStatus(Tween.playStatus.paused)}>Pause</button>
         <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayStatus(Tween.playStatus.stopped)}>Stop</button>
         <span style={this.playStatusStyle}>{playStatus}</span>

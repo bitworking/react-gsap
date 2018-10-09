@@ -2,7 +2,7 @@
 import { default as React, Fragment } from 'react';
 import { TweenMax as TweenClass } from 'gsap/TweenMax';
 import 'gsap/TextPlugin';
-import { getTweenFunction } from './helper';
+import { getTweenFunction, playStates, setPlayStatus } from './helper';
 import PlugInSvg from './plugins/PlugInSvg';
 PlugInSvg();
 
@@ -36,11 +36,7 @@ class Tween extends React.Component<TweenProps, {}> {
   static displayName = 'Tween';
 
   static get playStatus() {
-    return {
-      playing: 'playing',
-      stopped: 'stopped',
-      paused: 'paused',
-    };
+    return playStates;
   }
 
   targets: any[];
@@ -86,22 +82,9 @@ class Tween extends React.Component<TweenProps, {}> {
     if (totalProgress !== prevProps.totalProgress) {
       this.tween.totalProgress(totalProgress);
     }
-    if (playStatus !== prevProps.playStatus) {
-      if (playStatus === Tween.playStatus.playing) {
-        if (prevProps.playStatus === Tween.playStatus.paused) {
-          this.tween.resume();
-        }
-        else {
-          this.tween.restart(true);
-        }
-      }
-      else if (playStatus === Tween.playStatus.stopped) {
-        this.tween.pause(0);
-      }
-      else if (playStatus === Tween.playStatus.paused) {
-        this.tween.pause();
-      }
-    }
+
+    setPlayStatus(playStatus, prevProps.playStatus, this.tween);
+    
   }
 
   createTween() {

@@ -6,6 +6,7 @@ import './constants/style/global';
 import Tween from './components/Tween';
 import Timeline from './components/Timeline';
 import Svg from './components/Svg';
+import Transition from './components/Transition';
 
 const AppStyled = styled.div`
   nav {
@@ -42,6 +43,9 @@ const App = () => (
             <li>
               <Link to="/svg">Svg</Link>
             </li>
+            <li>
+              <Link to="/transition">Transition</Link>
+            </li>
           </ul>
         </nav>
 
@@ -50,6 +54,7 @@ const App = () => (
         <Route exact path="/" component={Tween} />
         <Route path="/timeline" component={Timeline} />
         <Route path="/svg" component={Svg} />
+        <Route path="/transition" component={Transition} />
       </div>
     </Router>
   </AppStyled>
