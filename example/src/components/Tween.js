@@ -51,7 +51,7 @@ const TweenComponent = () => (
 
     <Controls>
       {(totalProgress, playStatus) => (
-        <ul style={{ perspective: '4000px', fontSize: '1.5rem' }}>
+        <ul style={{ perspective: '1000px', fontSize: '1.5rem' }}>
           <Tween
             staggerFrom={{
               opacity: 0,

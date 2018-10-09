@@ -12,13 +12,24 @@ class Controls extends Component {
     padding: '10px',
     marginTop: '10px',
     display: 'flex',
+    flexWrap: 'wrap',
+    position: 'relative',
+    zIndex: '2',
+  }
+  
+  buttonContainerStyle = {
+    margin: '5px 0',
   }
 
   buttonStyle = {
     border: '0',
     backgroundColor: '#f0f0f0',
     padding: '5px',
-    marginLeft: '10px',
+    marginRight: '10px',
+  }
+  
+  sliderStyle = {
+    margin: '5px 20px 5px 0',
   }
 
   playStatusStyle = {
@@ -40,11 +51,13 @@ class Controls extends Component {
 
   getControls = (totalProgress, playStatus) => (
     <div style={this.containerStyle}>
-      <input type="range" value={totalProgress * 100} onChange={(e) => this.onChange(e)} />
-      <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayStatus(Tween.playStatus.playing)}>Play</button>
-      <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayStatus(Tween.playStatus.paused)}>Pause</button>
-      <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayStatus(Tween.playStatus.stopped)}>Stop</button>
-      <span style={this.playStatusStyle}>{playStatus}</span>
+      <input type="range" style={this.sliderStyle} value={totalProgress * 100} onChange={(e) => this.onChange(e)} />
+      <div style={this.buttonContainerStyle}>
+        <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayStatus(Tween.playStatus.playing)}>Play</button>
+        <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayStatus(Tween.playStatus.paused)}>Pause</button>
+        <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayStatus(Tween.playStatus.stopped)}>Stop</button>
+        <span style={this.playStatusStyle}>{playStatus}</span>
+      </div>
     </div>
   );
 

@@ -5,6 +5,7 @@ export default injectGlobal`
     margin: 50px;
     font-family: verdana, sans-serif;
     font-size: 16px;
+    overflow-x: hidden;
   }
 
   hr {

@@ -92,7 +92,7 @@ class Tween extends React.Component<TweenProps, {}> {
           this.tween.resume();
         }
         else {
-          this.tween.play();
+          this.tween.restart(true);
         }
       }
       else if (playStatus === Tween.playStatus.stopped) {

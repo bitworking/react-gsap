@@ -9,7 +9,7 @@ type TimelineProps = {
   wrapper: any,
   progress: number,
   totalProgress: number,
-  playStatus: string,  
+  playStatus: string,
 
   [prop: string]: any,
 
@@ -79,7 +79,7 @@ class Timeline extends React.Component<TimelineProps, {}> {
           this.timeline.resume();
         }
         else {
-          this.timeline.play();
+          this.timeline.restart(true);
         }
       }
       else if (playStatus === Timeline.playStatus.stopped) {
