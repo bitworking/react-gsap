@@ -37,7 +37,6 @@ class Example extends Component {
           <Tween from={{ opacity: 0 }} to={{ opacity: 1 }} />
           <Tween to={{ x: '50px' }} />
         </Timeline>
-      
       </div>
     )
   }

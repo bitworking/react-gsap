@@ -84,7 +84,6 @@ class Tween extends React.Component<TweenProps, {}> {
     }
 
     setPlayStatus(playStatus, prevProps.playStatus, this.tween);
-    
   }
 
   createTween() {

@@ -1,7 +1,7 @@
 // @flow
 import { default as React, Fragment } from 'react';
 import { TimelineMax as TimelineClass } from 'gsap/TweenMax';
-import { getTweenFunction } from './helper';
+import { getTweenFunction, playStates, setPlayStatus } from './helper';
 
 type TimelineProps = {
   children: Node,
@@ -19,11 +19,7 @@ class Timeline extends React.Component<TimelineProps, {}> {
   static displayName = 'Timeline';
 
   static get playStatus() {
-    return {
-      playing: 'playing',
-      stopped: 'stopped',
-      paused: 'paused',
-    };
+    return playStates;
   }
 
   targets: any[];
@@ -73,22 +69,8 @@ class Timeline extends React.Component<TimelineProps, {}> {
     if (totalProgress !== prevProps.totalProgress) {
       this.timeline.totalProgress(totalProgress);
     }
-    if (playStatus !== prevProps.playStatus) {
-      if (playStatus === Timeline.playStatus.playing) {
-        if (prevProps.playStatus === Timeline.playStatus.paused) {
-          this.timeline.resume();
-        }
-        else {
-          this.timeline.restart(true);
-        }
-      }
-      else if (playStatus === Timeline.playStatus.stopped) {
-        this.timeline.pause(0);
-      }
-      else if (playStatus === Timeline.playStatus.paused) {
-        this.timeline.pause();
-      }
-    }
+
+    setPlayStatus(playStatus, prevProps.playStatus, this.timeline);
   }
 
   createTimeline() {
@@ -112,7 +94,7 @@ class Timeline extends React.Component<TimelineProps, {}> {
     });
 
     // create tweens with no children and add to timeline
-    React.Children.forEach(this.props.children, child => {
+    React.Children.forEach(children, child => {
       if (child.type.displayName === 'Tween' && !child.props.children) {
         const {
           position,

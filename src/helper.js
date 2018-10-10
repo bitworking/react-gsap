@@ -1,3 +1,4 @@
+// @flow
 import { TimelineMax as TimelineClass, TweenMax as TweenClass } from 'gsap/TweenMax';
 
 const playStates = {
@@ -82,7 +83,7 @@ const getTweenFunction = (targets, tween) => {
   if (Array.isArray(tweenFunction)) {
     tweenFunction.forEach((t) => {
       t.paused(false);
-    })
+    });
     tweenFunction = new TimelineClass({
       tweens: tweenFunction,
       smoothChildTiming: true,
@@ -100,7 +101,6 @@ const getTweenFunction = (targets, tween) => {
   if (playStatus) {
     setPlayStatus(playStatus, null, tweenFunction);
   }
-
 
   return tweenFunction;
 };
