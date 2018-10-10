@@ -51,31 +51,32 @@ const TweenComponent = () => (
 
     <Controls>
       {(totalProgress, playStatus) => (
-        <ul style={{ perspective: '1000px', fontSize: '1.5rem' }}>
-          <Tween
-            staggerFrom={{
-              opacity: 0,
-              cycle: {
-                rotationX: [-90, 90],
-                transformOrigin: ['50% top -100', '50% bottom 100']
-              },
-            }}
-            duration={1}
-            stagger={0.1}
-            totalProgress={totalProgress}
-            playStatus= {playStatus}
-          >
-            <li>Rich Harris</li>
-            <li>Dan Abramov</li>
-            <li>Kyle Simpson</li>
-            <li>Gregory Brown</li>
-            <li>Addy Osmani</li>
-            <li>Evan You</li>
-            <li>Axel Rauschmayer</li>
-            <li>Sarah Drasner</li>
-            <li>André Staltz</li>
-          </Tween>
-        </ul>
+        <Tween
+          wrapper={
+            <ul style={{ perspective: '1000px', fontSize: '1.5rem' }} />
+          }
+          staggerFrom={{
+            opacity: 0,
+            cycle: {
+              rotationX: [-90, 90],
+              transformOrigin: ['50% top -100', '50% bottom 100']
+            },
+          }}
+          duration={1}
+          stagger={0.1}
+          totalProgress={totalProgress}
+          playStatus= {playStatus}
+        >
+          <li>Rich Harris</li>
+          <li>Dan Abramov</li>
+          <li>Kyle Simpson</li>
+          <li>Gregory Brown</li>
+          <li>Addy Osmani</li>
+          <li>Evan You</li>
+          <li>Axel Rauschmayer</li>
+          <li>Sarah Drasner</li>
+          <li>André Staltz</li>
+        </Tween>
       )}
     </Controls>
 

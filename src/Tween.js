@@ -27,6 +27,7 @@ type TweenProps = {
   progress: number,
   totalProgress: number,
   playStatus: string,
+  call: { method: string, params: any[], callback: Function },
 
   [prop: string]: any,
 

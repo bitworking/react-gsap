@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { Tween } from '../Tween';
 
 class Controls extends Component {
+  gsap: any;
+  slider: any;
+  sliderTouched: boolean;
+
   state = {
     totalProgress: 0,
     playStatus: 'playing',
@@ -38,10 +42,23 @@ class Controls extends Component {
     color: '#f0f0f0',
   }
 
+  componentDidMount() {
+    this.gsap.getGSAP().eventCallback('onUpdate', this.onUpdate, null, this);
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    this.onUpdate();
+  }
+
+  onUpdate(event) {
+    if (this.gsap && this.slider && !this.sliderTouched) {
+      const totalProgress = this.gsap.getGSAP().totalProgress();
+      this.slider.value = totalProgress * 100;
+    }
+  }
+
   onChange = (event) => {
-    this.setState({
-      totalProgress: event.target.value / 100,
-    });
+    this.gsap.getGSAP().totalProgress(event.target.value / 100);
   }
 
   setPlayStatus = (status) => {
@@ -52,7 +69,15 @@ class Controls extends Component {
 
   getControls = (totalProgress, playStatus) => (
     <div style={this.containerStyle}>
-      <input type="range" style={this.sliderStyle} value={totalProgress * 100} onChange={(e) => this.onChange(e)} />
+      <input
+        ref={el => this.slider = el}
+        type="range"
+        style={this.sliderStyle}
+        step="0.001"
+        onChange={(e) => this.onChange(e)}
+        onMouseDown={(e) => this.sliderTouched = true}
+        onMouseUp={(e) => this.sliderTouched = false}
+      />
       <div style={this.buttonContainerStyle}>
         <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayStatus(Tween.playStatus.playing)}>Play</button>
         <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayStatus(Tween.playStatus.reverse)}>Reverse</button>
@@ -73,11 +98,18 @@ class Controls extends Component {
       playStatus,
     } = this.state;
 
-    const childrenCalled = children(totalProgress, playStatus);
+    // TODO: allow only one child and Tween and Timeline
+
+    const child = children(totalProgress, playStatus);
 
     return (
       <div>
-        {childrenCalled}
+        {React.cloneElement(
+          child,
+          {
+            ref: (target) => { this.gsap = target }
+          }
+        )}
         {this.getControls(totalProgress, playStatus)}
       </div>
     );

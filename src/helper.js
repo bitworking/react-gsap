@@ -37,6 +37,8 @@ const setPlayStatus = (playStatus, prevPlayStatus, tween) => {
 
 const getTweenFunction = (targets, tween) => {
   const {
+    children,
+    wrapper,
     duration,
     from,
     to,
@@ -46,7 +48,6 @@ const getTweenFunction = (targets, tween) => {
     onCompleteAll,
     onCompleteAllParams,
     onCompleteAllScope,
-    children,
     progress,
     totalProgress,
     playStatus,

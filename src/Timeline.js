@@ -93,7 +93,8 @@ class Timeline extends React.Component<TimelineProps, {}> {
       ...vars,
     });
 
-    // create tweens with no children and add to timeline
+    // add tweens to timeline
+    let childIndex = 0;
     React.Children.forEach(children, child => {
       if (child.type.displayName === 'Tween' && !child.props.children) {
         const {
@@ -106,17 +107,18 @@ class Timeline extends React.Component<TimelineProps, {}> {
         const tween = getTweenFunction(this.targets, { stagger, ...vars });
         this.timeline.add(tween, position || '+=0', align || 'normal', stagger || 0);
       }
-    });
+      else if (child.type.displayName === 'Tween' || child.type.displayName === 'Timeline') {
+        const {
+          position,
+          align,
+          stagger,
+        } = child.props;
 
-    // add other tweens and timelines to timeline
-    this.tweens.forEach((child) => {
-      const {
-        position,
-        align,
-        stagger,
-      } = child.props;
+        const tweenRef = this.tweens[childIndex];
+        this.timeline.add(tweenRef.getGSAP(), position || '+=0', align || 'normal', stagger || 0);
 
-      this.timeline.add(child.getGSAP(), position || '+=0', align || 'normal', stagger || 0);
+        childIndex++;
+      }
     });
   }
 
@@ -153,6 +155,7 @@ class Timeline extends React.Component<TimelineProps, {}> {
 
     const output = (
       <Fragment>
+        {/* First render the target */}
         {React.Children.map(target, child => {
           if (child.type.toString() === 'Symbol(react.fragment)') {
             return React.Children.map(child.props.children, fragmentChild => {
