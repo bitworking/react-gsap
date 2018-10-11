@@ -2,9 +2,9 @@
 import { default as React, Fragment } from 'react';
 import { TweenMax as TweenClass } from 'gsap/TweenMax';
 import 'gsap/TextPlugin';
-import { getTweenFunction, playStates, setPlayStatus } from './helper';
-import PlugInSvg from './plugins/PlugInSvg';
-PlugInSvg();
+import { getTweenFunction, playStates, setPlayState } from './helper';
+import PlugInSvgDraw from './plugins/PlugInSvgDraw';
+PlugInSvgDraw();
 
 // svg morphing
 // https://github.com/veltman/flubber
@@ -26,7 +26,7 @@ type TweenProps = {
   wrapper: any,
   progress: number,
   totalProgress: number,
-  playStatus: string,
+  playState: string,
   call: { method: string, params: any[], callback: Function },
 
   [prop: string]: any,
@@ -36,7 +36,7 @@ type TweenProps = {
 class Tween extends React.Component<TweenProps, {}> {
   static displayName = 'Tween';
 
-  static get playStatus() {
+  static get playState() {
     return playStates;
   }
 
@@ -67,7 +67,7 @@ class Tween extends React.Component<TweenProps, {}> {
       children,
       progress,
       totalProgress,
-      playStatus,
+      playState,
     } = this.props;
 
     // if children change create a new tween
@@ -84,7 +84,7 @@ class Tween extends React.Component<TweenProps, {}> {
       this.tween.totalProgress(totalProgress);
     }
 
-    setPlayStatus(playStatus, prevProps.playStatus, this.tween);
+    setPlayState(playState, prevProps.playState, this.tween);
   }
 
   createTween() {

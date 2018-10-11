@@ -1,7 +1,7 @@
 // @flow
 import { default as React, Fragment } from 'react';
 import { TimelineMax as TimelineClass } from 'gsap/TweenMax';
-import { getTweenFunction, playStates, setPlayStatus } from './helper';
+import { getTweenFunction, playStates, setPlayState } from './helper';
 
 type TimelineProps = {
   children: Node,
@@ -9,7 +9,7 @@ type TimelineProps = {
   wrapper: any,
   progress: number,
   totalProgress: number,
-  playStatus: string,
+  playState: string,
 
   [prop: string]: any,
 
@@ -18,7 +18,7 @@ type TimelineProps = {
 class Timeline extends React.Component<TimelineProps, {}> {
   static displayName = 'Timeline';
 
-  static get playStatus() {
+  static get playState() {
     return playStates;
   }
 
@@ -52,7 +52,7 @@ class Timeline extends React.Component<TimelineProps, {}> {
       children,
       progress,
       totalProgress,
-      playStatus,
+      playState,
     } = this.props;
 
     // if children change create a new timeline
@@ -70,7 +70,7 @@ class Timeline extends React.Component<TimelineProps, {}> {
       this.timeline.totalProgress(totalProgress);
     }
 
-    setPlayStatus(playStatus, prevProps.playStatus, this.timeline);
+    setPlayState(playState, prevProps.playState, this.timeline);
   }
 
   createTimeline() {
@@ -79,7 +79,7 @@ class Timeline extends React.Component<TimelineProps, {}> {
       target,
       progress,
       totalProgress,
-      playStatus,
+      playState,
       ...vars
     } = this.props;
 

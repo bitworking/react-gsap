@@ -8,7 +8,7 @@ class Controls extends Component {
 
   state = {
     totalProgress: 0,
-    playStatus: 'playing',
+    playState: Tween.playState.play,
   }
 
   containerStyle = {
@@ -42,7 +42,7 @@ class Controls extends Component {
     width: '100%',
   }
 
-  playStatusStyle = {
+  playStateStyle = {
     color: '#999',
     margin: '10px 0',
     fontSize: '14px',
@@ -68,13 +68,13 @@ class Controls extends Component {
     this.gsap.getGSAP().totalProgress(event.target.value / 100);
   }
 
-  setPlayStatus = (status) => {
+  setPlayState = (state) => {
     this.setState({
-      playStatus: status
+      playState: state
     });
   }
 
-  getControls = (totalProgress, playStatus) => (
+  getControls = (totalProgress, playState) => (
     <div style={this.containerStyle}>
       <input
         ref={el => this.slider = el}
@@ -87,12 +87,12 @@ class Controls extends Component {
       />
       <div style={this.buttonContainerStyle}>
         <div>
-          <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayStatus(Tween.playStatus.playing)}>Play</button>
-          <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayStatus(Tween.playStatus.reverse)}>Reverse</button>
-          <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayStatus(Tween.playStatus.paused)}>Pause</button>
-          <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayStatus(Tween.playStatus.stopped)}>Stop</button>
+          <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayState(Tween.playState.play)}>Play</button>
+          <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayState(Tween.playState.reverse)}>Reverse</button>
+          <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayState(Tween.playState.pause)}>Pause</button>
+          <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayState(Tween.playState.stop)}>Stop</button>
         </div>
-        <span style={this.playStatusStyle}>{playStatus}</span>
+        <span style={this.playStateStyle}>{playState}</span>
       </div>
     </div>
   );
@@ -104,22 +104,25 @@ class Controls extends Component {
 
     const {
       totalProgress,
-      playStatus,
+      playState,
     } = this.state;
 
-    // TODO: allow only one child and Tween and Timeline
+    const child = React.Children.only(children);
 
-    const child = children(totalProgress, playStatus);
+    if (child.type.displayName !== 'Tween' && child.type.displayName !== 'Timeline') {
+      throw new Error('Controls component only allows a Tween or a Timeline component as direct child');
+    }
 
     return (
       <div>
         {React.cloneElement(
           child,
           {
-            ref: (target) => { this.gsap = target }
+            ref: (target) => { this.gsap = target },
+            playState,
           }
         )}
-        {this.getControls(totalProgress, playStatus)}
+        {this.getControls(totalProgress, playState)}
       </div>
     );
   }

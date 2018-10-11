@@ -15,7 +15,7 @@ const Item = styled.div`
 
 const TransitionItem = ({ children, onClick, ...props }) => (
   <Transition timeout={1000} {...props}>
-    {(status) => (
+    {(state) => (
       <Timeline
         wrapper={
           <div />
@@ -33,10 +33,10 @@ const TransitionItem = ({ children, onClick, ...props }) => (
           }}
           duration={1}
           paused={true}
-          playStatus={status === 'entering' ? Tween.playStatus.reverse : status === 'exiting' ? Tween.playStatus.playing : null}
+          playState={state === 'entering' ? Tween.playState.reverse : state === 'exiting' ? Tween.playState.play : null}
           ease="Back.easeInOut"
         >
-          <Item onClick={onClick}>{children} {status}</Item>
+          <Item onClick={onClick}>{children} {state}</Item>
         </Tween>
       </Timeline>
     )}

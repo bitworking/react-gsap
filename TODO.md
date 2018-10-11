@@ -1,8 +1,7 @@
 ## TODO
 
-* SVG PlugIn -> more options -> see https://greensock.com/drawSVG
 * Docs
-* Example page with code preview -> or add codesandbox.io or stackblitz.com widget
+* Improve SplitText components: Take wrapper prop and accept also raw text.
 * Example with Route transitions
 * Add a get and set prop to call every function on Tween and Timeline object? (Already possible with a ref)
 * SVG Morphing -> add https://github.com/veltman/flubber ?

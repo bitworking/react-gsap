@@ -2,34 +2,34 @@
 import { TimelineMax as TimelineClass, TweenMax as TweenClass } from 'gsap/TweenMax';
 
 const playStates = {
-  playing: 'playing',
+  play: 'play',
   reverse: 'reverse',
-  stopped: 'stopped',
-  paused: 'paused',
+  stop: 'stop',
+  pause: 'pause',
 };
 
-const setPlayStatus = (playStatus, prevPlayStatus, tween) => {
-  if (playStatus !== prevPlayStatus) {
-    if (playStatus === playStates.playing) {
-      if (prevPlayStatus === playStates.paused || prevPlayStatus === playStates.reverse) {
+const setPlayState = (playState, prevPlayState, tween) => {
+  if (playState && playState !== prevPlayState) {
+    if (playState === playStates.play) {
+      if (prevPlayState === playStates.pause || prevPlayState === playStates.reverse) {
         tween.play();
       }
       else {
         tween.restart(true);
       }
     }
-    else if (playStatus === playStates.reverse) {
-      if (prevPlayStatus === playStates.paused || prevPlayStatus === playStates.playing) {
+    else if (playState === playStates.reverse) {
+      if (prevPlayState === playStates.pause || prevPlayState === playStates.play) {
         tween.reverse();
       }
       else {
         tween.reverse(0);
       }
     }
-    else if (playStatus === playStates.stopped) {
+    else if (playState === playStates.stop) {
       tween.pause(0);
     }
-    else if (playStatus === playStates.paused) {
+    else if (playState === playStates.pause) {
       tween.pause();
     }
   }
@@ -50,7 +50,7 @@ const getTweenFunction = (targets, tween) => {
     onCompleteAllScope,
     progress,
     totalProgress,
-    playStatus,
+    playState,
     ...vars
   } = tween;
 
@@ -99,8 +99,8 @@ const getTweenFunction = (targets, tween) => {
   if (totalProgress) {
     tweenFunction.totalProgress(totalProgress);
   }
-  if (playStatus) {
-    setPlayStatus(playStatus, null, tweenFunction);
+  if (playState) {
+    setPlayState(playState, null, tweenFunction);
   }
 
   return tweenFunction;
@@ -123,4 +123,4 @@ const callTweenFunction = (tweenFunction: any, functionName: string, params?: ?A
   }
 };
 
-export { getTweenFunction, callTweenFunction, setPlayStatus, playStates };
+export { getTweenFunction, callTweenFunction, setPlayState, playStates };

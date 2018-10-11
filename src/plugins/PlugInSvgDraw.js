@@ -1,3 +1,5 @@
+// https://github.com/greensock/GreenSock-JS/blob/master/src/uncompressed/plugins/TEMPLATE_Plugin.js
+
 export default function () {
   var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(global) !== "undefined") ? global : this || window; //helps ensure compatibility with AMD/RequireJS and CommonJS/Node
   (_gsScope._gsQueue || (_gsScope._gsQueue = [])).push( function() {
@@ -57,20 +59,35 @@ export default function () {
     }
 
     _gsScope._gsDefine.plugin({
-      propName: "svg",
+      propName: "svgDraw",
       priority: 0,
       API: 2,
       version: "1.0.0",
-      overwriteProps: ["svg"],
+      overwriteProps: ["svgDraw"],
 
       init: function(target, value, tween, index) {
         this._target = target;
         this._length = getTotalLength(this._target);
- 
-        const muliplicator = 1 - value;
 
-        this._target.setAttribute('stroke-dasharray', this._length);
-        this._addTween(target, 'setAttribute', 'get', muliplicator * this._length, 'stroke-dashoffset', null, 'stroke-dashoffset', null, index);
+        let length;
+        let offset = null;
+
+        if (Array.isArray(value) && value.length === 2) {
+          length = value[0];
+          offset = value[1] * -1;
+        }
+        else {
+          length = value;
+        }
+
+        if (offset === null) {
+          this._addTween(target, 'setAttribute', 'get', 0, 'stroke-dashoffset', null, 'stroke-dashoffset', null, index);
+          this._addTween(target, 'setAttribute', 'get', [length * this._length, this._length], 'stroke-dasharray', null, 'stroke-dasharray', null, index);
+        }
+        else {
+          this._addTween(target, 'setAttribute', 'get', this._length * offset, 'stroke-dashoffset', null, 'stroke-dashoffset', null, index);
+          this._addTween(target, 'setAttribute', 'get', [length * this._length, this._length], 'stroke-dasharray', null, 'stroke-dasharray', null, index);
+        }
 
         return true;
       },
