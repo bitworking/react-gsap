@@ -12,37 +12,44 @@ class Controls extends Component {
   }
 
   containerStyle = {
-    backgroundColor: '#555',
-    padding: '10px',
+    backgroundColor: '#f0f0f0',
+    padding: '10px 10px 0 10px',
     marginTop: '10px',
-    display: 'flex',
-    flexWrap: 'wrap',
     position: 'relative',
     zIndex: '2',
+    fontFamily: 'verdana, sans-serif',
+    fontSize: '16px',
+    border: '1px solid #ccc',
   }
   
   buttonContainerStyle = {
-    margin: '5px 0',
+    margin: '0',
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
   }
 
   buttonStyle = {
-    border: '0',
+    border: '1px solid #999',
     backgroundColor: '#f0f0f0',
     padding: '5px',
-    marginRight: '10px',
+    margin: '10px 10px 10px 0',
+    cursor: 'pointer',
   }
   
   sliderStyle = {
-    margin: '5px 20px 5px 0',
+    margin: '0',
     width: '100%',
   }
 
   playStatusStyle = {
-    marginLeft: '20px',
-    color: '#f0f0f0',
+    color: '#999',
+    margin: '10px 0',
+    fontSize: '14px',
   }
 
   componentDidMount() {
+    this.slider.value = 0;
     this.gsap.getGSAP().eventCallback('onUpdate', this.onUpdate, null, this);
   }
 
@@ -79,10 +86,12 @@ class Controls extends Component {
         onMouseUp={(e) => this.sliderTouched = false}
       />
       <div style={this.buttonContainerStyle}>
-        <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayStatus(Tween.playStatus.playing)}>Play</button>
-        <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayStatus(Tween.playStatus.reverse)}>Reverse</button>
-        <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayStatus(Tween.playStatus.paused)}>Pause</button>
-        <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayStatus(Tween.playStatus.stopped)}>Stop</button>
+        <div>
+          <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayStatus(Tween.playStatus.playing)}>Play</button>
+          <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayStatus(Tween.playStatus.reverse)}>Reverse</button>
+          <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayStatus(Tween.playStatus.paused)}>Pause</button>
+          <button type="button" style={this.buttonStyle} onClick={(e) => this.setPlayStatus(Tween.playStatus.stopped)}>Stop</button>
+        </div>
         <span style={this.playStatusStyle}>{playStatus}</span>
       </div>
     </div>
