@@ -21,7 +21,7 @@ const TransitionItem = ({ children, onClick, ...props }) => (
           <div />
         }
       >
-        <Tween  
+        <Tween
           from={{
             xPercent: 0,
             opacity: 1,
@@ -73,6 +73,8 @@ class TransitionComponent extends React.Component {
 
     return (
       <TransitionStyled>
+        Play with these example on <a href="https://stackblitz.com/edit/react-v61on3" target="_blank">StackBlitz.io</a>
+
         <div className="section">Mount/Unmount Animation - built with React Transition Group</div>
 
         <button

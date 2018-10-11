@@ -16,6 +16,8 @@ const TweenStyled = styled.div`
 
 const TweenComponent = () => (
   <TweenStyled>
+    Play with these examples on <a href="https://stackblitz.com/edit/react-gmmwqj" target="_blank">StackBlitz.io</a>
+
     <div className="section">SplitWords component</div>
 
     <Controls>

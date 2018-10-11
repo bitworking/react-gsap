@@ -9,6 +9,8 @@ const TimelineStyled = styled.div`
 
 const TimelineComponent = () => (
   <TimelineStyled>
+    Play with these example on <a href="https://stackblitz.com/edit/react-ambemn" target="_blank">StackBlitz.io</a>
+
     <div className="section">Nested Timeline</div>
 
     <Controls>

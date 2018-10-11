@@ -49,6 +49,17 @@ https://bitworking.github.io/react-gsap/
 
 https://github.com/bitworking/react-gsap/tree/master/example/src/components
 
+##### You can play with these examples at StackBlitz.io. Because learning by doing is the King:
+
+[Tween](https://stackblitz.com/edit/react-gmmwqj)
+
+[Timeline](https://stackblitz.com/edit/react-ambemn)
+
+[Svg](https://stackblitz.com/edit/react-23bsde)
+
+[Transition](https://stackblitz.com/edit/react-v61on3)
+
+
 ## License
 
 MIT © [bitworking](https://github.com/bitworking)
