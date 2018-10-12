@@ -46,9 +46,37 @@ export default function () {
       const points = el.points;
       return getPolylineLength(el) + getDistance(points.getItem(points.numberOfItems - 1), points.getItem(0));
     }
+    
+    function getPathLength(el) {
+      if (!el.hasAttribute('d')) {
+        return el.getTotalLength();
+      }
+      const d = el.getAttribute('d');
+      const pathString = d.replace(/m/gi, 'M');
+
+      const paths = pathString.split('M')
+        .filter(path => path !== '')
+        .map(path => `M${path}`);
+  
+      if (paths.length === 1) {
+        return el.getTotalLength();
+      }
+  
+      let maxLength = 0;
+
+      paths.forEach(path => {
+        const pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        pathElement.setAttribute('d', path);
+        maxLength = Math.max(maxLength, pathElement.getTotalLength());
+      });
+
+      return maxLength;
+    }
 
     function getTotalLength(el) {
-      if (el.getTotalLength) return el.getTotalLength();
+      if (el.getTotalLength) {
+        return getPathLength(el);
+      }
       switch(el.tagName.toLowerCase()) {
         case 'circle': return getCircleLength(el);
         case 'rect': return getRectLength(el);
