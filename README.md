@@ -72,6 +72,10 @@ react-gsap exports the following components:
 
 [Controls](#controls)
 
+If you need the full control:
+
+[Low level access](#low-level-access)
+
 It also includes a Tween Plugin which let's you easy draw a SVG:
 
 [SvgDraw PlugIn](#svgdraw-plugin)
@@ -135,6 +139,12 @@ Example use: https://github.com/bitworking/react-gsap/blob/master/example/src/co
 ## Controls
 
 You can wrap this component around one Tween or Timeline component and you get a nice control panel with play, reverse, pause, stop and a slider controls.
+
+## Low level access
+
+TBD
+
+See https://github.com/bitworking/react-gsap/blob/master/src/tools/Controls.js for an example.
 
 ## SvgDraw PlugIn
 
