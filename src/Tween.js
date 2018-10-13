@@ -22,12 +22,11 @@ type TweenProps = {
   onCompleteAllParams?: Array<any>,
   onCompleteAllScope?: any,
 
-  children: Node,
-  wrapper: any,
-  progress: number,
-  totalProgress: number,
-  playState: string,
-  call: { method: string, params: any[], callback: Function },
+  children?: Node,
+  wrapper?: any,
+  progress?: number,
+  totalProgress?: number,
+  playState?: string,
 
   [prop: string]: any,
 

@@ -5,11 +5,11 @@ import { getTweenFunction, playStates, setPlayState } from './helper';
 
 type TimelineProps = {
   children: Node,
-  target: any,
-  wrapper: any,
-  progress: number,
-  totalProgress: number,
-  playState: string,
+  target?: any,
+  wrapper?: any,
+  progress?: number,
+  totalProgress?: number,
+  playState?: string,
 
   [prop: string]: any,
 
