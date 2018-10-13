@@ -84,7 +84,7 @@ The Tween component uses the [TweenMax](https://greensock.com/docs/TweenMax) cla
 
 
 name | type | default | more info
---- | --- | --- | --- | ---
+--- | --- | --- | ---
 duration | number | 1 | Duration in seconds (or frames if prop useFrames = true)
 from | object | null | The [vars](https://greensock.com/docs/TweenMax/static.from()) or [fromVars](https://greensock.com/docs/TweenMax/static.fromTo()) object
 to | object | null | The [vars](https://greensock.com/docs/TweenMax/static.to()) or [toVars](https://greensock.com/docs/TweenMax/static.fromTo()) object
@@ -111,7 +111,7 @@ The "staggerFrom" and "staggerTo" props are working analogous and call the follo
 The Timeline component uses the [TimelineMax](https://greensock.com/docs/TimelineMax) class internally. You can use the following props:
 
 name | type | default | more info
---- | --- | --- | --- | ---
+--- | --- | --- | ---
 target | Node | null | The target component that gets outputted and tweened from all childless Tween child components
 wrapper | Node | null | This component gets wrapped around the Tween component. Useful for svg's or lists for example.
 progress | number | null | 0 - 1
