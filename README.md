@@ -66,9 +66,9 @@ react-gsap exports the following components:
 
 [Timeline](#timeline)
 
-[SplitWords](#splitWords)
+[SplitWords](#splitwords)
 
-[SplitLetters](#splitLetters)
+[SplitLetters](#splitletters)
 
 [Controls](#controls)
 
