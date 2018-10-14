@@ -1,4 +1,5 @@
 // @flow
+// $FlowFixMe
 import { TimelineMax as TimelineClass, TweenMax as TweenClass } from 'gsap/TweenMax';
 
 const playStates = {
@@ -8,7 +9,7 @@ const playStates = {
   pause: 'pause',
 };
 
-const setPlayState = (playState, prevPlayState, tween) => {
+const setPlayState = (playState: ?string, prevPlayState: ?string, tween: any) => {
   if (playState && playState !== prevPlayState) {
     if (playState === playStates.play) {
       if (prevPlayState === playStates.pause || prevPlayState === playStates.reverse) {
@@ -35,7 +36,7 @@ const setPlayState = (playState, prevPlayState, tween) => {
   }
 };
 
-const getTweenFunction = (targets, props) => {
+const getTweenFunction = (targets: any, props: any) => {
   const {
     children,
     wrapper,
@@ -131,7 +132,7 @@ const callTweenFunction = (tweenFunction: any, functionName: string, params?: ?A
   }
 };
 
-const isEqual = (obj1, obj2) => {
+const isEqual = (obj1: any, obj2: any) => {
   // very easy equal check
   // attention: if the order of properties are different it returns false
   return JSON.stringify(obj1) === JSON.stringify(obj2);

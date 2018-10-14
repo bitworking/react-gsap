@@ -1,6 +1,8 @@
 // @flow
 import { default as React, Fragment } from 'react';
+// $FlowFixMe
 import { TweenMax as TweenClass } from 'gsap/TweenMax';
+// $FlowFixMe
 import 'gsap/TextPlugin';
 import { getTweenFunction, playStates, setPlayState, isEqual } from './helper';
 import PlugInSvgDraw from './plugins/PlugInSvgDraw';
@@ -54,12 +56,12 @@ class Tween extends React.Component<TweenProps, {}> {
     this.tween.kill();
   }
 
-  getSnapshotBeforeUpdate(prevProps) {
+  getSnapshotBeforeUpdate() {
     this.targets = [];
     return null;
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: TweenProps) {
     const {
       children,
       wrapper,
@@ -87,7 +89,7 @@ class Tween extends React.Component<TweenProps, {}> {
 
     // if children change create a new tween
     // TODO: replace easy length check with fast equal check
-    if (prevProps.children.length !== children.length) {
+    if (React.Children.count(prevProps.children) !== React.Children.count(children)) {
       this.createTween();
     }
 

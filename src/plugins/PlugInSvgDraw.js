@@ -3,11 +3,6 @@
 export default function () {
   var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(global) !== "undefined") ? global : this || window; //helps ensure compatibility with AMD/RequireJS and CommonJS/Node
   (_gsScope._gsQueue || (_gsScope._gsQueue = [])).push( function() {
-    "use strict";
-
-    function lerp(a, b, f) {
-      return a + f * (b - a);
-    }
 
     // from https://github.com/juliangarnier/anime/blob/master/anime.js
 
@@ -47,6 +42,7 @@ export default function () {
       return getPolylineLength(el) + getDistance(points.getItem(points.numberOfItems - 1), points.getItem(0));
     }
     
+    // if path is splitted into multiple move commands then return longest path
     function getPathLength(el) {
       if (!el.hasAttribute('d')) {
         return el.getTotalLength();
@@ -83,6 +79,7 @@ export default function () {
         case 'line': return getLineLength(el);
         case 'polyline': return getPolylineLength(el);
         case 'polygon': return getPolygonLength(el);
+        default: return 0;
       }
     }
 
@@ -94,28 +91,20 @@ export default function () {
       overwriteProps: ["svgDraw"],
 
       init: function(target, value, tween, index) {
-        this._target = target;
-        this._length = getTotalLength(this._target);
+        const length = getTotalLength(target);
 
-        let length;
-        let offset = null;
+        let lengthParam = value;
+        let offsetParam = 0;
 
-        if (Array.isArray(value) && value.length === 2) {
-          length = value[0];
-          offset = value[1] * -1;
-        }
-        else {
-          length = value;
+        if (Array.isArray(value)) {
+          lengthParam = value[0];
+          if (value.length >= 2) {
+            offsetParam = value[1] * -1;
+          }
         }
 
-        if (offset === null) {
-          this._addTween(target, 'setAttribute', 'get', 0, 'stroke-dashoffset', null, 'stroke-dashoffset', null, index);
-          this._addTween(target, 'setAttribute', 'get', [length * this._length, this._length], 'stroke-dasharray', null, 'stroke-dasharray', null, index);
-        }
-        else {
-          this._addTween(target, 'setAttribute', 'get', this._length * offset, 'stroke-dashoffset', null, 'stroke-dashoffset', null, index);
-          this._addTween(target, 'setAttribute', 'get', [length * this._length, this._length], 'stroke-dasharray', null, 'stroke-dasharray', null, index);
-        }
+        this._addTween(target, 'setAttribute', 'get', length * offsetParam, 'stroke-dashoffset', null, 'stroke-dashoffset', null, index);
+        this._addTween(target, 'setAttribute', 'get', [lengthParam * length, length], 'stroke-dasharray', null, 'stroke-dasharray', null, index);
 
         return true;
       },
