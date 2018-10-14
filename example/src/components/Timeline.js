@@ -23,10 +23,10 @@ const TimelineComponent = () => (
             <SplitWords><div style={{ position: 'relative', fontSize: '50px', display: 'inline-block' }}>This is a Timeline</div></SplitWords>
           </Fragment>
         }
-        repeat={10}
+        repeat={0}
       >
-        <Tween from={{ x: '-500px' }} to={{ x: '80px' }} duration={0.7} ease="Elastic.easeOut" delay={1} />
-        <Tween staggerTo={{ y: '55px' }} stagger={0.2} duration={0.1} ease="Back.easeOut" position="+=1" />
+        <Tween from={{ x: '-500px' }} to={{ x: '80px' }} duration={0.7} ease="Elastic.easeOut" delay={0.5} />
+        <Tween staggerTo={{ y: '55px' }} stagger={0.2} duration={0.1} ease="Back.easeOut" position="+=0" />
         <Tween staggerTo={{ x: '700px' }} stagger={0.2} duration={0.7} ease="Back.easeOut" position="+=1" />
 
         <Timeline
@@ -39,7 +39,7 @@ const TimelineComponent = () => (
             </Fragment>
           }
         >
-          <Tween staggerFrom={{ opacity: 0 }} staggerTo={{ opacity: 1 }} stagger={0.1} position="+=1" />
+          <Tween staggerFrom={{ opacity: 0 }} staggerTo={{ opacity: 1 }} stagger={0.1} position="+=0" />
           <Tween to={{ scale: 20, rotation: -180 }} position="+=1" />
           <Tween to={{ opacity: 0 }} />
         </Timeline>

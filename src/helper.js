@@ -35,31 +35,35 @@ const setPlayState = (playState, prevPlayState, tween) => {
   }
 };
 
-const getTweenFunction = (targets, tween) => {
+const getTweenFunction = (targets, props) => {
   const {
     children,
     wrapper,
+
     duration,
     from,
     to,
     staggerFrom,
     staggerTo,
     stagger,
-    onCompleteAll,
-    onCompleteAllParams,
-    onCompleteAllScope,
+
     progress,
     totalProgress,
     playState,
+
+    onCompleteAll,
+    onCompleteAllParams,
+    onCompleteAllScope,
+    onStartAll,
+
+    disabled,
+
     ...vars
-  } = tween;
+  } = props;
 
   let tweenFunction;
   const duration$ = duration || 1;
   const stagger$ = stagger || 0;
-  const onCompleteAll$ = onCompleteAll || null;
-  const onCompleteAllParams$ = onCompleteAllParams || null;
-  const onCompleteAllScope$ = onCompleteAllScope || null;
 
   if (from && to) {
     tweenFunction = TweenClass.fromTo(targets, duration$, from, { ...to, ...vars });
@@ -68,13 +72,13 @@ const getTweenFunction = (targets, tween) => {
     tweenFunction = TweenClass.to(targets, duration$, { ...to, ...vars });
   }
   else if (staggerFrom && staggerTo) {
-    tweenFunction = TweenClass.staggerFromTo(targets, duration$, staggerFrom, { ...staggerTo, ...vars }, stagger$, onCompleteAll$, onCompleteAllParams$, onCompleteAllScope$);
+    tweenFunction = TweenClass.staggerFromTo(targets, duration$, staggerFrom, { ...staggerTo, ...vars }, stagger$);
   }
   else if (staggerFrom) {
-    tweenFunction = TweenClass.staggerFrom(targets, duration$, { ...staggerFrom, ...vars }, stagger$, onCompleteAll$, onCompleteAllParams$, onCompleteAllScope$);
+    tweenFunction = TweenClass.staggerFrom(targets, duration$, { ...staggerFrom, ...vars }, stagger$);
   }
   else if (staggerTo) {
-    tweenFunction = TweenClass.staggerTo(targets, duration$, { ...staggerTo, ...vars }, stagger$, onCompleteAll$, onCompleteAllParams$, onCompleteAllScope$);
+    tweenFunction = TweenClass.staggerTo(targets, duration$, { ...staggerTo, ...vars }, stagger$);
   }
   else {
     tweenFunction = TweenClass.from(targets, duration$, { ...from, ...vars });
@@ -86,9 +90,13 @@ const getTweenFunction = (targets, tween) => {
       t.paused(false);
     });
     tweenFunction = new TimelineClass({
+      ...vars,
       tweens: tweenFunction,
       smoothChildTiming: true,
-      ...vars
+      onComplete: onCompleteAll, 
+      onCompleteParams: onCompleteAllParams,
+      onCompleteScope: onCompleteAllScope,
+      onStart: onStartAll,
     });
   }
 
@@ -123,4 +131,10 @@ const callTweenFunction = (tweenFunction: any, functionName: string, params?: ?A
   }
 };
 
-export { getTweenFunction, callTweenFunction, setPlayState, playStates };
+const isEqual = (obj1, obj2) => {
+  // very easy equal check
+  // attention: if the order of properties are different it returns false
+  return JSON.stringify(obj1) === JSON.stringify(obj2);
+};
+
+export { getTweenFunction, callTweenFunction, setPlayState, playStates, isEqual };

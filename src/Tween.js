@@ -2,7 +2,7 @@
 import { default as React, Fragment } from 'react';
 import { TweenMax as TweenClass } from 'gsap/TweenMax';
 import 'gsap/TextPlugin';
-import { getTweenFunction, playStates, setPlayState } from './helper';
+import { getTweenFunction, playStates, setPlayState, isEqual } from './helper';
 import PlugInSvgDraw from './plugins/PlugInSvgDraw';
 PlugInSvgDraw();
 
@@ -12,18 +12,16 @@ PlugInSvgDraw();
 TweenClass.lagSmoothing(0);
 
 type TweenProps = {
+  children?: Node,
+  wrapper?: any,
+
   duration?: number,
   from?: any,
   to?: any,
   staggerFrom?: any,
   staggerTo?: any,
   stagger?: number,
-  onCompleteAll?: Function,
-  onCompleteAllParams?: Array<any>,
-  onCompleteAllScope?: any,
 
-  children?: Node,
-  wrapper?: any,
   progress?: number,
   totalProgress?: number,
   playState?: string,
@@ -64,9 +62,27 @@ class Tween extends React.Component<TweenProps, {}> {
   componentDidUpdate(prevProps) {
     const {
       children,
+      wrapper,
+
+      duration,
+      from,
+      to,
+      staggerFrom,
+      staggerTo,
+      stagger,
+
       progress,
       totalProgress,
       playState,
+
+      onCompleteAll,
+      onCompleteAllParams,
+      onCompleteAllScope,
+      onStartAll,
+
+      disabled,
+
+      ...vars
     } = this.props;
 
     // if children change create a new tween
@@ -75,12 +91,31 @@ class Tween extends React.Component<TweenProps, {}> {
       this.createTween();
     }
 
+    if (disabled) {
+      return;
+    }
+
     // execute function calls
     if (progress !== prevProps.progress) {
       this.tween.progress(progress);
     }
     if (totalProgress !== prevProps.totalProgress) {
       this.tween.totalProgress(totalProgress);
+    }
+    // if "to" or "staggerTo" props are changed: reinit and restart tween
+    if (!isEqual(to, prevProps.to)) {
+      this.tween.vars = { ...to, ...vars };
+      this.tween.invalidate();
+      this.tween.restart();
+    }
+    if (!isEqual(staggerTo, prevProps.staggerTo)) {
+      let delay = 0;
+      this.tween.getChildren(false, true, false).forEach((tween) => {
+        tween.vars = { ...staggerTo, ...vars, ...{ delay } };
+        tween.invalidate();
+        delay += stagger;
+      });
+      this.tween.restart(true);
     }
 
     setPlayState(playState, prevProps.playState, this.tween);

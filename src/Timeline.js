@@ -5,8 +5,9 @@ import { getTweenFunction, playStates, setPlayState } from './helper';
 
 type TimelineProps = {
   children: Node,
-  target?: any,
   wrapper?: any,
+  target?: any,
+
   progress?: number,
   totalProgress?: number,
   playState?: string,

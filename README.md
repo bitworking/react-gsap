@@ -8,7 +8,7 @@
 
 react-gsap lets you use the GreenSock Animation Platform (GSAP) in React in a fully declarative way. It abstracts away the direct use of the GSAP classes [TweenMax](https://greensock.com/docs/TweenMax) and [TimelineMax](https://greensock.com/docs/TimelineMax).
 
-If you need the full control (calling methods like [updateTo](https://greensock.com/docs/TweenMax/updateTo())) it's possible by getting low level access to the underlying classes.
+If you need the full control it's possible by getting low level access to the underlying classes.
 
 In addition to that it has it's own SVG drawing PlugIn and some useful helper components.
 
@@ -91,18 +91,19 @@ name | type | default | more info
 --- | --- | --- | ---
 duration | number | 1 | Duration in seconds (or frames if prop useFrames = true)
 from | object | null | The [vars](https://greensock.com/docs/TweenMax/static.from()) or [fromVars](https://greensock.com/docs/TweenMax/static.fromTo()) object
-to | object | null | The [vars](https://greensock.com/docs/TweenMax/static.to()) or [toVars](https://greensock.com/docs/TweenMax/static.fromTo()) object
+to | object | null | The [vars](https://greensock.com/docs/TweenMax/static.to()) or [toVars](https://greensock.com/docs/TweenMax/static.fromTo()) object. Can be changed on-the-fly
 staggerFrom | object | null | The [vars](https://greensock.com/docs/TweenMax/static.staggerFrom()) or [fromVars](https://greensock.com/docs/TweenMax/static.staggerFromTo()) object
-staggerTo | object | null | The [vars](https://greensock.com/docs/TweenMax/static.staggerTo()) or [toVars](https://greensock.com/docs/TweenMax/static.staggerFromTo()) object
+staggerTo | object | null | The [vars](https://greensock.com/docs/TweenMax/static.staggerTo()) or [toVars](https://greensock.com/docs/TweenMax/static.staggerFromTo()) object. Can be changed on-the-fly
 stagger | number | 0 | The stagger parameter for the [staggerFrom](https://greensock.com/docs/TweenMax/static.staggerFrom()), [staggerTo](https://greensock.com/docs/TweenMax/static.staggerTo()) and [staggerFromTo](https://greensock.com/docs/TweenMax/static.staggerFromTo()) methods
-onCompleteAll | Function | null | Parameter for the stagger methods
-onCompleteAllParams | Array | null | Parameter for the stagger methods
-onCompleteAllScope | any | null | Parameter for the stagger methods
+onStartAll | Function | null | Parameter for the stagger methods. Get called when the first tween starts
+onCompleteAll | Function | null | Parameter for the stagger methods. Get called when the last tween stops
 wrapper | Node | null | This component gets wrapped around the Tween component. Useful for svg's or lists for example.
 progress | number | null | 0 - 1
 totalProgress | number | null | 0 - 1
 playState | string | null | "play", "reverse", "pause" or "stop" possible
+disabled | boolean | null | on-the-fly (to, staggerTo) and progress, totalProgress or playState changes and are no more possible
 [prop: string] | any | null | All other props will get merged with the vars object. So you can use for example useFrames property as prop for the Tween component instead of defining it in the from, to, staggerFrom or staggerTo objects.
+children | Node | null | Only HTML elements, [styled-components](https://www.styled-components.com/) or [React.forwardRef](https://reactjs.org/docs/forwarding-refs.html) components are getting tweened. Stateless or stateful components need to be wrapped in a HTML element.
 
 ### How from, to, staggerFrom and staggerTo work?
 
