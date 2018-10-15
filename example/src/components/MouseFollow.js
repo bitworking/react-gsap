@@ -25,6 +25,8 @@ class MouseFollowComponent extends PureComponent {
     completed: true,
   }
 
+  tween;
+
   constructor(props) {
     super(props);
     this.mouseMove = this.mouseMove.bind(this);
@@ -32,6 +34,8 @@ class MouseFollowComponent extends PureComponent {
 
   componentDidMount() {
     window.addEventListener('mousemove', this.mouseMove);
+    
+    // this.tween.getGSAP().shiftChildren(1);
   }
 
   componentWillUnmount() {
@@ -77,6 +81,7 @@ class MouseFollowComponent extends PureComponent {
           //onStartAll={() => { this.setState({ completed: false }) }}
           //onCompleteAll={() => { this.setState({ completed: true }) }}
           //disabled={!completed}
+          ref={ref => this.tween = ref}
         >
           <Circle />
           <Circle />
