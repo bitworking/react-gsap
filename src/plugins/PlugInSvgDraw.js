@@ -2,6 +2,11 @@
 
 export default function () {
   var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(global) !== "undefined") ? global : this || window; //helps ensure compatibility with AMD/RequireJS and CommonJS/Node
+
+  if (!_gsScope) {
+    _gsScope = {};
+  }
+
   (_gsScope._gsQueue || (_gsScope._gsQueue = [])).push( function() {
 
     // from https://github.com/juliangarnier/anime/blob/master/anime.js
