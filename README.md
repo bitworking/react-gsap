@@ -143,9 +143,45 @@ You can wrap this component around one Tween or Timeline component and you get a
 
 ## Low level access
 
-TBD
+You are able to use the complete API of the underlying GSAP objects.
+Just add a reference to the Tween or Timeline components and get the [TweenMax](https://greensock.com/docs/TweenMax) or [TimelineMax](https://greensock.com/docs/TimelineMax) objects by calling the `getGSAP()` method on it:
 
-See https://github.com/bitworking/react-gsap/blob/master/src/tools/Controls.js for an example.
+```jsx
+import React, { Component } from 'react';
+import { Tween } from 'react-gsap';
+
+class LowLevelAccess extends Component {
+  tween;
+
+  componentDidMount() {
+    // tween is now a TweenMax class instance
+    const tween = this.tween.getGSAP();
+    
+    // You can call any method on it
+    tween.timeScale(0.5);
+  }
+
+  render() {
+    return(
+        <Tween
+          to={{
+            x: 200,
+            y: 200,
+          }}
+          duration={2}
+          ease="Back.easeOut"
+          ref={ref => this.tween = ref}
+        >
+          <div>This div gets tweened</div>
+        </Tween>
+    );
+  }
+}
+
+export default LowLevelAccess;
+```
+
+Remember: If you use the stagger props on a Tween component (staggerTo, staggerFrom) then `getGSAP()` will return a [TimelineMax](https://greensock.com/docs/TimelineMax) and not a [TweenMax](https://greensock.com/docs/TweenMax) object.
 
 ## SvgDraw PlugIn
 
