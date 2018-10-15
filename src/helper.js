@@ -94,7 +94,7 @@ const getTweenFunction = (targets: any, props: any) => {
       ...vars,
       tweens: tweenFunction,
       smoothChildTiming: true,
-      onComplete: onCompleteAll, 
+      onComplete: onCompleteAll,
       onCompleteParams: onCompleteAllParams,
       onCompleteScope: onCompleteAllScope,
       onStart: onStartAll,
