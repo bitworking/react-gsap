@@ -1,15 +1,17 @@
 // @flow
 import { default as React, Fragment } from 'react';
+// $FlowFixMe
 import { TimelineMax as TimelineClass } from 'gsap/TweenMax';
 import { getTweenFunction, playStates, setPlayState } from './helper';
 
 type TimelineProps = {
   children: Node,
-  target: any,
-  wrapper: any,
-  progress: number,
-  totalProgress: number,
-  playState: string,
+  wrapper?: any,
+  target?: any,
+
+  progress?: number,
+  totalProgress?: number,
+  playState?: string,
 
   [prop: string]: any,
 
@@ -41,13 +43,13 @@ class Timeline extends React.Component<TimelineProps, {}> {
     this.timeline.kill();
   }
 
-  getSnapshotBeforeUpdate(prevProps) {
+  getSnapshotBeforeUpdate() {
     this.targets = [];
     this.tweens = [];
     return null;
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: TimelineProps) {
     const {
       children,
       progress,
@@ -58,7 +60,7 @@ class Timeline extends React.Component<TimelineProps, {}> {
     // if children change create a new timeline
     // TODO: replace easy length check with fast equal check
     // TODO: same for props.target?
-    if (prevProps.children.length !== children.length) {
+    if (React.Children.count(prevProps.children) !== React.Children.count(children)) {
       this.createTimeline();
     }
 
@@ -140,11 +142,12 @@ class Timeline extends React.Component<TimelineProps, {}> {
     }
   }
 
-  cloneElement(child, method = 'addTarget') {
+  cloneElement(child: any, method:string = 'addTarget') {
     const isStyled = child.type.styledComponentId;
     return React.cloneElement(
       child,
       {
+        // $FlowFixMe
         [isStyled ? 'innerRef' : 'ref']: (target) => this[method](target)
       }
     );
