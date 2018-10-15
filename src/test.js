@@ -1,7 +1,15 @@
-import { Tween } from './Tween';
+import { isEqual } from './helper';
 
-describe('Tween', () => {
-  it('is truthy', () => {
-    expect(Tween).toBeTruthy();
-  })
+test('isEqual: true', () => {
+  expect(isEqual({ a: 0, b: 1 }, { a: 0, b: 1 })).toBe(true);
 });
+
+test('isEqual: false', () => {
+  expect(isEqual({ a: 0, b: 1 }, { a: 2, b: 3 })).toBe(false);
+});
+
+test('isEqual: wrong order false', () => {
+  expect(isEqual({ a: 0, b: 1 }, { b: 1, a: 0 })).toBe(false);
+});
+
+
