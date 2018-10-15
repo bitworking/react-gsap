@@ -10,7 +10,7 @@ react-gsap lets you use the GreenSock Animation Platform (GSAP) in React in a fu
 
 If you need the full control it's possible by getting low level access to the underlying classes.
 
-In addition to that it has it's own SVG drawing PlugIn and some useful helper components.
+In addition to that it has it's own SVG drawing Plugin and some useful helper components.
 
 ## Install
 
@@ -80,7 +80,18 @@ It also includes a Tween Plugin which let's you easy draw a SVG:
 
 [SvgDraw PlugIn](#svgdraw-plugin)
 
+## About GSAP
 
+GreenSock Animation Platform (GSAP) is a set of some JavaScript classes which let you tween a value/attribute/css property over time and insert these tweens into a timeline for more complex animations.
+
+react-gsap uses the classes [TweenMax](https://greensock.com/docs/TweenMax) and [TimelineMax](https://greensock.com/docs/TimelineMax) internally. That means that the following Plugins and tools are available, too:
+
+- https://greensock.com/docs/Plugins/CSSPlugin
+- https://greensock.com/docs/Plugins/AttrPlugin
+- https://greensock.com/docs/Plugins/RoundPropsPlugin
+- https://greensock.com/docs/Plugins/BezierPlugin
+- https://greensock.com/docs/Plugins/DirectionalRotationPlugin
+- https://greensock.com/docs/Easing
 
 ## Tween
 
@@ -183,9 +194,9 @@ export default LowLevelAccess;
 
 Remember: If you use the stagger props on a Tween component (staggerTo, staggerFrom) then `getGSAP()` will return a [TimelineMax](https://greensock.com/docs/TimelineMax) and not a [TweenMax](https://greensock.com/docs/TweenMax) object.
 
-## SvgDraw PlugIn
+## SvgDraw Plugin
 
-With this PlugIn you can draw the following SVG elements: path, circle, rect, line, polyline and polygon. It works similar to the [DrawSVGPlugin](https://greensock.com/drawSVG) from GreenSock but the parameters are different.
+With this Plugin you can draw the following SVG elements: path, circle, rect, line, polyline and polygon. It works similar to the [DrawSVGPlugin](https://greensock.com/drawSVG) from GreenSock but the parameters are different.
 
 It can be called with the "svgDraw" property and takes a single number (0-1) value or an array with two numbers ([(0-1), (0-1)]).
 
