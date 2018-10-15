@@ -76,7 +76,7 @@ If you need the full control:
 
 [Low level access](#low-level-access)
 
-It also includes a Tween Plugin which let's you easy draw a SVG:
+It also includes a Tween Plugin which let's you easily draw a SVG:
 
 [SvgDraw PlugIn](#svgdraw-plugin)
 
