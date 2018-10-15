@@ -1,11 +1,7 @@
 // https://github.com/greensock/GreenSock-JS/blob/master/src/uncompressed/plugins/TEMPLATE_Plugin.js
 
 export default function () {
-  var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(global) !== "undefined") ? global : this || window; //helps ensure compatibility with AMD/RequireJS and CommonJS/Node
-
-  if (!_gsScope) {
-    _gsScope = {};
-  }
+  var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(global) !== "undefined") ? global : this || (typeof(window) !== "undefined" ? window : {}); //helps ensure compatibility with AMD/RequireJS and CommonJS/Node
 
   (_gsScope._gsQueue || (_gsScope._gsQueue = [])).push( function() {
 
