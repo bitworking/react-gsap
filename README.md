@@ -6,9 +6,9 @@
 
 # Introduction
 
-react-gsap lets you use the GreenSock Animation Platform (GSAP) in React in a fully declarative way. It abstracts away the direct use of the GSAP classes [TweenMax](https://greensock.com/docs/TweenMax) and [TimelineMax](https://greensock.com/docs/TimelineMax).
+react-gsap lets you use the [GreenSock Animation Platform (GSAP)](https://greensock.com/) in React in a fully declarative way. It abstracts away the direct use of the GSAP classes [TweenMax](https://greensock.com/docs/TweenMax) and [TimelineMax](https://greensock.com/docs/TimelineMax).
 
-If you need the full control it's possible by getting low level access to the underlying classes.
+If you need the full control it's possible by getting low level access to the underlying objects.
 
 In addition to that it has it's own SVG drawing Plugin and some useful helper components.
 
