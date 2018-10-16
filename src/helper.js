@@ -138,4 +138,24 @@ const isEqual = (obj1: any, obj2: any) => {
   return JSON.stringify(obj1) === JSON.stringify(obj2);
 };
 
-export { getTweenFunction, callTweenFunction, setPlayState, playStates, isEqual };
+const refOrInnerRef = (child: any) => {
+  if (child.type.$$typeof && child.type.$$typeof.toString() === 'Symbol(react.forward_ref)') {
+    return 'ref';
+  }
+
+  // styled-components < 4
+  if (child.type.styledComponentId) {
+    return 'innerRef';
+  }
+
+  return 'ref';
+}
+
+export {
+  getTweenFunction,
+  callTweenFunction,
+  setPlayState,
+  playStates,
+  isEqual,
+  refOrInnerRef,
+};

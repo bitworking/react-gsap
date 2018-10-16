@@ -4,7 +4,7 @@ import { default as React, Fragment } from 'react';
 import { TweenMax as TweenClass } from 'gsap/TweenMax';
 // $FlowFixMe
 import 'gsap/TextPlugin';
-import { getTweenFunction, playStates, setPlayState, isEqual } from './helper';
+import { getTweenFunction, playStates, setPlayState, isEqual, refOrInnerRef } from './helper';
 import PlugInSvgDraw from './plugins/PlugInSvgDraw';
 PlugInSvgDraw();
 
@@ -150,7 +150,7 @@ class Tween extends React.Component<TweenProps, {}> {
           React.cloneElement(
             child,
             {
-              [child.type.styledComponentId ? 'innerRef' : 'ref']: (target) => this.addTarget(target)
+              [refOrInnerRef(child)]: (target) => this.addTarget(target)
             }
           )
         )}

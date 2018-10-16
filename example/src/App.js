@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import './constants/style/global';
+import GlobalStyle from  './constants/style/global';
 
 import Tween from './components/Tween';
 import Timeline from './components/Timeline';
@@ -31,6 +31,7 @@ const Home = () => (
 
 const App = () => (
   <AppStyled>
+    <GlobalStyle />
     <Router basename="/react-gsap">
       <div>
         <nav>
