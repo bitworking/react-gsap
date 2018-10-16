@@ -2,7 +2,7 @@
 import { default as React, Fragment } from 'react';
 // $FlowFixMe
 import { TimelineMax as TimelineClass } from 'gsap/TweenMax';
-import { getTweenFunction, playStates, setPlayState } from './helper';
+import { getTweenFunction, playStates, setPlayState, refOrInnerRef } from './helper';
 
 type TimelineProps = {
   children: Node,
@@ -143,12 +143,11 @@ class Timeline extends React.Component<TimelineProps, {}> {
   }
 
   cloneElement(child: any, method:string = 'addTarget') {
-    const isStyled = child.type.styledComponentId;
     return React.cloneElement(
       child,
       {
         // $FlowFixMe
-        [isStyled ? 'innerRef' : 'ref']: (target) => this[method](target)
+        [refOrInnerRef(child)]: (target) => this[method](target)
       }
     );
   }
