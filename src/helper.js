@@ -63,7 +63,7 @@ const getTweenFunction = (targets: any, props: any) => {
   } = props;
 
   let tweenFunction;
-  const duration$ = duration || 1;
+  const duration$ = (duration === undefined || duration === null) ? 1 : duration;
   const stagger$ = stagger || 0;
 
   if (from && to) {
