@@ -98,7 +98,7 @@ class Timeline extends React.Component<TimelineProps, {}> {
     // add tweens to timeline
     let childIndex = 0;
     React.Children.forEach(children, child => {
-      if (child.type.displayName === 'Tween' && !child.props.children) {
+      if (child.type && child.type.displayName === 'Tween' && !child.props.children) {
         const {
           position,
           align,
@@ -109,7 +109,7 @@ class Timeline extends React.Component<TimelineProps, {}> {
         const tween = getTweenFunction(this.targets, { stagger, ...vars });
         this.timeline.add(tween, position || '+=0', align || 'normal', stagger || 0);
       }
-      else if (child.type.displayName === 'Tween' || child.type.displayName === 'Timeline') {
+      else if (child.type && (child.type.displayName === 'Tween' || child.type.displayName === 'Timeline')) {
         const {
           position,
           align,
@@ -167,10 +167,10 @@ class Timeline extends React.Component<TimelineProps, {}> {
           return this.cloneElement(child);
         })}
         {React.Children.map(children, child => {
-          if (child.type.displayName === 'Tween' && !child.props.children) {
+          if (child.type && child.type.displayName === 'Tween' && !child.props.children) {
             return null;
           }
-          if (child.type.displayName === 'Tween' || child.type.displayName === 'Timeline') {
+          if (child.type && (child.type.displayName === 'Tween' || child.type.displayName === 'Timeline')) {
             return this.cloneElement(child, 'addTween');
           }
           return child;
