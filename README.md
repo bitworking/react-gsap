@@ -122,6 +122,48 @@ If you only define the "from" prop then [TweenMax.from](https://greensock.com/do
 
 The "staggerFrom" and "staggerTo" props are working analogous and call the following methods: [TweenMax.staggerFrom](https://greensock.com/docs/TweenMax/static.staggerFrom()), [TweenMax.staggerTo](https://greensock.com/docs/TweenMax/static.staggerTo()) and [TweenMax.staggerFromTo](https://greensock.com/docs/TweenMax/static.staggerFromTo()).
 
+If you don't define any of these props then [TweenMax.from](https://greensock.com/docs/TweenMax/static.from()) is used and all additional props are passed as the vars object.
+
+In this way you can define a FadeIn component for example like this:
+
+```jsx
+import React from 'react';
+import { Tween } from 'react-gsap';
+
+const FadeIn = ({ children, duration }) => (
+  <Tween
+    opacity={0}
+    duration={duration}
+  >
+    {children}
+  </Tween>
+);
+```
+
+The most performant option would be to use the css property ([CSSPlugin](https://greensock.com/CSSPlugin)):
+
+```jsx
+const FadeIn = ({ children, duration }) => (
+  <Tween
+    css={{ opacity: 0 }}
+    duration={duration}
+  >
+    {children}
+  </Tween>
+);
+
+// equivalent with
+
+const FadeIn = ({ children, duration }) => (
+  <Tween
+    from={{ css: { opacity: 0 }}}
+    duration={duration}
+  >
+    {children}
+  </Tween>
+);
+```
+
 ## Timeline
 
 The Timeline component uses the [TimelineMax](https://greensock.com/docs/TimelineMax) class internally. You can use the following props:
@@ -130,7 +172,7 @@ name | type | default | more info
 --- | --- | --- | ---
 target | Node | null | The target component that gets outputted and tweened from all childless Tween child components
 wrapper | Node | null | This component gets wrapped around the Tween component. Useful for svg's or lists for example.
-duration | number | 1 | Adjusts the timeline's timeScale. Can be changed on-the-fly
+duration | number | null | Adjusts the timeline's timeScale. Can be changed on-the-fly
 progress | number | null | 0 - 1
 totalProgress | number | null | 0 - 1
 playState | string | null | "play", "reverse", "pause" or "stop" possible
