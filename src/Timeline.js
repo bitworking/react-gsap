@@ -9,6 +9,7 @@ type TimelineProps = {
   wrapper?: any,
   target?: any,
 
+  duration?: number,
   progress?: number,
   totalProgress?: number,
   playState?: string,
@@ -52,6 +53,7 @@ class Timeline extends React.Component<TimelineProps, {}> {
   componentDidUpdate(prevProps: TimelineProps) {
     const {
       children,
+      duration,
       progress,
       totalProgress,
       playState,
@@ -71,6 +73,9 @@ class Timeline extends React.Component<TimelineProps, {}> {
     if (totalProgress !== prevProps.totalProgress) {
       this.timeline.totalProgress(totalProgress);
     }
+    if (duration !== prevProps.duration) {
+      this.timeline.duration(duration);
+    }
 
     setPlayState(playState, prevProps.playState, this.timeline);
   }
@@ -79,6 +84,7 @@ class Timeline extends React.Component<TimelineProps, {}> {
     const {
       children,
       target,
+      duration,
       progress,
       totalProgress,
       playState,
@@ -122,6 +128,10 @@ class Timeline extends React.Component<TimelineProps, {}> {
         childIndex++;
       }
     });
+
+    if (duration) {
+      this.timeline.duration(duration);
+    }
   }
 
   getGSAP() {

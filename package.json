@@ -1,6 +1,6 @@
 {
   "name": "react-gsap",
-  "version": "1.0.16",
+  "version": "1.1.0",
   "description": "React components for GSAP",
   "author": "bitworking",
   "license": "MIT",
@@ -9,7 +9,7 @@
   "module": "dist/index.es.js",
   "jsnext:main": "dist/index.es.js",
   "engines": {
-    "node": "^6.14.0 || ^8.10.0 || >=9.10.0",
+    "node": ">=8",
     "npm": ">=5"
   },
   "scripts": {
