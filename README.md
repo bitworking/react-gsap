@@ -172,7 +172,7 @@ name | type | default | more info
 --- | --- | --- | ---
 target | Node | null | The target component that gets outputted and tweened from all childless Tween child components
 wrapper | Node | null | This component gets wrapped around the Tween component. Useful for svg's or lists for example.
-duration | number | 1 | Adjusts the timeline's timeScale. Can be changed on-the-fly
+duration | number | null | Adjusts the timeline's timeScale. Can be changed on-the-fly
 progress | number | null | 0 - 1
 totalProgress | number | null | 0 - 1
 playState | string | null | "play", "reverse", "pause" or "stop" possible
