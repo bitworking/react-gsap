@@ -100,7 +100,7 @@ The Tween component uses the [TweenMax](https://greensock.com/docs/TweenMax) cla
 
 name | type | default | more info
 --- | --- | --- | ---
-duration | number | 1 | Duration in seconds (or frames if prop useFrames = true)
+duration | number | 1 | Duration in seconds (or frames if prop useFrames = true). Can be changed on-the-fly
 from | object | null | The [vars](https://greensock.com/docs/TweenMax/static.from()) or [fromVars](https://greensock.com/docs/TweenMax/static.fromTo()) object
 to | object | null | The [vars](https://greensock.com/docs/TweenMax/static.to()) or [toVars](https://greensock.com/docs/TweenMax/static.fromTo()) object. Can be changed on-the-fly
 staggerFrom | object | null | The [vars](https://greensock.com/docs/TweenMax/static.staggerFrom()) or [fromVars](https://greensock.com/docs/TweenMax/static.staggerFromTo()) object
@@ -172,6 +172,7 @@ name | type | default | more info
 --- | --- | --- | ---
 target | Node | null | The target component that gets outputted and tweened from all childless Tween child components
 wrapper | Node | null | This component gets wrapped around the Tween component. Useful for svg's or lists for example.
+duration | number | 1 | Adjusts the timeline's timeScale. Can be changed on-the-fly
 progress | number | null | 0 - 1
 totalProgress | number | null | 0 - 1
 playState | string | null | "play", "reverse", "pause" or "stop" possible

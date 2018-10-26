@@ -76,7 +76,7 @@ class MouseFollowComponent extends PureComponent {
             scale: (Math.random() + 0.5) * 2,
           }}
           stagger={0.2}
-          duration={0.5}
+          duration={Math.random() * 10}
           ease="Back.easeOut"
           //onStartAll={() => { this.setState({ completed: false }) }}
           //onCompleteAll={() => { this.setState({ completed: true }) }}

@@ -104,11 +104,16 @@ class Tween extends React.Component<TweenProps, {}> {
     if (totalProgress !== prevProps.totalProgress) {
       this.tween.totalProgress(totalProgress);
     }
+    if (duration !== prevProps.duration) {
+      this.tween.duration(duration);
+    }
     // if "to" or "staggerTo" props are changed: reinit and restart tween
     if (!isEqual(to, prevProps.to)) {
       this.tween.vars = { ...to, ...vars };
       this.tween.invalidate();
-      this.tween.restart();
+      if (!this.tween.paused()) {
+        this.tween.restart();
+      }
     }
     if (!isEqual(staggerTo, prevProps.staggerTo)) {
       let delay = 0;
@@ -117,7 +122,9 @@ class Tween extends React.Component<TweenProps, {}> {
         tween.invalidate();
         delay += stagger;
       });
-      this.tween.restart(true);
+      if (!this.tween.paused()) {
+        this.tween.restart(true);
+      }
     }
 
     setPlayState(playState, prevProps.playState, this.tween);
