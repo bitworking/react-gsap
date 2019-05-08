@@ -33,7 +33,8 @@ declare module 'react-gsap' {
     [prop: string]: any,
 
   };
-
+  export class SplitLetters extends React.Component<{}> {}
+  export class SplitWords extends React.Component<{}> {}
   export class Tween extends React.Component<TweenProps> {}
   export class Timeline extends React.Component<TimelineProps> {}
 }
