@@ -84,6 +84,8 @@ class Tween extends React.Component<TweenProps, {}> {
 
       disabled,
 
+      onlyInvalidateTo, // set to true in case you want to preserve the animation origin after updating the 'to' object
+
       ...vars
     } = this.props;
 
@@ -110,7 +112,12 @@ class Tween extends React.Component<TweenProps, {}> {
     // if "to" or "staggerTo" props are changed: reinit and restart tween
     if (!isEqual(to, prevProps.to)) {
       this.tween.vars = { ...to, ...vars };
-      this.tween.invalidate();
+      if( onlyInvalidateTo ) {
+        var tempProgress = this.tween.progress();
+        this.tween.progress(0).invalidate().progress(tempProgress);
+      } else {
+        this.tween.invalidate();
+      }
       if (!this.tween.paused()) {
         this.tween.restart();
       }

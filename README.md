@@ -113,6 +113,7 @@ progress | number | null | 0 - 1
 totalProgress | number | null | 0 - 1
 playState | string | null | "play", "reverse", "pause" or "stop" possible
 disabled | boolean | null | on-the-fly (to, staggerTo) and progress, totalProgress or playState changes and are no more possible
+onlyInvalidateTo | boolean | null | on-the-fly `to` preserve the animation origin and only affect the `to` object
 [prop: string] | any | null | All other props will get merged with the vars object. So you can use for example useFrames property as prop for the Tween component instead of defining it in the from, to, staggerFrom or staggerTo objects.
 children | Node | null | Only HTML elements, [styled-components](https://www.styled-components.com/) or [React.forwardRef](https://reactjs.org/docs/forwarding-refs.html) components are getting tweened. Stateless or stateful components need to be wrapped in a HTML element.
 
@@ -210,7 +211,7 @@ class LowLevelAccess extends Component {
   componentDidMount() {
     // tween is now a TweenMax class instance
     const tween = this.tween.getGSAP();
-    
+
     // You can call any method on it
     tween.timeScale(0.5);
   }
