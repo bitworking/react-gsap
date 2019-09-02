@@ -1,6 +1,8 @@
 // @flow
+// eslint-disable-next-line
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
+// eslint-disable-next-line
 import { Tween, Timeline, SplitWords, SplitLetters, Controls } from 'react-gsap';
 
 const SvgStyled = styled.div`
@@ -9,7 +11,7 @@ const SvgStyled = styled.div`
 
 const SvgComponent = () => (
   <SvgStyled>
-    Play with these example on <a href="https://stackblitz.com/edit/react-23bsde" target="_blank">StackBlitz.io</a>
+    Play with these example on <a href="https://stackblitz.com/edit/react-23bsde" target="_blank" rel="noopener noreferrer">StackBlitz.io</a>
 
     <div className="section">SvgDraw PlugIn</div>
 

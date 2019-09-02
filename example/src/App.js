@@ -25,6 +25,7 @@ const AppStyled = styled.div`
   }
 `;
 
+// eslint-disable-next-line
 const Home = () => (
   <div />
 );

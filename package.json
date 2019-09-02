@@ -18,7 +18,7 @@
     "test:watch": "react-scripts test",
     "build": "rollup -c",
     "start": "rollup -c -w",
-    "copy": "copy \"src\\index.d.ts\" \"dist\\index.d.ts\"",
+    "copy": "cpx \"src/index.d.ts\" \"dist/index.d.ts\"",
     "prepare": "npm run build && npm run copy",
     "predeploy": "cd example && npm install && npm run build",
     "deploy": "gh-pages -d example/build",
@@ -84,6 +84,7 @@
     "dist"
   ],
   "dependencies": {
+    "cpx": "github:mysticatea/cpx",
     "gsap": "^2.0.2"
   }
 }

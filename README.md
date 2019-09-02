@@ -58,6 +58,14 @@ https://github.com/bitworking/react-gsap/tree/master/example/src/components
 
 [Transition](https://stackblitz.com/edit/react-v61on3)
 
+As well as run your own examples local by
+
+```
+npm install && npm run predeploy
+cd example
+npm start
+```
+
 # Documentation
 
 react-gsap exports the following components:

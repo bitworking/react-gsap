@@ -1,6 +1,8 @@
 // @flow
+// eslint-disable-next-line
 import React, { PureComponent, Fragment } from 'react';
 import styled from 'styled-components';
+// eslint-disable-next-line
 import { Tween, Timeline, SplitWords, SplitLetters, Controls } from 'react-gsap';
 
 const MouseFollowStyled = styled.div`
@@ -62,6 +64,7 @@ class MouseFollowComponent extends PureComponent {
   }
 
   render() {
+    // eslint-disable-next-line
     const { x, y, completed } = this.state;
 
     const colors = ['red', 'yellow', 'green'];

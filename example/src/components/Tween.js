@@ -1,6 +1,8 @@
 // @flow
+// eslint-disable-next-line
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
+// eslint-disable-next-line
 import { Tween, Timeline, SplitWords, SplitLetters, Controls } from 'react-gsap';
 
 const Square = styled.div`
@@ -16,7 +18,7 @@ const TweenStyled = styled.div`
 
 const TweenComponent = () => (
   <TweenStyled>
-    Play with these examples on <a href="https://stackblitz.com/edit/react-gmmwqj" target="_blank">StackBlitz.io</a>
+    Play with these examples on <a href="https://stackblitz.com/edit/react-gmmwqj" target="_blank" rel="noopener noreferrer">StackBlitz.io</a>
 
     <div className="section">SplitWords component</div>
 
