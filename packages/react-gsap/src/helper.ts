@@ -8,12 +8,9 @@ const setPlayState = (
 ) => {
   if (tween && playState && playState !== prevPlayState) {
     if (playState === PlayState.play) {
-      console.log(playState, prevPlayState);
       if (prevPlayState === PlayState.pause || prevPlayState === PlayState.reverse) {
-        console.log('play');
         tween.play();
       } else {
-        console.log('restart');
         tween.restart(true);
       }
     } else if (playState === PlayState.reverse) {
