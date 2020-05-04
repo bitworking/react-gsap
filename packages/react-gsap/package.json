@@ -1,0 +1,55 @@
+{
+  "name": "react-gsap",
+  "version": "2.0.0",
+  "description": "React components for GSAP",
+  "author": "bitworking",
+  "license": "MIT",
+  "repository": "bitworking/react-gsap",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "module": "dist/react-gsap.esm.js",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test --passWithNoTests",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "typecheck": "tsc --project tsconfig.json -noEmit"
+  },
+  "peerDependencies": {
+    "gsap": ">=3",
+    "react": ">=16",
+    "react-dom": ">=16"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 100,
+    "tabWidth": 2,
+    "trailingComma": "es5",
+    "semi": true,
+    "singleQuote": true,
+    "endOfLine": "lf"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.7",
+    "gsap": "^3.2.6",
+    "husky": "^4.2.5",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "tsdx": "^0.13.2",
+    "tslib": "^1.11.1",
+    "typescript": "^3.8.3"
+  }
+}

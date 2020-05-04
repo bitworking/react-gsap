@@ -1,0 +1,47 @@
+---
+name: SplitWords
+menu: Components
+---
+
+import { Fragment } from 'react';
+import { Playground, Props } from 'docz'
+import { Controls, PlayState, SplitWords } from './../../../react-gsap/src/'
+import { Tween } from './Tween'
+import { Timeline } from './Timeline'
+
+# SplitWords
+
+The SplitWords component is a small helper that splits a text by words and returns one component per word.
+
+    import { Controls, PlayState, Timeline, Tween, SplitWords } from 'react-gsap';
+
+## Usage with Tween
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <Tween from={{ x: '200px' }} stagger={0.5} ease="elastic.out(0.1, 0.1)">
+      <SplitWords wrapper={<div style={{ display: 'inline-block', fontSize: '40px' }} />}>
+        This text gets splitted by words.
+      </SplitWords>
+    </Tween>
+  </Controls>
+</Playground>
+
+## Usage with Timeline
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <Timeline target={
+      <Fragment>
+        <SplitWords wrapper={<div style={{ display: 'inline-block', fontSize: '40px' }} />}>
+          This text gets splitted by words.
+        </SplitWords>
+      </Fragment>
+      }>
+      <Tween to={{ y: '-20px' }} position={0.5} duration={0.1} target={1} />
+      <Tween to={{ y: '-20px' }} position="+=0.5" duration={0.1} target={3} />
+      <Tween to={{ y: '-20px' }} position="+=0.5" duration={0.1} target={5} />
+    </Timeline>
+  </Controls>
+</Playground>
+

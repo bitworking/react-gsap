@@ -1,0 +1,142 @@
+---
+name: Timeline
+menu: Components
+---
+
+import { Fragment } from 'react';
+import { Playground, Props } from 'docz'
+import { Controls, PlayState } from './../../../react-gsap/src/'
+import { Timeline, TimelinePropsDummy } from './Timeline'
+import { Tween } from './Tween'
+
+# Timeline
+
+The Timeline component uses the [gsap.timeline()](https://greensock.com/docs/v3/GSAP/Timeline) function internally.
+
+    import { Controls, PlayState, Timeline, Tween } from 'react-gsap';
+
+## Basic usage
+
+You can add a target and control it with childless Tween components. The target needs to be a "refable" component.
+So it can be a HTML element or a forwardRef component like a styled-components component.
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <Timeline
+      target={
+        <div style={{ width: '100px', height: '100px', background: '#ccc' }} />
+      }
+    >
+      <Tween from={{ opacity: 0 }} to={{ opacity: 1 }} duration={2} />
+      <Tween to={{ x: '200px' }} />
+      <Tween to={{ rotation: 180 }} position="+=1" />
+    </Timeline>
+  </Controls>
+</Playground>
+
+## Other Tweens
+
+You can also add other normal Tweens.
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <Timeline
+      target={
+        <div style={{ width: '100px', height: '100px', background: '#ccc' }} />
+      }
+    >
+      <Tween from={{ opacity: 0 }} to={{ opacity: 1 }} duration={2} />
+      <Tween to={{ x: '200px' }} />
+      <Tween to={{ x: '200px' }} duration={1}>
+        <div style={{ width: '100px', height: '100px', background: 'red' }} />
+      </Tween>
+    </Timeline>
+  </Controls>
+</Playground>
+
+## Multiple targets
+
+You can wrap multiple target components in a Fragment and target them with the array index with the `target` prop from the Tween component.
+If you don't add a target you transform all target components.
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <Timeline
+      target={
+        <Fragment>
+          <div style={{ width: '100px', height: '100px', background: '#ccc' }} />
+          <div style={{ width: '100px', height: '100px', background: 'red' }} />
+        </Fragment>
+      }
+    >
+      <Tween to={{ x: '100px' }} target={0} />
+      <Tween to={{ x: '100px' }} target={1} />
+      <Tween to={{ x: '200px' }} target={0} />
+      <Tween to={{ x: '200px' }} target={1} />
+      <Tween to={{ opacity: 0 }} />
+    </Timeline>
+  </Controls>
+</Playground>
+
+## Nested Timelines
+
+You can nest other Timelines or HTML structures.
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <Timeline
+      target={
+        <div style={{ width: '100px', height: '100px', background: '#ccc' }} />
+      }
+    >
+      <Tween from={{ scaleX: 0.5, scaleY: 0.5 }} duration={2} />
+      <Tween to={{ x: '200px' }} />
+      <div>
+        <p>Other Timeline:</p>
+        <Timeline
+          target={
+            <div style={{ width: '100px', height: '100px', background: 'red' }} />
+          }
+        >
+          <Tween from={{ scaleX: 0.5, scaleY: 0.5 }} duration={2} />
+          <Tween to={{ x: '200px' }} />
+        </Timeline>
+      </div>
+    </Timeline>
+  </Controls>
+</Playground>
+
+## Label support
+
+You can add labels to the timeline and use them in the position prop of the Tweens or nested Timelines.
+
+More info: [https://greensock.com/docs/v3/GSAP/Timeline/addLabel()](https://greensock.com/docs/v3/GSAP/Timeline/addLabel())
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <Timeline
+      target={
+        <div style={{ width: '100px', height: '100px', background: '#ccc' }} />
+      }
+      labels={[
+        {
+          label: 'sec4',
+          position: 4,
+        },
+        {
+          label: 'sec6',
+          position: 6,
+        },
+      ]}
+    >
+      <Tween from={{ opacity: 0 }} to={{ opacity: 1 }} duration={2} />
+      <Tween to={{ x: '200px' }} />
+      <Tween to={{ rotation: 180 }} position="sec4" />
+      <Tween to={{ x: '0px' }} position="sec6" />
+    </Timeline>
+  </Controls>
+</Playground>
+
+## Props
+
+<Props of={TimelinePropsDummy} />

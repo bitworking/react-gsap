@@ -1,0 +1,30 @@
+{
+  "private": true,
+  "name": "react-gsap-docz",
+  "version": "2.0.0-rc.41",
+  "license": "MIT",
+  "files": [
+    "src/",
+    "doczrc.js",
+    "tsconfig.json",
+    "package.json"
+  ],
+  "scripts": {
+    "dev": "docz dev",
+    "build": "docz build",
+    "serve": "docz build && docz serve"
+  },
+  "dependencies": {
+    "@emotion/core": "^10.0.14",
+    "@emotion/styled": "^10.0.14",
+    "docz": "latest",
+    "gsap": "^3.2.6",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-gsap": "2.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^16.8.23",
+    "@types/react-dom": "^16.8.4"
+  }
+}

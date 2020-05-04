@@ -3,6 +3,11 @@
 
 # dependencies
 node_modules
+.pnp
+.pnp.js
+
+# testing
+/coverage
 
 # builds
 build
@@ -20,6 +25,8 @@ dist
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+.docz
 
 # editors
 /.vscode

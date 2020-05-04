@@ -1,0 +1,28 @@
+---
+name: SplitLetters
+menu: Components
+---
+
+import { Fragment } from 'react';
+import { Playground, Props } from 'docz'
+import { Controls, PlayState, SplitLetters } from './../../../react-gsap/src/'
+import { Tween } from './Tween'
+
+# SplitLetters
+
+The SplitLetters component is a small helper that splits a text by letters and returns one component per letter.
+
+    import { Controls, PlayState, Tween, SplitLetters } from 'react-gsap';
+
+## Usage with Tween
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <Tween from={{ x: '200px' }} stagger={0.1}>
+      <SplitLetters wrapper={<div style={{ display: 'inline-block', fontSize: '40px' }} />}>
+        This text gets splitted by letters.
+      </SplitLetters>
+    </Tween>
+  </Controls>
+</Playground>
+

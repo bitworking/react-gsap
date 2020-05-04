@@ -1,0 +1,100 @@
+---
+name: CountPlugin
+menu: Plugins
+---
+
+import { Fragment } from 'react';
+import { Playground, Props } from 'docz'
+import { Controls, PlayState, Timeline, Tween } from './../../../react-gsap/src/'
+
+# CountPlugin
+
+The CountPlugin animates an number counting. It uses the innerText from the target elements. (children)
+
+It can be called with the "count" property which takes an number or an object with the following properties:
+
+| Name | Type |
+| :-- | :-- |
+| value | number |
+| format | (value) => (value) => string |
+
+    import { Controls, PlayState, Tween } from 'react-gsap';
+
+## Integer
+
+By default the count value will be parsed to an integer.
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <div style={{ width: '70px', height: '70px', background: '#ccc', textAlign: 'center' }}>
+      <Tween
+        to={{
+          count: 100,
+        }}
+        ease="none"
+        duration={5}
+      >
+        <div style={{ fontSize: '40px', lineHeight: '70px' }}>0</div>
+      </Tween>
+    </div>
+  </Controls>
+</Playground>
+
+## Custom format function
+
+You can use your own custom format function.
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <div style={{ width: '100px', height: '70px', background: '#ccc', textAlign: 'center' }}>
+      <Tween
+        to={{
+          count: {
+            value: 100,
+            format: (value) => (value) => value.toFixed(2),
+          },
+        }}
+        ease="none"
+        duration={5}
+      >
+        <div style={{ fontSize: '30px', lineHeight: '70px' }}>10.00</div>
+      </Tween>
+    </div>
+  </Controls>
+</Playground>
+
+## Percentage Bar
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <Timeline>
+      <Tween
+        to={{
+          count: {
+            value: 100,
+            format: (value) => (value) => `${parseInt(value, 10)} %`,
+          },
+        }}
+        ease="none"
+        duration={5}
+        position={0}
+      >
+        <div style={{ fontSize: '30px' }}>0 %</div>
+      </Tween>
+      <div style={{ width: '300px', height: '30px', border: '2px solid black' }}>
+        <Tween
+          to={{
+            width: '300px',
+          }}
+          ease="none"
+          duration={5}
+          position={0}
+        >
+          <div style={{ width: '0px', height: '30px', background: 'blue' }} />
+        </Tween>
+      </div>
+    </Timeline>
+  </Controls>
+</Playground>
+
+

@@ -1,0 +1,37 @@
+---
+name: GSAP Plugins
+menu: Plugins
+---
+
+import { Fragment } from 'react';
+import { Playground } from 'docz'
+import { Controls, PlayState, Tween } from './../../../react-gsap/src/'
+
+import { gsap } from "gsap";
+import { TextPlugin } from "gsap/TextPlugin";
+gsap.registerPlugin(TextPlugin);
+
+# GSAP Plugins
+
+There are some Core Plugins that are already included in GSAP: https://greensock.com/docs/v3/GSAP/CorePlugins
+
+And there are some free Plugins that you can use to extend the functionality. Here is the list: https://greensock.com/docs/v3/Plugins.
+
+To use them with `react-gsap` you first have to register them.
+
+### Register the TextPlugin for example:
+
+    import { gsap } from "gsap";
+    import { TextPlugin } from "gsap/TextPlugin";
+
+    gsap.registerPlugin(TextPlugin);
+
+### And use it:
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <Tween to={{ text: 'This is the new text.' }} duration={2}>
+      <span>This is a text.</span>
+    </Tween>
+  </Controls>
+</Playground>

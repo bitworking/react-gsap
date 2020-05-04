@@ -1,0 +1,70 @@
+---
+name: Tween
+menu: Components
+---
+
+import { Playground, Props } from 'docz'
+import { Controls, PlayState } from './../../../react-gsap/src/'
+import { Tween, TweenPropsDummy, StaggerPropsDummy } from './Tween'
+
+# Tween
+
+The Tween component uses the [gsap.to()](https://greensock.com/docs/v3/GSAP/gsap.to()),
+[gsap.from()](https://greensock.com/docs/v3/GSAP/gsap.from()) and
+[gsap.fromTo()](https://greensock.com/docs/v3/GSAP/gsap.fromTo()) functions internally.
+
+The children need to be "refable" components. So they can be HTML elements or forwardRef components like styled-components components.
+
+    import { Controls, PlayState, Tween } from 'react-gsap';
+
+## Use "to" prop
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <Tween to={{ x: '200px', rotation: 180 }} duration={2} ease="back.out(1.7)">
+      <div style={{ width: '100px', height: '100px', background: '#ccc' }} />
+    </Tween>
+  </Controls>
+</Playground>
+
+## Use "from" prop
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <Tween from={{ x: '200px', rotation: 180 }} duration={2}>
+      <div style={{ width: '100px', height: '100px', background: '#ccc' }} />
+    </Tween>
+  </Controls>
+</Playground>
+
+## Use "from" and "to" prop
+
+Internally the [gsap.fromTo()](https://greensock.com/docs/v3/GSAP/gsap.fromTo()) function will be called.
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <Tween from={{ x: '100px', rotation: 45 }} to={{ x: '200px', rotation: 135 }} duration={2}>
+      <div style={{ width: '100px', height: '100px', background: '#ccc' }} />
+    </Tween>
+  </Controls>
+</Playground>
+
+## Use stagger prop
+
+If you have multiple children you can make use of the stagger prop.
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <Tween to={{ x: '200px' }} stagger={0.2} ease="elastic.out(0.2, 0.1)">
+      <div style={{ width: '20px', height: '20px', background: '#ccc' }} />
+      <div style={{ width: '20px', height: '20px', background: '#ccc' }} />
+      <div style={{ width: '20px', height: '20px', background: '#ccc' }} />
+      <div style={{ width: '20px', height: '20px', background: '#ccc' }} />
+      <div style={{ width: '20px', height: '20px', background: '#ccc' }} />
+    </Tween>
+  </Controls>
+</Playground>
+
+## Props
+
+<Props of={TweenPropsDummy} />

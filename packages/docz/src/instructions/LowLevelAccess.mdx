@@ -1,0 +1,40 @@
+---
+name: Low level access
+menu: Instructions
+---
+
+import { Fragment } from 'react';
+import { Playground } from 'docz'
+import { PlayState, Tween } from './../../../react-gsap/src/'
+
+# Low level access
+
+You are able to use the complete API of the underlying GSAP objects.
+Just add a reference to the React `Tween` or `Timeline` components and get the `Tween` or `Timeline` objects from GSAP by calling the getGSAP() method on it:
+
+    import { PlayState, Tween } from 'react-gsap';
+
+### Usage with Tween
+
+<Playground>
+  {() => {
+    const tween = React.useRef(null)
+    return (
+      <Fragment>
+        <Tween ref={tween} to={{ x: '200px' }} duration={2} playState={PlayState.stop}>
+          <div style={{ width: '100px', height: '100px', background: '#ccc' }} />
+        </Tween>
+        <button onClick={() => tween.current.getGSAP().play(0)}>
+          Play
+        </button>
+        <button onClick={() => tween.current.getGSAP().seek(1)}>
+          Seek
+        </button>
+        <button onClick={() => tween.current.getGSAP().pause(0)}>
+          Stop
+        </button>
+      </Fragment>
+    )
+  }}
+</Playground>
+
