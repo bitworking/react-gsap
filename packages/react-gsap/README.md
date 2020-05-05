@@ -4,7 +4,7 @@
 
 [![NPM](https://img.shields.io/npm/v/react-gsap.svg)](https://www.npmjs.com/package/react-gsap)
 ![npm type definitions](https://img.shields.io/npm/types/react-gsap)
-![npm bundle size](https://img.shields.io/bundlephobia/minzip/react-gsap)
+![npm bundle size (version)](https://img.shields.io/bundlephobia/minzip/react-gsap/^2)
 
 # Introduction
 
