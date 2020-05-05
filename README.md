@@ -19,6 +19,8 @@ From version 2 on it's build for GSAP 3 and only has `gsap` as a peer dependency
 
 It's built with TypeScript and ships the types directly in the package.
 
+Documentation and examples are here: https://bitworking.github.io/react-gsap/
+
 ## Installation
 
 ```bash
