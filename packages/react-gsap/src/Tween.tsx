@@ -10,7 +10,7 @@ gsap.registerPlugin(CountPlugin);
 
 type StaggerFunction = (index: number, target: any, list: any) => number;
 type StaggerFromValues = 'start' | 'center' | 'edges' | 'random' | 'end';
-type StaggerEaseFunction = (value: number) => number;
+type EaseFunction = (value: number) => number;
 
 export type Stagger =
   | {
@@ -19,7 +19,7 @@ export type Stagger =
       from?: StaggerFromValues | number | [number, number];
       grid?: [number, number] | 'auto';
       axis?: 'x' | 'y';
-      ease?: string | StaggerEaseFunction;
+      ease?: string | EaseFunction;
       repeat?: number;
       yoyo?: boolean;
       [prop: string]: any;
