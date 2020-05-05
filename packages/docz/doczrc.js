@@ -6,7 +6,7 @@ export default {
     'react-gsap lets you use the GreenSock Animation Platform (GSAP) in React in a fully declarative way. It abstracts away the direct use of the GSAP Tween and Timeline functions.',
   menu: [
     'Introduction',
-    'Components',
+    { name: 'Components', menu: ['Tween', 'Timeline', 'SplitLetters', 'SplitWords', 'Controls'] },
     { name: 'Plugins', menu: ['GSAP Plugins', 'CountPlugin', 'SvgDrawPlugin'] },
     'Instructions',
   ],

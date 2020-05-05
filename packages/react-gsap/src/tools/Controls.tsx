@@ -9,7 +9,7 @@ type ControlsProps = {
 
 type ControlsState = {
   totalProgress: number;
-  playState: PlayState;
+  playState?: PlayState;
   prevPlayState?: PlayState;
 };
 
@@ -20,7 +20,7 @@ class Controls extends Base<ControlsProps, ControlsState> {
 
   state = {
     totalProgress: 0,
-    playState: PlayState.play,
+    playState: undefined,
     prevPlayState: undefined,
   };
 
@@ -68,7 +68,19 @@ class Controls extends Base<ControlsProps, ControlsState> {
 
       if (this.props.playState) {
         this.setPlayState(this.props.playState);
+      } else {
+        // get child initial state
+        if (this.gsap.getGSAP()?.paused()) {
+          this.setPlayState(PlayState.pause);
+        } else if (this.gsap.getGSAP()?.reversed()) {
+          this.setPlayState(PlayState.reverse);
+        } else {
+          this.setPlayState(PlayState.play);
+        }
       }
+
+      const totalProgress = this.gsap.getGSAP()?.totalProgress();
+      this.slider.value = totalProgress * 100;
     }
   }
 
@@ -96,7 +108,7 @@ class Controls extends Base<ControlsProps, ControlsState> {
     });
   };
 
-  getControls = (_totalProgress: any, playState: PlayState) => (
+  getControls = (_totalProgress: any, playState: PlayState | undefined) => (
     <div style={this.containerStyle}>
       <input
         ref={el => (this.slider = el)}
