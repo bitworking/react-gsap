@@ -16,7 +16,7 @@ It can be called with the "count" property which takes an number or an object wi
 | Name | Type |
 | :-- | :-- |
 | value | number |
-| format | (value) => (value) => string |
+| format | () => (value) => string |
 
     import { Controls, PlayState, Tween } from 'react-gsap';
 
@@ -51,7 +51,7 @@ You can use your own custom format function.
         to={{
           count: {
             value: 100,
-            format: (value) => (value) => value.toFixed(2),
+            format: () => (value) => value.toFixed(2),
           },
         }}
         ease="none"
@@ -72,7 +72,7 @@ You can use your own custom format function.
         to={{
           count: {
             value: 100,
-            format: (value) => (value) => `${parseInt(value, 10)} %`,
+            format: () => (value) => `${parseInt(value, 10)} %`,
           },
         }}
         ease="none"

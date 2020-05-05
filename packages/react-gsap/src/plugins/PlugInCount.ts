@@ -7,7 +7,7 @@ const _getGSAP = () =>
 type Prop =
   | {
       value: string | number;
-      format: (value: string | number) => (value: string | number) => number | string;
+      format: () => (value: string | number) => number | string;
     }
   | number
   | string;
