@@ -12,7 +12,9 @@
   "scripts": {
     "dev": "docz dev",
     "build": "docz build",
-    "serve": "docz build && docz serve"
+    "serve": "docz build && docz serve",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d .docz/public"
   },
   "dependencies": {
     "@emotion/core": "^10.0.14",
@@ -25,6 +27,7 @@
   },
   "devDependencies": {
     "@types/react": "^16.8.23",
-    "@types/react-dom": "^16.8.4"
+    "@types/react-dom": "^16.8.4",
+    "gh-pages": "^2.2.0"
   }
 }
