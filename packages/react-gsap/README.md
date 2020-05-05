@@ -24,7 +24,7 @@ Documentation and examples are here: https://bitworking.github.io/react-gsap/
 ## Installation
 
 ```bash
-npm install gsap, react-gsap
+npm install gsap react-gsap
 ```
 
 ## About GSAP
