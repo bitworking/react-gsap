@@ -1,0 +1,132 @@
+---
+name: SvgDrawPlugin
+menu: Plugins
+---
+
+import { Fragment } from 'react';
+import { Playground, Props } from 'docz'
+import { Controls, PlayState, Tween } from './../../../react-gsap/src/'
+
+# SvgDrawPlugin
+
+The SvgDrawPlugin is shipped with react-gsap and lets you animate SVG elements.
+You can draw the following SVG elements: path, circle, rect, line, polyline and polygon.
+
+It works similar to the [DrawSVGPlugin](https://greensock.com/drawSVG) from GreenSock but the parameters are a little different.
+
+It can be called with the "svgDraw" property and takes a single number (0-1) value or an array with two numbers (Tuple) ([(0-1), (0-1)]).
+
+The single or first number is the length of the stroke.
+
+The second value is the position/offset on the path. (default = 0)
+
+So you can animate a line drawing from start to end like that:
+
+    import { Controls, PlayState, Tween } from 'react-gsap';
+
+## Single Number
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <svg
+      width="200"
+      height="200"
+      viewBox="-55 -55 110 110"
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <Tween
+        from={{
+          svgDraw: 0,
+        }}
+        to={{
+          svgDraw: 1,
+        }}
+      >
+        <circle r="50" stroke="red" strokeWidth="5" fill="transparent" />
+      </Tween>
+    </svg>
+  </Controls>
+</Playground>
+
+## Tuple
+
+An animation from the middle to the outside:
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <svg
+      width="200"
+      height="200"
+      viewBox="-55 -55 110 110"
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <Tween
+        from={{
+          svgDraw: [0, 0.5],
+        }}
+        to={{
+          svgDraw: [1, 0],
+        }}
+      >
+        <circle r="50" stroke="red" strokeWidth="5" fill="transparent" />
+      </Tween>
+    </svg>
+  </Controls>
+</Playground>
+
+## All possible SVG elements
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <svg width="200" height="250" version="1.1" xmlns="http://www.w3.org/2000/svg">
+      <Tween
+        from={{
+          svgDraw: 0,
+        }}
+        to={{
+          svgDraw: 1,
+        }}
+        duration={2}
+      >
+        <rect
+          x="10"
+          y="10"
+          width="30"
+          height="30"
+          stroke="black"
+          fill="transparent"
+          strokeWidth="5"
+        />
+        <rect
+          x="60"
+          y="10"
+          rx="10"
+          ry="10"
+          width="30"
+          height="30"
+          stroke="black"
+          fill="transparent"
+          strokeWidth="5"
+        />
+        <circle cx="25" cy="75" r="20" stroke="red" fill="transparent" strokeWidth="5" />
+        <ellipse cx="75" cy="75" rx="20" ry="5" stroke="red" fill="transparent" strokeWidth="5" />
+        <line x1="10" x2="50" y1="110" y2="150" stroke="orange" strokeWidth="5" />
+        <polyline
+          points="60 110 65 120 70 115 75 130 80 125 85 140 90 135 95 150 100 145"
+          stroke="orange"
+          fill="transparent"
+          strokeWidth="5"
+        />
+        <polygon
+          points="50 160 55 180 70 180 60 190 65 205 50 195 35 205 40 190 30 180 45 180"
+          stroke="green"
+          fill="transparent"
+          strokeWidth="5"
+        />
+        <path d="M20,230 Q40,205 50,230 T90,230" fill="none" stroke="blue" strokeWidth="5" />
+      </Tween>
+    </svg>
+  </Controls>
+</Playground>

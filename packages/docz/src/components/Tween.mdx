@@ -1,0 +1,164 @@
+---
+name: Tween
+menu: Components
+---
+
+import { Fragment } from 'react'
+import { Playground, Props } from 'docz'
+import { Controls, PlayState } from './../../../react-gsap/src/'
+import { Tween, TweenPropsDummy, StaggerPropsDummy } from './Tween'
+
+# Tween
+
+The Tween component uses the [gsap.to()](https://greensock.com/docs/v3/GSAP/gsap.to()),
+[gsap.from()](https://greensock.com/docs/v3/GSAP/gsap.from()) and
+[gsap.fromTo()](https://greensock.com/docs/v3/GSAP/gsap.fromTo()) functions internally.
+
+The children need to be "refable" components. So they can be HTML elements or forwardRef components like styled-components components.
+
+    import { Controls, PlayState, Tween } from 'react-gsap';
+
+## Use "to" prop
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <Tween to={{ x: '200px', rotation: 180 }} duration={2} ease="back.out(1.7)">
+      <div style={{ width: '100px', height: '100px', background: '#ccc' }} />
+    </Tween>
+  </Controls>
+</Playground>
+
+## Use "from" prop
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <Tween from={{ x: '200px', rotation: 180 }} duration={2}>
+      <div style={{ width: '100px', height: '100px', background: '#ccc' }} />
+    </Tween>
+  </Controls>
+</Playground>
+
+## Use "from" and "to" prop
+
+Internally the [gsap.fromTo()](https://greensock.com/docs/v3/GSAP/gsap.fromTo()) function will be called.
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <Tween from={{ x: '100px', rotation: 45 }} to={{ x: '200px', rotation: 135 }} duration={2}>
+      <div style={{ width: '100px', height: '100px', background: '#ccc' }} />
+    </Tween>
+  </Controls>
+</Playground>
+
+## Use stagger prop
+
+If you have multiple children you can make use of the stagger prop.
+
+More info: https://greensock.com/docs/v3/Staggers
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <Tween to={{ x: '200px' }} stagger={0.2} ease="elastic.out(0.2, 0.1)">
+      <div style={{ width: '20px', height: '20px', background: '#ccc' }} />
+      <div style={{ width: '20px', height: '20px', background: '#ccc' }} />
+      <div style={{ width: '20px', height: '20px', background: '#ccc' }} />
+      <div style={{ width: '20px', height: '20px', background: '#ccc' }} />
+      <div style={{ width: '20px', height: '20px', background: '#ccc' }} />
+    </Tween>
+  </Controls>
+</Playground>
+
+### Advanced stagger
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <div style={{ width: '200px', height: '200px', display: 'flex', flexWrap: 'wrap' }}>
+      <Tween from={{ scale: 0.1 }} stagger={{ from: 'center', amount: 1, grid: [3, 3] }} duration={1} ease="elastic.out(2, 0.5)">
+        <div style={{ width: '33.33%', height: '33.33%', background: '#ccc' }} />
+        <div style={{ width: '33.33%', height: '33.33%', background: '#ccc' }} />
+        <div style={{ width: '33.33%', height: '33.33%', background: '#ccc' }} />
+        <div style={{ width: '33.33%', height: '33.33%', background: '#ccc' }} />
+        <div style={{ width: '33.33%', height: '33.33%', background: '#ccc' }} />
+        <div style={{ width: '33.33%', height: '33.33%', background: '#ccc' }} />
+        <div style={{ width: '33.33%', height: '33.33%', background: '#ccc' }} />
+        <div style={{ width: '33.33%', height: '33.33%', background: '#ccc' }} />
+        <div style={{ width: '33.33%', height: '33.33%', background: '#ccc' }} />
+      </Tween>
+    </div>
+  </Controls>
+</Playground>
+
+## Use playState and totalProgress props
+
+With the playState and progress/totalProgress props you can control the Tween.
+So you don't need low-level access to play/reverse/pause/stop or seek to a position.
+
+<Playground>
+  {() => {
+    const [playing, setPlaying] = React.useState(false)
+    const [progress, setProgress] = React.useState(0)
+    return (
+      <Fragment>
+        <Tween to={{ x: '200px' }} duration={2} playState={playing ? PlayState.play : PlayState.pause} totalProgress={progress}>
+          <div style={{ width: '100px', height: '100px', background: '#ccc' }} />
+        </Tween>
+        <button onClick={() => setPlaying(!playing)}>
+          {playing ? 'Pause' : 'Play'}
+        </button>
+        <div>
+          <input type="range" max="1" step="0.001" value={progress} onChange={(event) => setProgress(event.target.value)} />
+        </div>
+      </Fragment>
+    )
+  }}
+</Playground>
+
+## Props
+
+The question mark means it's an optional prop.
+
+For a documentation of all possible props or from and to values check out the documentations:
+[vars](https://greensock.com/docs/v3/GSAP/Tween/vars), [gsap.to()](https://greensock.com/docs/v3/GSAP/gsap.to()),
+[gsap.from()](https://greensock.com/docs/v3/GSAP/gsap.from()) and [gsap.fromTo()](https://greensock.com/docs/v3/GSAP/gsap.fromTo())
+
+| Name | Type | Description |
+| :-- | :-- | :-- |
+| children? | React.ReactNode | Need to be "refable" components. So they can be HTML elements or forwardRef components like styled-components components |
+| wrapper? | any | This component gets wrapped around the Tween component |
+| target? | number | The target index of the Timeline targets. Used if Tween is childless and child of a Timeline |
+| position? | string \| number | If this Tween is a child from a Timeline it's added at this position  |
+| from? | any | The vars object for the [gsap.from()](https://greensock.com/docs/v3/GSAP/gsap.from()) or [gsap.fromTo()](https://greensock.com/docs/v3/GSAP/gsap.fromTo()) function |
+| to? | any | The vars object for the [gsap.to()](https://greensock.com/docs/v3/GSAP/gsap.to()) or [gsap.fromTo()](https://greensock.com/docs/v3/GSAP/gsap.fromTo()) function |
+| stagger? | number \| Stagger \| (index: number, target: any, list: any) => number | If multiple children are added, you can stagger the start times for each |
+| duration? | number | The duration of the animation (in seconds) (Can be changed on-the-fly) |
+| progress? | number | 0 - 1 (Can be changed on-the-fly) |
+| totalProgress? | number | 0 - 1 (Can be changed on-the-fly) |
+| playState? | PlayState | Use it to control the playing state (Can be changed on-the-fly) |
+| disabled? | boolean | on-the-fly changes and are no more possible |
+| onlyInvalidateTo? | boolean |  |
+| [prop: string] | any | All other props are added to the vars object for the Tween functions |
+
+## Type Stagger
+
+More info: https://greensock.com/docs/v3/Staggers
+
+| Name | Type |
+| :-- | :-- |
+| amount? | number |
+| each? | number |
+| from? | 'start' \| 'center' \| 'edges' \| 'random' \| 'end' \| number \| [number, number] |
+| grid? | [number, number] \| 'auto' |
+| axis? | 'x' \| 'y' |
+| ease? | string \| (value: number) => number |
+| repeat? | number |
+| yoyo? | boolean |
+| [prop: string] | any |
+
+## Enum PlayState
+
+| Field | As string |
+| :-- | :-- |
+| play | "play" |
+| reverse | "reverse" |
+| stop | "stop" |
+| pause | "pause" |

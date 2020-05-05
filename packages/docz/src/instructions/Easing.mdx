@@ -1,0 +1,49 @@
+---
+name: Easing
+menu: Instructions
+---
+
+import { Fragment } from 'react';
+import { Playground } from 'docz'
+import { Controls, PlayState, Tween } from './../../../react-gsap/src/'
+
+import { gsap } from 'gsap'
+import { SlowMo } from 'gsap/EasePack'
+gsap.registerPlugin(SlowMo)
+
+# Easing
+
+With gsap 3 the easing functions are more easily usable as string without importing. They can be used in the "ease" prop of the `Tween`.
+
+Have a look at the docs: https://greensock.com/docs/v3/Eases
+
+The default is `power1.out`. You can overide the defaults if you want: https://greensock.com/docs/v3/GSAP/gsap.defaults().
+
+    import { Controls, PlayState, Tween } from 'react-gsap';
+
+## Ease function with parameters
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <Tween to={{ x: '200px' }} duration={2} ease="elastic.out(0.9, 0.1)">
+      <div style={{ width: '100px', height: '100px', background: '#ccc' }} />
+    </Tween>
+  </Controls>
+</Playground>
+
+## SlowMo ease
+
+This is an extra ease that has to be registered first:
+
+    import { gsap } from 'gsap';
+    import { SlowMo } from 'gsap/EasePack';
+
+    gsap.registerPlugin(SlowMo);
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <Tween to={{ x: '200px' }} duration={2} ease="slow(0.5, 0.8)">
+      <div style={{ width: '100px', height: '100px', background: '#ccc' }} />
+    </Tween>
+  </Controls>
+</Playground>

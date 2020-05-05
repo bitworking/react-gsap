@@ -1,0 +1,39 @@
+---
+name: Migration from version 1
+menu: Instructions
+---
+
+import { Fragment } from 'react';
+import { Playground } from 'docz'
+import { PlayState, Tween } from './../../../react-gsap/src/'
+
+# Migration from version 1
+
+`react-gsap` version 2 is mostly backwards compatible with version 1.
+
+But there are 2 changes:
+
+1. You need to install `gsap` separately. So if you upgrade `react-gsap` you need to upgrade `gsap` to a version >= 3.
+
+2. The `Tween` component props `staggerFrom` and `staggerTo` are removed.
+In `gsap` version >=3 you can "stagger" the normal
+[gsap.to()](https://greensock.com/docs/v3/GSAP/gsap.to()), [gsap.from()](https://greensock.com/docs/v3/GSAP/gsap.from()) and
+[gsap.fromTo()](https://greensock.com/docs/v3/GSAP/gsap.fromTo()) functions.
+
+So replace this:
+
+    <Tween staggerTo={{ x: '200px' }} stagger={0.2}>
+      <div style={{ width: '20px', height: '20px', background: '#ccc' }} />
+      <div style={{ width: '20px', height: '20px', background: '#ccc' }} />
+    </Tween>
+
+With this:
+
+    <Tween to={{ x: '200px' }} stagger={0.2}>
+      <div style={{ width: '20px', height: '20px', background: '#ccc' }} />
+      <div style={{ width: '20px', height: '20px', background: '#ccc' }} />
+    </Tween>
+
+
+There are possible more changes in `gsap` version 3 that leads to a different behaviour. Have also a look at https://greensock.com/3-migration/.
+If you find something please open an issue in github.
