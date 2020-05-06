@@ -13,7 +13,7 @@ gsap.registerPlugin(SlowMo)
 
 # Easing
 
-With gsap 3 the easing functions are more easily usable as string without importing. They can be used in the "ease" prop of the `Tween`.
+With GSAP 3 the easing functions are more easily usable as string without importing. They can be used in the "ease" prop of the `Tween`.
 
 Have a look at the docs: https://greensock.com/docs/v3/Eases
 
@@ -43,6 +43,20 @@ This is an extra ease that has to be registered first:
 <Playground>
   <Controls playState={PlayState.stop}>
     <Tween to={{ x: '200px' }} duration={2} ease="slow(0.5, 0.8)">
+      <div style={{ width: '100px', height: '100px', background: '#ccc' }} />
+    </Tween>
+  </Controls>
+</Playground>
+
+## Custom easing function
+
+You can also pass a function to the ease prop. In this way you can have your custom easing functions.
+
+In the example it's an `easeInOutQuart`. Take a look at this resource for inspiration: https://easings.net/
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <Tween to={{ x: '200px' }} duration={2} ease={(x) => x < 0.5 ? 8 * x * x * x * x : 1 - Math.pow(-2 * x + 2, 4) / 2}>
       <div style={{ width: '100px', height: '100px', background: '#ccc' }} />
     </Tween>
   </Controls>
