@@ -1,6 +1,6 @@
 {
   "name": "react-gsap",
-  "version": "2.0.3",
+  "version": "2.0.6",
   "description": "React components for GSAP",
   "author": "bitworking",
   "license": "MIT",
@@ -17,10 +17,10 @@
   },
   "scripts": {
     "start": "tsdx watch",
-    "build": "tsdx build",
+    "build": "tsdx build --format cjs,esm,umd",
     "test": "tsdx test --passWithNoTests",
     "lint": "tsdx lint",
-    "prepare": "tsdx build",
+    "prepare": "yarn build",
     "typecheck": "tsc --project tsconfig.json -noEmit"
   },
   "peerDependencies": {
