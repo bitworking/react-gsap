@@ -1,5 +1,6 @@
 export default {
   typescript: true,
+  repository: 'https://github.com/bitworking/react-gsap',
   base: '/react-gsap/',
   title: 'react-gsap Docs',
   description:
