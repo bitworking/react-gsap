@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Tween, Timeline } from 'react-gsap';
+import { Tween, Timeline, PlayState } from 'react-gsap';
 import { Transition, TransitionGroup } from 'react-transition-group';
 import { v4 as uuid } from 'uuid';
 
@@ -36,9 +36,9 @@ const TransitionItem = ({
           paused={true}
           playState={
             state === 'entering'
-              ? Tween.playState.reverse
+              ? PlayState.reverse
               : state === 'exiting'
-              ? Tween.playState.play
+              ? PlayState.play
               : undefined
           }
           ease="Back.easeInOut"

@@ -3,8 +3,12 @@ import { gsap } from 'gsap';
 import { Context } from './Base';
 import { PlayState } from './types';
 import { getTweenFunction, setPlayState, isEqual, refOrInnerRef } from './helper';
+
+// import { CSSPlugin } from 'gsap/CSSPlugin';
 import SvgDrawPlugin from './plugins/PlugInSvgDraw';
 import CountPlugin from './plugins/PlugInCount';
+
+// gsap.registerPlugin(CSSPlugin);
 gsap.registerPlugin(SvgDrawPlugin);
 gsap.registerPlugin(CountPlugin);
 
@@ -173,6 +177,10 @@ class Tween extends React.Component<TweenProps, {}> {
     if (target !== null) {
       this.targets.push(target);
     }
+  }
+
+  getTargets() {
+    return this.targets;
   }
 
   render() {

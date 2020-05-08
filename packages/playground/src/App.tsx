@@ -5,6 +5,7 @@ import Tween from './examples/Tween';
 import Timeline from './examples/Timeline';
 import Svg from './examples/Svg';
 import Transition from './examples/Transition';
+import Reveal from './examples/Reveal';
 
 function App() {
   return (
@@ -25,6 +26,9 @@ function App() {
               <li>
                 <Link to="/transition">Transition</Link>
               </li>
+              <li>
+                <Link to="/reveal">Reveal</Link>
+              </li>
             </ul>
           </nav>
 
@@ -34,6 +38,7 @@ function App() {
           <Route exact path="/timeline" component={Timeline} />
           <Route exact path="/svg" component={Svg} />
           <Route exact path="/transition" component={Transition} />
+          <Route exact path="/reveal" component={Reveal} />
         </div>
       </Router>
     </div>

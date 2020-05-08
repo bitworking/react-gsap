@@ -143,6 +143,10 @@ class Timeline extends Base<TimelineProps> {
     }
   }
 
+  getTargets() {
+    return this.targets;
+  }
+
   cloneElement(child: any) {
     return React.cloneElement(child, {
       // @ts-ignore
