@@ -1,10 +1,10 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, ReactComponentElement, ReactHTMLElement } from 'react';
 import styled from 'styled-components';
-import { Tween, Timeline, Reveal } from 'react-gsap';
+import { Tween, Timeline, Reveal, SplitLetters, SplitWords } from 'react-gsap';
 
 const RevealStyled = styled.div`
-  padding-top: 800px;
-  padding-bottom: 800px;
+  padding-top: 1000px;
+  padding-bottom: 1000px;
   overflow: hidden;
 
   text-align: center;
@@ -34,27 +34,56 @@ const RubberBand = ({ children, ...rest }: { children: React.ReactNode }) => (
   </Timeline>
 );
 
+export const FadeInLeftChars = ({
+  children,
+  wrapper,
+  ...rest
+}: {
+  children: React.ReactNode;
+  wrapper: ReactComponentElement<any>;
+}) => (
+  <Tween from={{ opacity: 0, x: '-2000px' }} ease="power1.inOut" {...rest} stagger={0.1}>
+    <SplitLetters wrapper={wrapper}>{children}</SplitLetters>
+  </Tween>
+);
+
 const RevealComponent = () => (
   <RevealStyled>
-    {/*
-    <Reveal>
+    <Reveal repeat>
       <FadeIn>
         <h1>REACT-GSAP</h1>
       </FadeIn>
     </Reveal>
-    **/}
-    <Reveal>
+    <Reveal useWrapper repeat>
       <FadeInLeft>
         <h1>AIIIIIIGHT</h1>
       </FadeInLeft>
     </Reveal>
-    {/*
-    <Reveal>
+    <Reveal repeat>
       <RubberBand>
         <h1>ONE MORE</h1>
       </RubberBand>
     </Reveal>
-    **/}
+    <Reveal repeat>
+      <FadeIn>
+        <h1>REACT-GSAP</h1>
+      </FadeIn>
+    </Reveal>
+    <Reveal useWrapper repeat>
+      <FadeInLeft>
+        <h1>AIIIIIIGHT</h1>
+      </FadeInLeft>
+    </Reveal>
+    <Reveal repeat>
+      <RubberBand>
+        <h1>ONE MORE</h1>
+      </RubberBand>
+    </Reveal>
+    <Reveal repeat useWrapper>
+      <FadeInLeftChars wrapper={<div style={{ display: 'inline-block', fontSize: '40px' }} />}>
+        SPLIT&nbsp;IT&nbsp;UP
+      </FadeInLeftChars>
+    </Reveal>
   </RevealStyled>
 );
 

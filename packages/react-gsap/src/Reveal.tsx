@@ -4,13 +4,33 @@ import Base from './Base';
 
 export type RevealProps = {
   children: React.ReactNode;
+  useWrapper: boolean;
+  repeat: boolean;
+  root: Element | null;
+  rootMargin: string;
+  threshold: number;
 };
+
+enum EntryState {
+  unknown,
+  entered,
+  exited,
+}
 
 class Reveal extends Base<RevealProps> {
   static displayName = 'Reveal';
 
+  static defaultProps = {
+    useWrapper: false,
+    repeat: false,
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.66,
+  };
+
   timeline: any;
   targets: any[] = [];
+  wrapper: HTMLDivElement | null = null;
   observer: IntersectionObserver | null = null;
 
   componentDidMount() {
@@ -39,8 +59,6 @@ class Reveal extends Base<RevealProps> {
   }
 
   createTimeline() {
-    const { children } = this.props;
-
     if (this.timeline) {
       this.timeline.kill();
     }
@@ -59,32 +77,65 @@ class Reveal extends Base<RevealProps> {
   }
 
   createIntersectionObserver() {
+    let { useWrapper, root, rootMargin, threshold } = this.props;
+
     const options = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 1.0,
+      root,
+      rootMargin,
+      threshold: [0, threshold],
     };
 
     this.observer = new IntersectionObserver(this.intersectionObserverCallback, options);
 
-    this.consumers.forEach(consumer => {
-      consumer.getTargets().forEach((target: any) => {
-        this.observer?.observe(target);
+    // It would be better if we wouldn't need an extra wrapper.
+    // But it can be problematic for example with a fadeInLeft animation
+    // were the element is out of the viewport in the initial state.
+    // In this case there wouldn't be an intersection..
+    if (!useWrapper) {
+      this.consumers.forEach(consumer => {
+        consumer.getTargets().forEach((target: any) => {
+          this.observer?.observe(target);
+        });
       });
-    });
+    } else if (this.wrapper) {
+      this.observer?.observe(this.wrapper);
+    }
   }
 
-  intersectionObserverCallback = (entries: any, observer: IntersectionObserver) => {
-    entries.every((entry: any) => {
-      console.log('intersectionObserverCallback', entry);
+  unobserveAll() {
+    let { useWrapper } = this.props;
 
-      if (entry.isIntersecting) {
+    if (!useWrapper) {
+      this.consumers.forEach(consumer => {
+        consumer.getTargets().forEach((target: any) => {
+          this.observer?.unobserve(target);
+        });
+      });
+    } else if (this.wrapper) {
+      this.observer?.unobserve(this.wrapper);
+    }
+  }
+
+  intersectionObserverCallback = (entries: any) => {
+    let { repeat, threshold } = this.props;
+    let state: EntryState = EntryState.unknown;
+
+    for (const entry of entries) {
+      if (entry.isIntersecting && entry.intersectionRatio >= threshold) {
         this.timeline.play();
-        return false;
+        state = EntryState.entered;
+        break;
+      } else if (!entry.isIntersecting) {
+        state = EntryState.exited;
+        break;
       }
+    }
 
-      return true;
-    });
+    if (!repeat && state === EntryState.entered) {
+      this.unobserveAll();
+    } else if (repeat && state === EntryState.exited) {
+      this.timeline.pause(0);
+    }
   };
 
   getGSAP() {
@@ -92,9 +143,9 @@ class Reveal extends Base<RevealProps> {
   }
 
   render() {
-    let { children } = this.props;
-    let output = <Fragment>{children}</Fragment>;
-    return this.renderWithProvider(output);
+    let { children, useWrapper } = this.props;
+    let wrapper = <div ref={wrapper => (this.wrapper = wrapper)}>{children}</div>;
+    return this.renderWithProvider(useWrapper ? wrapper : children);
   }
 }
 
