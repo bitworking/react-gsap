@@ -1,6 +1,6 @@
 import React, { Fragment, ReactComponentElement, ReactHTMLElement } from 'react';
 import styled from 'styled-components';
-import { Tween, Timeline, Reveal, SplitLetters, SplitWords } from 'react-gsap';
+import { Tween, Timeline, Reveal, SplitChars, SplitWords } from 'react-gsap';
 
 const RevealStyled = styled.div`
   padding-top: 1000px;
@@ -43,7 +43,20 @@ export const FadeInLeftChars = ({
   wrapper: ReactComponentElement<any>;
 }) => (
   <Tween from={{ opacity: 0, x: '-2000px' }} ease="power1.inOut" {...rest} stagger={0.1}>
-    <SplitLetters wrapper={wrapper}>{children}</SplitLetters>
+    <SplitChars wrapper={wrapper}>{children}</SplitChars>
+  </Tween>
+);
+
+export const FadeInLeftWords = ({
+  children,
+  wrapper,
+  ...rest
+}: {
+  children: React.ReactNode;
+  wrapper: ReactComponentElement<any>;
+}) => (
+  <Tween from={{ opacity: 0, x: '-2000px' }} ease="power1.inOut" {...rest} stagger={0.5}>
+    <SplitWords wrapper={wrapper}>{children}</SplitWords>
   </Tween>
 );
 
@@ -81,8 +94,13 @@ const RevealComponent = () => (
     </Reveal>
     <Reveal repeat useWrapper>
       <FadeInLeftChars wrapper={<div style={{ display: 'inline-block', fontSize: '40px' }} />}>
-        SPLIT&nbsp;IT&nbsp;UP
+        SPLIT IT UP
       </FadeInLeftChars>
+    </Reveal>
+    <Reveal repeat useWrapper>
+      <FadeInLeftWords wrapper={<div style={{ display: 'inline-block', fontSize: '40px' }} />}>
+        SPLIT IT UP
+      </FadeInLeftWords>
     </Reveal>
   </RevealStyled>
 );
