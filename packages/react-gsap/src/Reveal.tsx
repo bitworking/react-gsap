@@ -4,7 +4,7 @@ import Base from './Base';
 
 export type RevealProps = {
   children: React.ReactNode;
-  useWrapper: boolean;
+  wrapper: React.ReactElement | null;
   repeat: boolean;
   root: Element | null;
   rootMargin: string;
@@ -21,7 +21,7 @@ class Reveal extends Base<RevealProps> {
   static displayName = 'Reveal';
 
   static defaultProps = {
-    useWrapper: false,
+    wrapper: null,
     repeat: false,
     root: null,
     rootMargin: '0px',
@@ -30,7 +30,7 @@ class Reveal extends Base<RevealProps> {
 
   timeline: any;
   targets: any[] = [];
-  wrapper: HTMLDivElement | null = null;
+  wrapperRef: HTMLElement | null = null;
   observer: IntersectionObserver | null = null;
 
   componentDidMount() {
@@ -77,7 +77,7 @@ class Reveal extends Base<RevealProps> {
   }
 
   createIntersectionObserver() {
-    let { useWrapper, root, rootMargin, threshold } = this.props;
+    let { root, rootMargin, threshold } = this.props;
 
     const options = {
       root,
@@ -91,28 +91,26 @@ class Reveal extends Base<RevealProps> {
     // But it can be problematic for example with a fadeInLeft animation
     // were the element is out of the viewport in the initial state.
     // In this case there wouldn't be an intersection..
-    if (!useWrapper) {
+    if (!this.wrapperRef) {
       this.consumers.forEach(consumer => {
         consumer.getTargets().forEach((target: any) => {
           this.observer?.observe(target);
         });
       });
-    } else if (this.wrapper) {
-      this.observer?.observe(this.wrapper);
+    } else {
+      this.observer?.observe(this.wrapperRef);
     }
   }
 
   unobserveAll() {
-    let { useWrapper } = this.props;
-
-    if (!useWrapper) {
+    if (!this.wrapperRef) {
       this.consumers.forEach(consumer => {
         consumer.getTargets().forEach((target: any) => {
           this.observer?.unobserve(target);
         });
       });
-    } else if (this.wrapper) {
-      this.observer?.unobserve(this.wrapper);
+    } else {
+      this.observer?.unobserve(this.wrapperRef);
     }
   }
 
@@ -143,9 +141,17 @@ class Reveal extends Base<RevealProps> {
   }
 
   render() {
-    let { children, useWrapper } = this.props;
-    let wrapper = <div ref={wrapper => (this.wrapper = wrapper)}>{children}</div>;
-    return this.renderWithProvider(useWrapper ? wrapper : children);
+    let { children, wrapper } = this.props;
+
+    let output = wrapper ? (
+      <wrapper.type {...wrapper.props} ref={(wrapper: HTMLElement) => (this.wrapperRef = wrapper)}>
+        {children}
+      </wrapper.type>
+    ) : (
+      children
+    );
+
+    return this.renderWithProvider(output);
   }
 }
 
