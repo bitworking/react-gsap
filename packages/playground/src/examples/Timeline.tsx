@@ -1,8 +1,39 @@
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
-import { Tween, Timeline, SplitWords, SplitLetters, Controls } from 'react-gsap';
+import { Tween, Timeline, SplitWords, SplitLetters, Controls, PlayState } from 'react-gsap';
 
 const TimelineStyled = styled.div``;
+
+const TimelinePlayState = () => {
+  const [playing, setPlaying] = React.useState(false);
+  const [progress, setProgress] = React.useState(0);
+
+  return (
+    <>
+      <Timeline
+        target={<div style={{ width: '100px', height: '100px', background: '#ccc' }} />}
+        playState={playing ? PlayState.play : PlayState.pause}
+        totalProgress={progress}
+        paused={false}
+      >
+        <Tween from={{ opacity: 0 }} to={{ opacity: 1 }} duration={2} />
+        <Tween to={{ x: '200px' }} />
+        <Tween to={{ rotation: 180 }} position="+=1" />
+      </Timeline>
+      <button onClick={() => setPlaying(!playing)}>{playing ? 'Pause' : 'Play'}</button>
+      <div>
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.001"
+          value={progress}
+          onChange={event => setProgress(parseFloat(event.target.value))}
+        />
+      </div>
+    </>
+  );
+};
 
 const TimelineComponent = () => (
   <TimelineStyled>
@@ -79,6 +110,7 @@ const TimelineComponent = () => (
         </Timeline>
       </Timeline>
     </Controls>
+    <TimelinePlayState />
   </TimelineStyled>
 );
 
