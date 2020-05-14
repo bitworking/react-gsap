@@ -34,7 +34,7 @@ export type Stagger =
 export type TweenProps = {
   /** One or multiple "refable" components  */
   children?: React.ReactNode;
-  wrapper?: any;
+  wrapper?: React.ReactElement;
   target?: number;
   position?: string | number;
 

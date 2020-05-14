@@ -12,7 +12,7 @@ type Label = {
 
 export type TimelineProps = {
   children: React.ReactNode;
-  wrapper?: any;
+  wrapper?: React.ReactElement;
   target?: any;
   position?: string | number;
   labels?: Label[];

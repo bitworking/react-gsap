@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { gsap } from 'gsap';
 import Base from '../Base';
 
@@ -29,22 +29,25 @@ class Reveal extends Base<RevealProps> {
   };
 
   timeline: any;
-  targets: any[] = [];
   wrapperRef: HTMLElement | null = null;
   observer: IntersectionObserver | null = null;
 
-  componentDidMount() {
+  init() {
     this.createTimeline();
     this.createIntersectionObserver();
   }
 
-  componentWillUnmount() {
-    this.timeline.kill();
+  kill() {
+    this.killTimeline();
+    this.killIntersectionObserver();
   }
 
-  getSnapshotBeforeUpdate() {
-    this.targets = [];
-    return null;
+  componentDidMount() {
+    this.init();
+  }
+
+  componentWillUnmount() {
+    this.kill();
   }
 
   componentDidUpdate(prevProps: RevealProps) {
@@ -54,14 +57,12 @@ class Reveal extends Base<RevealProps> {
     // TODO: replace easy length check with fast equal check
     // TODO: same for props.target?
     if (React.Children.count(prevProps.children) !== React.Children.count(children)) {
-      this.createTimeline();
+      this.init();
     }
   }
 
   createTimeline() {
-    if (this.timeline) {
-      this.timeline.kill();
-    }
+    this.killTimeline();
 
     // init timeline
     this.timeline = gsap.timeline({
@@ -74,6 +75,12 @@ class Reveal extends Base<RevealProps> {
       const { position } = consumer.props;
       this.timeline.add(consumer.getGSAP().play(), position ?? 0);
     });
+  }
+
+  killTimeline() {
+    if (this.timeline) {
+      this.timeline.kill();
+    }
   }
 
   createIntersectionObserver() {
@@ -102,15 +109,22 @@ class Reveal extends Base<RevealProps> {
     }
   }
 
+  killIntersectionObserver() {
+    this.unobserveAll();
+    this.observer = null;
+  }
+
   unobserveAll() {
-    if (!this.wrapperRef) {
-      this.consumers.forEach(consumer => {
-        consumer.getTargets().forEach((target: any) => {
-          this.observer?.unobserve(target);
+    if (this.observer) {
+      if (!this.wrapperRef) {
+        this.consumers.forEach(consumer => {
+          consumer.getTargets().forEach((target: any) => {
+            this.observer?.unobserve(target);
+          });
         });
-      });
-    } else {
-      this.observer?.unobserve(this.wrapperRef);
+      } else {
+        this.observer?.unobserve(this.wrapperRef);
+      }
     }
   }
 
@@ -130,7 +144,7 @@ class Reveal extends Base<RevealProps> {
     }
 
     if (!repeat && state === EntryState.entered) {
-      this.unobserveAll();
+      this.killIntersectionObserver();
     } else if (repeat && state === EntryState.exited) {
       this.timeline.pause(0);
     }
