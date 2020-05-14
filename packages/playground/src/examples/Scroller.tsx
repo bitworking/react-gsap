@@ -7,13 +7,12 @@ import React, {
   useState,
 } from 'react';
 import styled from 'styled-components';
-import { Tween, Timeline, Reveal, SplitChars, SplitWords } from 'react-gsap';
+import { Tween, Timeline, Scroller, SplitChars, SplitWords } from 'react-gsap';
 import { gsap } from 'gsap';
 
 const RevealStyled = styled.div`
-  padding-top: 1000px;
-  padding-bottom: 1000px;
   overflow: hidden;
+  margin-bottom: 100vh;
 
   text-align: center;
   font-family: arial;
@@ -29,10 +28,21 @@ const RevealStyled = styled.div`
   svg {
     padding: 60px 0;
   }
+
+  .fixed {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const FadeIn = ({ children, ...rest }: { children: React.ReactNode; [key: string]: any }) => (
-  <Tween from={{ opacity: 0 }} {...rest}>
+  <Tween from={{ opacity: 0 }} paused={true} {...rest}>
     {children}
   </Tween>
 );
@@ -147,6 +157,7 @@ const CutText = ({
             ))}
           </Fragment>
         }
+        paused={true}
         {...rest}
       >
         {type === 0 && (
@@ -191,49 +202,37 @@ const CutText = ({
   );
 };
 
-const RevealComponent = () => (
+const ScrollerComponent = () => (
   <RevealStyled>
-    <Reveal repeat>
-      <FadeIn duration={2}>
-        <h1>REACT-GSAP</h1>
-      </FadeIn>
-    </Reveal>
-    <Reveal repeat wrapper={<div />}>
-      <FadeInLeft>
-        <h1>AIIIIIIGHT</h1>
-      </FadeInLeft>
-    </Reveal>
-    <Reveal repeat>
-      <RubberBand>
-        <h1>ONE MORE</h1>
-      </RubberBand>
-    </Reveal>
-    <Reveal repeat wrapper={<div />}>
-      <FadeInLeftChars wrapper={<h1 style={{ display: 'inline-block' }} />}>
-        SPLIT IT UP
-      </FadeInLeftChars>
-    </Reveal>
-    <Reveal repeat wrapper={<div />}>
-      <FadeInLeftWords wrapper={<h1 style={{ display: 'inline-block' }} />}>
-        SPLIT IT UP
-      </FadeInLeftWords>
-    </Reveal>
-    <Reveal repeat wrapper={<div />}>
-      <CutText type={0} numberSlices={4}>
-        CUT ME PLEASE
-      </CutText>
-    </Reveal>
-    <Reveal repeat wrapper={<div />}>
-      <CutText type={1} numberSlices={4}>
-        CUT ME PLEASE
-      </CutText>
-    </Reveal>
-    <Reveal repeat wrapper={<div />}>
-      <CutText type={2} numberSlices={4}>
-        CUT ME PLEASE
-      </CutText>
-    </Reveal>
+    <Scroller heightVh={250} resolution={20}>
+      {(progress: number) => (
+        <>
+          {progress >= 0 && (
+            <div className="fixed">
+              <CutText type={0} numberSlices={4} totalProgress={progress}>
+                SCROLLREVEAL RULES
+              </CutText>
+            </div>
+          )}
+        </>
+      )}
+    </Scroller>
+    {/*
+    <Scroller height="100vh">
+      {(progress: number) => (
+        <>
+          {progress >= 0 && (
+            <div className="fixed">
+              <CutText type={0} numberSlices={4} totalProgress={progress}>
+                SCROLLREVEAL RULES
+              </CutText>
+            </div>
+          )}
+        </>
+      )}
+    </Scroller>
+    */}
   </RevealStyled>
 );
 
-export default RevealComponent;
+export default ScrollerComponent;

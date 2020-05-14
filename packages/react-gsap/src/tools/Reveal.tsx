@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { gsap } from 'gsap';
-import Base from './Base';
+import Base from '../Base';
 
 export type RevealProps = {
   children: React.ReactNode;
