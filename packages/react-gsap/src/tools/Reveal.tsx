@@ -1,10 +1,11 @@
 import React from 'react';
 import { gsap } from 'gsap';
 import Base from '../Base';
+import { nullishCoalescing } from '../helper';
 
 export type RevealProps = {
   children: React.ReactNode;
-  wrapper: React.ReactElement | null;
+  trigger: React.ReactElement | null;
   repeat: boolean;
   root: Element | null;
   rootMargin: string;
@@ -21,7 +22,7 @@ class Reveal extends Base<RevealProps> {
   static displayName = 'Reveal';
 
   static defaultProps = {
-    wrapper: null,
+    trigger: null,
     repeat: false,
     root: null,
     rootMargin: '0px',
@@ -29,7 +30,7 @@ class Reveal extends Base<RevealProps> {
   };
 
   timeline: any;
-  wrapperRef: HTMLElement | null = null;
+  triggerRef: HTMLElement | null = null;
   observer: IntersectionObserver | null = null;
 
   init() {
@@ -73,7 +74,7 @@ class Reveal extends Base<RevealProps> {
     // add consumers
     this.consumers.forEach(consumer => {
       const { position } = consumer.props;
-      this.timeline.add(consumer.getGSAP().play(), position ?? 0);
+      this.timeline.add(consumer.getGSAP().play(), nullishCoalescing(position, 0));
     });
   }
 
@@ -98,14 +99,14 @@ class Reveal extends Base<RevealProps> {
     // But it can be problematic for example with a fadeInLeft animation
     // were the element is out of the viewport in the initial state.
     // In this case there wouldn't be an intersection..
-    if (!this.wrapperRef) {
+    if (!this.triggerRef) {
       this.consumers.forEach(consumer => {
         consumer.getTargets().forEach((target: any) => {
-          this.observer?.observe(target);
+          this.observer && this.observer.observe(target);
         });
       });
     } else {
-      this.observer?.observe(this.wrapperRef);
+      this.observer && this.observer.observe(this.triggerRef);
     }
   }
 
@@ -116,14 +117,14 @@ class Reveal extends Base<RevealProps> {
 
   unobserveAll() {
     if (this.observer) {
-      if (!this.wrapperRef) {
+      if (!this.triggerRef) {
         this.consumers.forEach(consumer => {
           consumer.getTargets().forEach((target: any) => {
-            this.observer?.unobserve(target);
+            this.observer && this.observer.unobserve(target);
           });
         });
       } else {
-        this.observer?.unobserve(this.wrapperRef);
+        this.observer && this.observer.unobserve(this.triggerRef);
       }
     }
   }
@@ -155,12 +156,12 @@ class Reveal extends Base<RevealProps> {
   }
 
   render() {
-    let { children, wrapper } = this.props;
+    let { children, trigger } = this.props;
 
-    let output = wrapper ? (
-      <wrapper.type {...wrapper.props} ref={(wrapper: HTMLElement) => (this.wrapperRef = wrapper)}>
+    let output = trigger ? (
+      <trigger.type {...trigger.props} ref={(trigger: HTMLElement) => (this.triggerRef = trigger)}>
         {children}
-      </wrapper.type>
+      </trigger.type>
     ) : (
       children
     );

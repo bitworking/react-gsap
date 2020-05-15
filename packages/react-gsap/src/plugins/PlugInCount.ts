@@ -1,3 +1,5 @@
+import { nullishCoalescing } from '../helper';
+
 let gsap: any;
 let _interpolate: any;
 let _format: any;
@@ -24,7 +26,7 @@ export const CountPlugin = {
     let inputValue = value;
     let format = _format;
     if (typeof value === 'object') {
-      inputValue = value.value ?? 0;
+      inputValue = nullishCoalescing(value.value, 0);
       if (value.format) {
         format = value.format;
       }

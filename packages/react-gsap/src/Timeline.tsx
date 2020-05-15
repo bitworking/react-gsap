@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { gsap } from 'gsap';
 import { Context } from './Base';
 import { PlayState } from './types';
-import { getTweenFunction, setPlayState, refOrInnerRef } from './helper';
+import { getTweenFunction, setPlayState, refOrInnerRef, nullishCoalescing } from './helper';
 import Base from './Base';
 
 type Label = {
@@ -107,11 +107,14 @@ class Timeline extends Base<TimelineProps> {
     this.consumers.forEach(consumer => {
       if (consumer.tween && !consumer.props.children) {
         const { position, target, stagger, ...vars } = consumer.props;
-        const tween = getTweenFunction(this.targets[target] ?? this.targets, { stagger, ...vars });
-        this.timeline.add(tween, position ?? '+=0');
+        const tween = getTweenFunction(nullishCoalescing(this.targets[target], this.targets), {
+          stagger,
+          ...vars,
+        });
+        this.timeline.add(tween, nullishCoalescing(position, '+=0'));
       } else {
         const { position } = consumer.props;
-        this.timeline.add(consumer.getGSAP(), position ?? '+=0');
+        this.timeline.add(consumer.getGSAP(), nullishCoalescing(position, '+=0'));
       }
     });
 

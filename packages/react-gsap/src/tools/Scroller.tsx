@@ -1,6 +1,7 @@
 import React from 'react';
 import { gsap } from 'gsap';
 import Base from '../Base';
+import { nullishCoalescing } from '../helper';
 
 export type ScrollerProps = {
   children: (progress: number) => React.ReactNode;
@@ -83,7 +84,7 @@ class Scroller extends Base<ScrollerProps, ScrollerState> {
     // add consumers
     this.consumers.forEach(consumer => {
       const { position } = consumer.props;
-      this.timeline.add(consumer.getGSAP().play(), position ?? 0);
+      this.timeline.add(consumer.getGSAP().play(), nullishCoalescing(position, 0));
     });
   }
 
@@ -100,13 +101,13 @@ class Scroller extends Base<ScrollerProps, ScrollerState> {
     this.observer = new IntersectionObserver(this.intersectionObserverCallback, options);
 
     this.targetRefs.forEach(target => {
-      this.observer?.observe(target);
+      this.observer && this.observer.observe(target);
     });
   }
 
   unobserveAll() {
     this.targetRefs.forEach(target => {
-      this.observer?.unobserve(target);
+      this.observer && this.observer.unobserve(target);
     });
   }
 

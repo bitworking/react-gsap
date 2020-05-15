@@ -135,4 +135,18 @@ const refOrInnerRef = (child: any) => {
   return 'ref';
 };
 
-export { getTweenFunction, callTweenFunction, setPlayState, isEqual, refOrInnerRef };
+const nullishCoalescing = (value: any, ifNullish: any) => {
+  if (value === null || typeof value === 'undefined') {
+    return ifNullish;
+  }
+  return value;
+};
+
+export {
+  getTweenFunction,
+  callTweenFunction,
+  setPlayState,
+  isEqual,
+  refOrInnerRef,
+  nullishCoalescing,
+};
