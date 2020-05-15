@@ -45,3 +45,20 @@ The SplitWords component is a small helper that splits a text by words and retur
   </Controls>
 </Playground>
 
+## With custom delimiter
+
+You can use the `delimiter` prop to use a custom delimiter string.
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <Tween from={{ x: '200px', rotation: 360}} stagger={0.2} ease="elastic.out(0.1, 0.1)">
+      <SplitWords
+        delimiter="|"
+        wrapper={<div style={{ display: 'inline-block', fontSize: '40px' }} />}
+      >
+        This|text|gets|splitted|by|custom|delimiter
+      </SplitWords>
+    </Tween>
+  </Controls>
+</Playground>
+

@@ -1,0 +1,98 @@
+---
+name: Reveal
+menu: Components
+---
+
+import { Fragment } from 'react';
+import { Playground, Props } from 'docz'
+import { Reveal, SplitLetters } from './../../../react-gsap/src/'
+import { Tween, Comment } from './Tween'
+import { FadeInLeft } from './Animation'
+
+
+# Reveal
+
+The Reveal component is basically an Intersection Observer and a Timeline component combined.
+
+All children Tween and Timeline components get played when they are visible in viewport.
+
+
+    import { Reveal, Tween } from 'react-gsap';
+
+## Usage with Tween
+
+Add a little space for testing
+
+
+
+
+
+|
+
+so scroll down
+
+|
+
+|
+
+|
+
+|
+
+|
+
+|
+
+|
+
+|
+
+|
+
+|
+
+<Playground>
+  <Reveal repeat>
+    <Tween from={{ opacity: 0 }} duration={2}>
+      <h3>This headline is fading in</h3>
+    </Tween>
+  </Reveal>
+</Playground>
+
+## FadeInLeft component
+
+Of course you can outsource animations to separate components. In this example a FadeInLeft animation:
+
+```javascript
+const FadeInLeft = ({ children }) => (
+  <Tween
+    from={{ opacity: 0, transform: 'translate3d(-100vw, 0, 0)' }}
+    ease="back.out(1.4)"
+  >
+    {children}
+  </Tween>
+);
+```
+
+Also note the use of the `trigger` prop.
+In this case the `<H3>` wouldn't trigger because it's out of the viewport initially: `translate3d(-100vw, 0, 0)`
+If no trigger is passed, the first element from any child Tween or Timeline that gets into view is used.
+
+<Playground>
+  <Reveal repeat trigger={<div />}>
+    <FadeInLeft>
+      <h3>This headline is coming from left</h3>
+    </FadeInLeft>
+  </Reveal>
+</Playground>
+
+## Props
+
+| Name | Type | Default | Description |
+| :-- | :-- | :-- | :-- |
+| children | React.ReactNode |  |  |
+| trigger? | React.ReactElement \| null |  | This element triggers the animation if it gets into view. Needs to be a "refable" element like HTML element or forwardRef component |
+| repeat? | boolean | false | Trigger the animation again and again? |
+| root? | Element \| null | null |  |
+| rootMargin? | string | 0px |  |
+| threshold? | number | 0.66 | As opposed to the threshold value from IntersectionObserver options this is just a single number |
