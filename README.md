@@ -13,13 +13,15 @@ It abstracts away the direct use of the GSAP [Tween](https://greensock.com/docs/
 
 If you need the full control it's possible by getting low level access to the underlying objects.
 
-In addition to that it has it's own SVG drawing Plugin and some useful helper components.
+In addition to that it ships some GSAP Plugins and useful helper components.
 
 From version 2 on it's build for GSAP 3 and only has `gsap` as a peer dependency. In this way you can update `gsap` separately from `react-gsap`.
 
 It's built with TypeScript and ships the types directly in the package.
 
 Documentation and examples are here: https://bitworking.github.io/react-gsap/
+
+##### The examples on the documentation pages are all editable directly in the browser. So play with it!
 
 ## Installation
 
