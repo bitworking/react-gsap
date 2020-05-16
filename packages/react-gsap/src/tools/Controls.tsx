@@ -1,7 +1,7 @@
 import React from 'react';
-import Base from '../Base';
 import { PlayState } from './../types';
 import { setPlayState } from './../helper';
+import Provider from '../Provider';
 
 type ControlsProps = {
   playState?: PlayState;
@@ -13,7 +13,7 @@ type ControlsState = {
   prevPlayState?: PlayState;
 };
 
-class Controls extends Base<ControlsProps, ControlsState> {
+class Controls extends Provider<ControlsProps, ControlsState> {
   gsap: any;
   slider: any;
   sliderTouched: boolean = false;

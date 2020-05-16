@@ -40,7 +40,7 @@ const RevealComponent = () => (
         <h1>REACT-GSAP</h1>
       </FadeIn>
     </Reveal>
-    <Reveal repeat wrapper={<Wrapper />}>
+    <Reveal repeat trigger={<Wrapper />}>
       <FadeInLeft>
         <h1>AIIIIIIGHT</h1>
       </FadeInLeft>
@@ -50,27 +50,27 @@ const RevealComponent = () => (
         <h1>ONE MORE</h1>
       </RubberBand>
     </Reveal>
-    <Reveal repeat wrapper={<div />}>
+    <Reveal repeat trigger={<div />}>
       <FadeInLeftChars wrapper={<h1 style={{ display: 'inline-block' }} />}>
         SPLIT IT UP
       </FadeInLeftChars>
     </Reveal>
-    <Reveal repeat wrapper={<div />}>
+    <Reveal repeat trigger={<div />}>
       <FadeInLeftWords wrapper={<h1 style={{ display: 'inline-block' }} />}>
         SPLIT IT UP
       </FadeInLeftWords>
     </Reveal>
-    <Reveal repeat wrapper={<div />}>
+    <Reveal repeat trigger={<div />}>
       <CutText type={0} numberSlices={4}>
         CUT ME PLEASE
       </CutText>
     </Reveal>
-    <Reveal repeat wrapper={<div />}>
+    <Reveal repeat trigger={<div />}>
       <CutText type={1} numberSlices={4}>
         CUT ME PLEASE
       </CutText>
     </Reveal>
-    <Reveal repeat wrapper={<div />}>
+    <Reveal repeat trigger={<div />}>
       <CutText type={2} numberSlices={4}>
         CUT ME PLEASE
       </CutText>

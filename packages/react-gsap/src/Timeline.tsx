@@ -1,9 +1,8 @@
 import React, { Fragment } from 'react';
 import { gsap } from 'gsap';
-import { Context } from './Base';
 import { PlayState } from './types';
 import { getTweenFunction, setPlayState, refOrInnerRef, nullishCoalescing } from './helper';
-import Base from './Base';
+import Provider, { Context } from './Provider';
 
 type Label = {
   label: string;
@@ -25,7 +24,7 @@ export type TimelineProps = {
   [prop: string]: any;
 };
 
-class Timeline extends Base<TimelineProps> {
+class Timeline extends Provider<TimelineProps> {
   static displayName = 'Timeline';
   static contextType = Context;
 

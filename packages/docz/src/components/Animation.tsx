@@ -179,3 +179,17 @@ export const CutText = ({
     </svg>
   );
 };
+
+export const AnimationTrigger = React.forwardRef<HTMLDivElement>(({ children }, ref) => (
+  <div
+    ref={ref}
+    style={{
+      paddingTop: '200px',
+      paddingBottom: '200px',
+      background: '#f0f0f0',
+      textAlign: 'center',
+    }}
+  >
+    {children}
+  </div>
+));

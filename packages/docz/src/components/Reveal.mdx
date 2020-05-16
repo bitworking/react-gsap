@@ -7,7 +7,7 @@ import { Fragment } from 'react';
 import { Playground, Props } from 'docz'
 import { Reveal, SplitLetters } from './../../../react-gsap/src/'
 import { Tween, Comment } from './Tween'
-import { FadeInLeft } from './Animation'
+import { FadeInLeft, AnimationTrigger, RubberBand } from './Animation'
 
 
 # Reveal
@@ -59,7 +59,7 @@ so scroll down
   </Reveal>
 </Playground>
 
-## FadeInLeft component
+## Fade in from left example
 
 Of course you can outsource animations to separate components. In this example a FadeInLeft animation:
 
@@ -76,13 +76,42 @@ const FadeInLeft = ({ children }) => (
 
 Also note the use of the `trigger` prop.
 In this case the `<H3>` wouldn't trigger because it's out of the viewport initially: `translate3d(-100vw, 0, 0)`
-If no trigger is passed, the first element from any child Tween or Timeline that gets into view is used.
+If no trigger is passed, the first element from any child Tween or Timeline that gets beyond the threshold is used.
 
 <Playground>
   <Reveal repeat trigger={<div />}>
     <FadeInLeft>
       <h3>This headline is coming from left</h3>
     </FadeInLeft>
+  </Reveal>
+</Playground>
+
+## forwardRef trigger
+
+You also can create a forwardRef component as trigger if you need a more complex wrapper or trigger.
+
+```javascript
+export const AnimationTrigger = React.forwardRef<HTMLDivElement>(({ children }, ref) => (
+  <div
+    ref={ref}
+    style={{
+      paddingTop: '200px',
+      paddingBottom: '200px',
+      background: '#f0f0f0',
+      textAlign: 'center',
+    }}
+  >
+    {children}
+  </div>
+));
+
+```
+
+<Playground>
+  <Reveal repeat threshold={1} trigger={<AnimationTrigger />}>
+    <RubberBand>
+      <h2>I get triggered later</h2>
+    </RubberBand>
   </Reveal>
 </Playground>
 

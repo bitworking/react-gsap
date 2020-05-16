@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import { gsap } from 'gsap';
-import { Context } from './Base';
 import { PlayState } from './types';
 import { getTweenFunction, setPlayState, isEqual, refOrInnerRef } from './helper';
+import { Context } from './Provider';
 
 // import { CSSPlugin } from 'gsap/CSSPlugin';
 import SvgDrawPlugin from './plugins/PlugInSvgDraw';

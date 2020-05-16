@@ -1,7 +1,7 @@
 import React from 'react';
 import { gsap } from 'gsap';
-import Base from '../Base';
 import { nullishCoalescing } from '../helper';
+import Provider from '../Provider';
 
 export type RevealProps = {
   children: React.ReactNode;
@@ -18,7 +18,7 @@ enum EntryState {
   exited,
 }
 
-class Reveal extends Base<RevealProps> {
+class Reveal extends Provider<RevealProps> {
   static displayName = 'Reveal';
 
   static defaultProps = {
@@ -52,12 +52,16 @@ class Reveal extends Base<RevealProps> {
   }
 
   componentDidUpdate(prevProps: RevealProps) {
-    const { children } = this.props;
+    const { children, trigger } = this.props;
 
     // if children change create a new timeline
     // TODO: replace easy length check with fast equal check
     // TODO: same for props.target?
     if (React.Children.count(prevProps.children) !== React.Children.count(children)) {
+      this.init();
+    }
+
+    if (prevProps.trigger !== trigger) {
       this.init();
     }
   }

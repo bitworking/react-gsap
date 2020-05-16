@@ -1,24 +1,31 @@
 import React from 'react';
 import { gsap } from 'gsap';
-import Base from '../Base';
 import { nullishCoalescing } from '../helper';
+import Provider from '../Provider';
+
+export enum TriggerPosition {
+  top = 'top',
+  bottom = 'bottom',
+}
 
 export type ScrollerProps = {
   children: (progress: number) => React.ReactNode;
   heightVh: number;
   resolution: number;
+  triggerPosition: TriggerPosition;
 };
 
 type ScrollerState = {
   progress: number;
 };
 
-class Scroller extends Base<ScrollerProps, ScrollerState> {
+class Scroller extends Provider<ScrollerProps, ScrollerState> {
   static displayName = 'ScrollReveal';
 
   static defaultProps = {
     heightVh: 100,
     resolution: 100,
+    triggerPosition: TriggerPosition.bottom,
   };
 
   state: ScrollerState = {
@@ -112,24 +119,33 @@ class Scroller extends Base<ScrollerProps, ScrollerState> {
   }
 
   intersectionObserverCallback = (entries: any) => {
+    const { triggerPosition } = this.props;
     const progresses = Array.from({ length: this.heights.length }, () => 0);
     const { heightVh } = this.props;
 
     for (const entry of entries) {
-      // console.log('rootBounds.height', entry.rootBounds.height);
-      // console.log('boundingClientRect.top', entry.boundingClientRect.top);
-      // console.log('boundingClientRect.height', entry.boundingClientRect.height);
-      // console.log('intersectionRatio', entry.intersectionRatio);
-      // console.log('intersectionRect.top', entry.intersectionRect.top);
-      // console.log('intersectionRect.height', entry.intersectionRect.height);
+      console.log('rootBounds.height', entry.rootBounds.height);
+      console.log('boundingClientRect.top', entry.boundingClientRect.top);
+      console.log('boundingClientRect.height', entry.boundingClientRect.height);
+      console.log('intersectionRatio', entry.intersectionRatio);
+      console.log('intersectionRect.top', entry.intersectionRect.top);
+      console.log('intersectionRect.height', entry.intersectionRect.height);
+      console.log('isIntersecting', entry.isIntersecting);
 
-      const height = entry.rootBounds.height;
-      const top = entry.boundingClientRect.top;
-      // const position = (entry.boundingClientRect.top + height) / 2;
-      const position = top <= 0 ? -top : 0;
-      const progress = position / height;
+      let progress = 0;
 
-      // console.log(entry);
+      if (triggerPosition == TriggerPosition.top) {
+        const height = entry.boundingClientRect.height;
+        const top = entry.boundingClientRect.top;
+        const position = top <= 0 ? -top : 0;
+        progress = position / height;
+      } else if (triggerPosition == TriggerPosition.bottom) {
+        const height = entry.boundingClientRect.height;
+        const position = height - Math.max(Math.min(entry.boundingClientRect.top, height), 0);
+        progress = position / height;
+      }
+
+      // console.log('progress', progress);
 
       const key = entry.target.dataset.key;
 
@@ -143,6 +159,10 @@ class Scroller extends Base<ScrollerProps, ScrollerState> {
 
     const totalProgress = this.getTotalProgress(progresses);
     const progress = (totalProgress * 100) / heightVh;
+
+    console.log('progresses', progresses);
+    console.log('totalProgress', totalProgress);
+    console.log('progress', progress);
 
     this.setState({ progress });
   };
@@ -178,13 +198,14 @@ class Scroller extends Base<ScrollerProps, ScrollerState> {
       <>
         {this.heights.map((height: number, index: number) => (
           <div
-            style={{ height: `${height}vh` }}
+            style={{ height: `${height}vh`, background: '#f0f0f0', borderBottom: '1px solid #ddd' }}
             ref={(target: HTMLDivElement) => this.targetRefs.push(target)}
             key={index}
             data-key={index}
-          />
+          >
+            {index === 0 ? children(progress) : null}
+          </div>
         ))}
-        {children(progress)}
       </>
     );
 
