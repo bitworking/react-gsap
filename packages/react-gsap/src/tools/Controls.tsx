@@ -1,7 +1,7 @@
 import React from 'react';
-import Base from '../Base';
 import { PlayState } from './../types';
 import { setPlayState } from './../helper';
+import Provider from '../Provider';
 
 type ControlsProps = {
   playState?: PlayState;
@@ -13,7 +13,7 @@ type ControlsState = {
   prevPlayState?: PlayState;
 };
 
-class Controls extends Base<ControlsProps, ControlsState> {
+class Controls extends Provider<ControlsProps, ControlsState> {
   gsap: any;
   slider: any;
   sliderTouched: boolean = false;
@@ -64,23 +64,28 @@ class Controls extends Base<ControlsProps, ControlsState> {
   componentDidMount() {
     if (this.consumers.length) {
       this.gsap = this.consumers[0];
-      this.gsap.getGSAP()?.eventCallback('onUpdate', this.onUpdate);
 
-      if (this.props.playState) {
-        this.setPlayState(this.props.playState);
-      } else {
-        // get child initial state
-        if (this.gsap.getGSAP()?.paused()) {
-          this.setPlayState(PlayState.pause);
-        } else if (this.gsap.getGSAP()?.reversed()) {
-          this.setPlayState(PlayState.reverse);
+      const gsap = this.gsap.getGSAP();
+
+      if (gsap) {
+        gsap.eventCallback('onUpdate', this.onUpdate);
+
+        if (this.props.playState) {
+          this.setPlayState(this.props.playState);
         } else {
-          this.setPlayState(PlayState.play);
+          // get child initial state
+          if (gsap.paused()) {
+            this.setPlayState(PlayState.pause);
+          } else if (gsap.reversed()) {
+            this.setPlayState(PlayState.reverse);
+          } else {
+            this.setPlayState(PlayState.play);
+          }
         }
-      }
 
-      const totalProgress = this.gsap.getGSAP()?.totalProgress();
-      this.slider.value = totalProgress * 100;
+        const totalProgress = gsap.totalProgress();
+        this.slider.value = totalProgress * 100;
+      }
     }
   }
 
@@ -96,7 +101,9 @@ class Controls extends Base<ControlsProps, ControlsState> {
   };
 
   onChange = (event: any) => {
-    this.gsap?.getGSAP()?.totalProgress(event.target.value / 100);
+    if (this.gsap && this.gsap.getGSAP()) {
+      this.gsap.getGSAP().totalProgress(event.target.value / 100);
+    }
   };
 
   setPlayState = (state: PlayState) => {

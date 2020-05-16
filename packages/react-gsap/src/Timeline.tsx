@@ -1,9 +1,8 @@
 import React, { Fragment } from 'react';
 import { gsap } from 'gsap';
-import { Context } from './Base';
 import { PlayState } from './types';
-import { getTweenFunction, setPlayState, refOrInnerRef } from './helper';
-import Base from './Base';
+import { getTweenFunction, setPlayState, refOrInnerRef, nullishCoalescing } from './helper';
+import Provider, { Context } from './Provider';
 
 type Label = {
   label: string;
@@ -12,7 +11,7 @@ type Label = {
 
 export type TimelineProps = {
   children: React.ReactNode;
-  wrapper?: any;
+  wrapper?: React.ReactElement;
   target?: any;
   position?: string | number;
   labels?: Label[];
@@ -25,7 +24,7 @@ export type TimelineProps = {
   [prop: string]: any;
 };
 
-class Timeline extends Base<TimelineProps> {
+class Timeline extends Provider<TimelineProps> {
   static displayName = 'Timeline';
   static contextType = Context;
 
@@ -107,11 +106,14 @@ class Timeline extends Base<TimelineProps> {
     this.consumers.forEach(consumer => {
       if (consumer.tween && !consumer.props.children) {
         const { position, target, stagger, ...vars } = consumer.props;
-        const tween = getTweenFunction(this.targets[target] ?? this.targets, { stagger, ...vars });
-        this.timeline.add(tween, position ?? '+=0');
+        const tween = getTweenFunction(nullishCoalescing(this.targets[target], this.targets), {
+          stagger,
+          ...vars,
+        });
+        this.timeline.add(tween, nullishCoalescing(position, '+=0'));
       } else {
         const { position } = consumer.props;
-        this.timeline.add(consumer.getGSAP(), position ?? '+=0');
+        this.timeline.add(consumer.getGSAP(), nullishCoalescing(position, '+=0'));
       }
     });
 
@@ -141,6 +143,10 @@ class Timeline extends Base<TimelineProps> {
     if (target !== null) {
       this.targets.push(target);
     }
+  }
+
+  getTargets() {
+    return this.targets;
   }
 
   cloneElement(child: any) {

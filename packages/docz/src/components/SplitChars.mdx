@@ -1,0 +1,28 @@
+---
+name: SplitChars
+menu: Components
+---
+
+import { Fragment } from 'react';
+import { Playground, Props } from 'docz'
+import { Controls, PlayState, SplitChars } from './../../../react-gsap/src/'
+import { Tween } from './Tween'
+
+# SplitChars
+
+The SplitChars component is a small helper that splits a text by chars and returns one component per char.
+
+    import { Controls, PlayState, Tween, SplitChars } from 'react-gsap';
+
+## Usage with Tween
+
+<Playground>
+  <Controls playState={PlayState.stop}>
+    <Tween from={{ x: '200px' }} stagger={0.1}>
+      <SplitChars wrapper={<div style={{ display: 'inline-block', fontSize: '40px' }} />}>
+        This text gets splitted by chars.
+      </SplitChars>
+    </Tween>
+  </Controls>
+</Playground>
+

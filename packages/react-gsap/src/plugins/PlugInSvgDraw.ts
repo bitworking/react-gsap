@@ -1,3 +1,5 @@
+import { nullishCoalescing } from '../helper';
+
 let gsap: any;
 let _interpolate: any;
 let _getProp: any;
@@ -14,23 +16,26 @@ function getDistance(p1: DOMPoint | Point, p2: DOMPoint | Point) {
 }
 
 function getCircleLength(el: SVGCircleElement) {
-  return 2 * Math.PI * parseFloat(el.getAttribute('r') ?? '1');
+  return 2 * Math.PI * parseFloat(nullishCoalescing(el.getAttribute('r'), '1'));
 }
 
 function getRectLength(el: SVGRectElement) {
   return (
-    parseFloat(el.getAttribute('width') ?? '1') * 2 +
-    parseFloat(el.getAttribute('height') ?? '1') * 2
+    parseFloat(nullishCoalescing(el.getAttribute('width'), '1')) * 2 +
+    parseFloat(nullishCoalescing(el.getAttribute('height'), '1')) * 2
   );
 }
 
 function getLineLength(el: SVGLineElement) {
   return getDistance(
     {
-      x: parseFloat(el.getAttribute('x1') ?? '1'),
-      y: parseFloat(el.getAttribute('y1') ?? '1'),
+      x: parseFloat(nullishCoalescing(el.getAttribute('x1'), '1')),
+      y: parseFloat(nullishCoalescing(el.getAttribute('y1'), '1')),
     },
-    { x: parseFloat(el.getAttribute('x2') ?? '1'), y: parseFloat(el.getAttribute('y2') ?? '1') }
+    {
+      x: parseFloat(nullishCoalescing(el.getAttribute('x2'), '1')),
+      y: parseFloat(nullishCoalescing(el.getAttribute('y2'), '1')),
+    }
   );
 }
 
@@ -59,7 +64,7 @@ function getPathLength(el: SVGPathElement) {
     return el.getTotalLength();
   }
   const d = el.getAttribute('d');
-  const pathString = d?.replace(/m/gi, 'M');
+  const pathString = d ? d.replace(/m/gi, 'M') : null;
 
   if (!pathString) {
     return el.getTotalLength();

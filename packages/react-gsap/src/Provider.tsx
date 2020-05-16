@@ -6,7 +6,7 @@ export type ContextProps = {
 
 export const Context = React.createContext<ContextProps>({ registerConsumer: () => {} });
 
-class Base<T, S = {}> extends React.Component<T, S> {
+abstract class Provider<T, S = {}> extends React.Component<T, S> {
   consumers: any[];
 
   constructor(props: T) {
@@ -33,4 +33,4 @@ class Base<T, S = {}> extends React.Component<T, S> {
   }
 }
 
-export default Base;
+export default Provider;

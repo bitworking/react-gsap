@@ -1,10 +1,14 @@
 import React, { Fragment } from 'react';
 import { gsap } from 'gsap';
-import { Context } from './Base';
 import { PlayState } from './types';
 import { getTweenFunction, setPlayState, isEqual, refOrInnerRef } from './helper';
+import { Context } from './Provider';
+
+// import { CSSPlugin } from 'gsap/CSSPlugin';
 import SvgDrawPlugin from './plugins/PlugInSvgDraw';
 import CountPlugin from './plugins/PlugInCount';
+
+// gsap.registerPlugin(CSSPlugin);
 gsap.registerPlugin(SvgDrawPlugin);
 gsap.registerPlugin(CountPlugin);
 
@@ -30,7 +34,7 @@ export type Stagger =
 export type TweenProps = {
   /** One or multiple "refable" components  */
   children?: React.ReactNode;
-  wrapper?: any;
+  wrapper?: React.ReactElement;
   target?: number;
   position?: string | number;
 
@@ -173,6 +177,10 @@ class Tween extends React.Component<TweenProps, {}> {
     if (target !== null) {
       this.targets.push(target);
     }
+  }
+
+  getTargets() {
+    return this.targets;
   }
 
   render() {
