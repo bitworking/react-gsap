@@ -34,7 +34,7 @@ export const RubberBand = ({
   children,
   ...rest
 }: {
-  children: React.ReactNode;
+  children: React.ReactElement;
   [key: string]: any;
 }) => (
   <Timeline target={children} {...rest}>

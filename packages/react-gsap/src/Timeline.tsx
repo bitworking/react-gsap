@@ -1,18 +1,27 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, ReactNode, ReactElement, forwardRef } from 'react';
 import { gsap } from 'gsap';
+import { isForwardRef, isFragment } from 'react-is';
 import { PlayState } from './types';
 import { getTweenFunction, setPlayState, refOrInnerRef, nullishCoalescing } from './helper';
 import Provider, { Context } from './Provider';
+import { TweenProps } from './Tween';
 
 type Label = {
   label: string;
   position: string | number;
 };
 
+export type Targets = Map<string | number, ReactElement | ReactElement[]>;
+export type TargetsRef = {
+  set: (key: string, target: any) => void;
+};
+
+export type Target = ReactElement | null;
+
 export type TimelineProps = {
-  children: React.ReactNode;
-  wrapper?: React.ReactElement;
-  target?: any;
+  children: ReactNode;
+  wrapper?: ReactElement;
+  target?: Target;
   position?: string | number;
   labels?: Label[];
 
@@ -29,7 +38,13 @@ class Timeline extends Provider<TimelineProps> {
   static contextType = Context;
 
   timeline: any;
-  targets: any[] = [];
+  targets: Targets = new Map();
+
+  constructor(props: TimelineProps) {
+    super(props);
+
+    this.setTarget = this.setTarget.bind(this);
+  }
 
   setPlayState(playState: PlayState) {
     const { playState: previousPlayState } = this.props;
@@ -45,7 +60,7 @@ class Timeline extends Provider<TimelineProps> {
   }
 
   getSnapshotBeforeUpdate() {
-    this.targets = [];
+    this.targets = new Map();
     return null;
   }
 
@@ -105,12 +120,24 @@ class Timeline extends Provider<TimelineProps> {
     // add tweens or nested timelines to timeline
     this.consumers.forEach(consumer => {
       if (consumer.tween && !consumer.props.children) {
-        const { position, target, stagger, ...vars } = consumer.props;
-        const tween = getTweenFunction(nullishCoalescing(this.targets[target], this.targets), {
-          stagger,
-          ...vars,
-        });
+        const { position, target, stagger, ...vars } = consumer.props as TweenProps;
+
+        // get target if not nullish
+        let targets = null;
+        if (target !== null && typeof target !== 'undefined') {
+          targets = this.targets.get(target);
+        }
+
+        const tween = getTweenFunction(
+          // @ts-ignore
+          nullishCoalescing(targets, Array.from(this.targets.values())),
+          {
+            stagger,
+            ...vars,
+          }
+        );
         this.timeline.add(tween, nullishCoalescing(position, '+=0'));
+        consumer.setGSAP(tween);
       } else {
         const { position } = consumer.props;
         this.timeline.add(consumer.getGSAP(), nullishCoalescing(position, '+=0'));
@@ -139,10 +166,26 @@ class Timeline extends Provider<TimelineProps> {
   }
 
   addTarget(target: any) {
-    // target is null at unmount
     if (target !== null) {
-      this.targets.push(target);
+      this.targets.set(this.targets.size, target);
     }
+  }
+
+  setTarget(key: string, target: any) {
+    if (target !== null) {
+      if (this.targets.has(key)) {
+        const targets = this.targets.get(key);
+        if (Array.isArray(targets)) {
+          this.targets.set(key, [...targets, ...target]);
+          return;
+        }
+      }
+      this.targets.set(key, target);
+    }
+  }
+
+  setTargets(targets: Targets) {
+    this.targets = targets;
   }
 
   getTargets() {
@@ -156,20 +199,40 @@ class Timeline extends Provider<TimelineProps> {
     });
   }
 
-  render() {
-    let { target, children, wrapper } = this.props;
+  renderTarget(target?: Target): ReactNode {
+    if (!target) {
+      return null;
+    }
 
-    let output = (
+    // if is forwardRef clone and pass targets as ref
+    if (isForwardRef(target)) {
+      return <target.type ref={{ set: this.setTarget }} />;
+    }
+
+    // else iterate the first level of children and set targets
+    return (
       <Fragment>
         {/* First render the target */}
-        {React.Children.map(target, child => {
-          if (child.type.toString() === 'Symbol(react.fragment)') {
+        {React.Children.map<ReactElement, ReactElement>(target, child => {
+          if (isFragment(child)) {
             return React.Children.map(child.props.children, fragmentChild => {
               return this.cloneElement(fragmentChild);
             });
           }
           return this.cloneElement(child);
         })}
+      </Fragment>
+    );
+  }
+
+  render() {
+    let { target, children, wrapper } = this.props;
+
+    const renderedTarget = this.renderTarget(target);
+
+    let output = (
+      <Fragment>
+        {renderedTarget}
         {children}
       </Fragment>
     );
