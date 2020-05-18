@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { forwardRef, Fragment, useRef, useImperativeHandle, ReactElement } from 'react';
 import styled from 'styled-components';
 import { Tween, Timeline, SplitWords, SplitLetters, Controls, PlayState } from 'react-gsap';
 
@@ -114,4 +114,24 @@ const TimelineComponent = () => (
   </TimelineStyled>
 );
 
-export default TimelineComponent;
+const TargetWithNames = forwardRef((props, targets: any) => (
+  <div>
+    <div ref={div => targets.set('div1', div)}>first</div>
+    <div ref={div => targets.set('div2', div)} style={{ display: 'inline-block' }}>
+      second
+    </div>
+    <div ref={div => targets.set('div3', div)}>third</div>
+  </div>
+));
+
+const TimelineTargets = () => {
+  return (
+    <Timeline target={<TargetWithNames />}>
+      <Tween to={{ x: '200px' }} target="div3" position="0" />
+      <Tween to={{ x: '200px' }} target="div1" position="0" />
+      <Tween to={{ x: '200px', rotation: 0 }} from={{ rotation: 180 }} target="div2" position="0" />
+    </Timeline>
+  );
+};
+
+export default TimelineTargets;

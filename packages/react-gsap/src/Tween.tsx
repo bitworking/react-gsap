@@ -4,11 +4,11 @@ import { PlayState } from './types';
 import { getTweenFunction, setPlayState, isEqual, refOrInnerRef } from './helper';
 import { Context } from './Provider';
 
-// import { CSSPlugin } from 'gsap/CSSPlugin';
+import { CSSPlugin } from 'gsap/CSSPlugin';
 import SvgDrawPlugin from './plugins/PlugInSvgDraw';
 import CountPlugin from './plugins/PlugInCount';
 
-// gsap.registerPlugin(CSSPlugin);
+gsap.registerPlugin(CSSPlugin);
 gsap.registerPlugin(SvgDrawPlugin);
 gsap.registerPlugin(CountPlugin);
 
@@ -35,7 +35,7 @@ export type TweenProps = {
   /** One or multiple "refable" components  */
   children?: React.ReactNode;
   wrapper?: React.ReactElement;
-  target?: number;
+  target?: number | string;
   position?: string | number;
 
   from?: any;
@@ -70,7 +70,9 @@ class Tween extends React.Component<TweenProps, {}> {
   }
 
   componentWillUnmount() {
-    this.tween.kill();
+    if (this.tween) {
+      this.tween.kill();
+    }
   }
 
   getSnapshotBeforeUpdate() {
@@ -164,12 +166,23 @@ class Tween extends React.Component<TweenProps, {}> {
     if (this.tween) {
       this.tween.kill();
     }
-    this.tween = getTweenFunction(this.targets, this.props);
+
+    if (this.props.children) {
+      this.tween = getTweenFunction(this.targets, this.props);
+    } else {
+      // why this is needed?
+      this.tween = () => {};
+    }
+
     this.context.registerConsumer(this);
   }
 
   getGSAP() {
     return this.tween;
+  }
+
+  setGSAP(tween: any) {
+    this.tween = tween;
   }
 
   addTarget(target: any) {
