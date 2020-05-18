@@ -136,7 +136,7 @@ const refOrInnerRef = (child: any) => {
   return 'ref';
 };
 
-const nullishCoalescing = (value: any, ifNullish: any) => {
+const nullishCoalescing = <T, R>(value: T, ifNullish: R): T | R => {
   if (value === null || typeof value === 'undefined') {
     return ifNullish;
   }

@@ -11,7 +11,10 @@ type Label = {
   position: string | number;
 };
 
-export type Targets = Map<string | number, ReactElement>;
+export type Targets = Map<string | number, ReactElement | ReactElement[]>;
+export type TargetsRef = {
+  set: (key: string, target: any) => void;
+};
 
 export type Target = ReactElement | null;
 
@@ -36,6 +39,12 @@ class Timeline extends Provider<TimelineProps> {
 
   timeline: any;
   targets: Targets = new Map();
+
+  constructor(props: TimelineProps) {
+    super(props);
+
+    this.setTarget = this.setTarget.bind(this);
+  }
 
   setPlayState(playState: PlayState) {
     const { playState: previousPlayState } = this.props;
@@ -113,12 +122,15 @@ class Timeline extends Provider<TimelineProps> {
       if (consumer.tween && !consumer.props.children) {
         const { position, target, stagger, ...vars } = consumer.props as TweenProps;
 
+        // get target if not nullish
+        let targets = null;
+        if (target !== null && typeof target !== 'undefined') {
+          targets = this.targets.get(target);
+        }
+
         const tween = getTweenFunction(
           // @ts-ignore
-          nullishCoalescing(
-            target ? this.targets.get(target) : null,
-            Array.from(this.targets.values())
-          ),
+          nullishCoalescing(targets, Array.from(this.targets.values())),
           {
             stagger,
             ...vars,
@@ -161,6 +173,13 @@ class Timeline extends Provider<TimelineProps> {
 
   setTarget(key: string, target: any) {
     if (target !== null) {
+      if (this.targets.has(key)) {
+        const targets = this.targets.get(key);
+        if (Array.isArray(targets)) {
+          this.targets.set(key, [...targets, ...target]);
+          return;
+        }
+      }
       this.targets.set(key, target);
     }
   }
@@ -187,7 +206,7 @@ class Timeline extends Provider<TimelineProps> {
 
     // if is forwardRef clone and pass targets as ref
     if (isForwardRef(target)) {
-      return <target.type ref={this.targets} />;
+      return <target.type ref={{ set: this.setTarget }} />;
     }
 
     // else iterate the first level of children and set targets

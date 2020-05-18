@@ -1,6 +1,13 @@
-import React, { forwardRef, Fragment, useRef, useImperativeHandle, ReactElement } from 'react';
+import React, {
+  forwardRef,
+  Fragment,
+  useRef,
+  useImperativeHandle,
+  ReactElement,
+  ReactHTMLElement,
+} from 'react';
 import styled from 'styled-components';
-import { Tween, Timeline, SplitWords, SplitLetters, Controls, PlayState } from 'react-gsap';
+import { Tween, Timeline, SplitWords, SplitChars, Controls, PlayState } from 'react-gsap';
 
 const TimelineStyled = styled.div``;
 
@@ -87,9 +94,9 @@ const TimelineComponent = () => (
           wrapper={<div style={{ position: 'relative', left: '90px' }} />}
           target={
             <Fragment>
-              <SplitLetters wrapper={<div style={{ fontSize: '80px', display: 'inline-block' }} />}>
+              <SplitChars wrapper={<div style={{ fontSize: '80px', display: 'inline-block' }} />}>
                 AIIIIGHHT
-              </SplitLetters>
+              </SplitChars>
             </Fragment>
           }
           labels={[
@@ -117,9 +124,12 @@ const TimelineComponent = () => (
 const TargetWithNames = forwardRef((props, targets: any) => (
   <div>
     <div ref={div => targets.set('div1', div)}>first</div>
-    <div ref={div => targets.set('div2', div)} style={{ display: 'inline-block' }}>
+    <SplitChars
+      ref={(div: ReactElement) => targets.set('div2', [div])}
+      wrapper={<span style={{ display: 'inline-block' }} />}
+    >
       second
-    </div>
+    </SplitChars>
     <div ref={div => targets.set('div3', div)}>third</div>
   </div>
 ));
@@ -128,8 +138,8 @@ const TimelineTargets = () => {
   return (
     <Timeline target={<TargetWithNames />}>
       <Tween to={{ x: '200px' }} target="div3" position="0" />
-      <Tween to={{ x: '200px' }} target="div1" position="0" />
-      <Tween to={{ x: '200px', rotation: 0 }} from={{ rotation: 180 }} target="div2" position="0" />
+      <Tween to={{ x: '200px' }} target="div1" position="0.5" />
+      <Tween to={{ x: '200px' }} target="div2" position="1" stagger={0.1} />
     </Timeline>
   );
 };
