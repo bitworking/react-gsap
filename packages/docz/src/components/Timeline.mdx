@@ -179,8 +179,8 @@ For all available props check out the documentation: [vars](https://greensock.co
 | Name | Type | Description |
 | :-- | :-- | :-- |
 | children | React.ReactNode | Can be any component type. But Tween and other Timeline components are controlled by this Timeline |
-| wrapper? | any | This component gets wrapped around the Timeline component |
-| target? | any | The target component that gets outputted and tweened from all childless Tween child components |
+| wrapper? | React.ReactElement | This component gets wrapped around the Timeline component |
+| target? | React.ReactElement \| null | The target component that gets outputted and tweened from all childless Tween child components |
 | position? | string \| number | If this Timeline is a child from another Timeline it's added at this position  |
 | labels? | Label[] | Can be used to give the positions a name |
 | duration? | number | Adjusts the Timeline's timeScale to fit it within the specified duration (Can be changed on-the-fly) |

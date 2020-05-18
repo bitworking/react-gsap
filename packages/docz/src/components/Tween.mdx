@@ -125,7 +125,7 @@ For a documentation of all possible props or from and to values check out the do
 | :-- | :-- | :-- |
 | children? | React.ReactNode | Need to be "refable" components. So they can be HTML elements or forwardRef components like styled-components components |
 | wrapper? | any | This component gets wrapped around the Tween component |
-| target? | number | The target index of the Timeline targets. Used if Tween is childless and child of a Timeline |
+| target? | number \| string | The target index or key of the Timeline targets. Used if Tween is childless and child of a Timeline |
 | position? | string \| number | If this Tween is a child from a Timeline it's added at this position  |
 | from? | any | The vars object for the [gsap.from()](https://greensock.com/docs/v3/GSAP/gsap.from()) or [gsap.fromTo()](https://greensock.com/docs/v3/GSAP/gsap.fromTo()) function |
 | to? | any | The vars object for the [gsap.to()](https://greensock.com/docs/v3/GSAP/gsap.to()) or [gsap.fromTo()](https://greensock.com/docs/v3/GSAP/gsap.fromTo()) function |
