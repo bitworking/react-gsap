@@ -4,11 +4,11 @@ import { PlayState } from './types';
 import { getTweenFunction, setPlayState, isEqual, refOrInnerRef } from './helper';
 import { Context } from './Provider';
 
-import { CSSPlugin } from 'gsap/CSSPlugin';
+// import { CSSPlugin } from 'gsap/dist/CSSPlugin'; // CSSPlugin not exported as ES5?
 import SvgDrawPlugin from './plugins/PlugInSvgDraw';
 import CountPlugin from './plugins/PlugInCount';
 
-gsap.registerPlugin(CSSPlugin);
+// gsap.registerPlugin(CSSPlugin);
 gsap.registerPlugin(SvgDrawPlugin);
 gsap.registerPlugin(CountPlugin);
 
