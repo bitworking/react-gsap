@@ -4,12 +4,13 @@ import { PlayState } from './types';
 import { getTweenFunction, setPlayState, isEqual, refOrInnerRef } from './helper';
 import { Context } from './Provider';
 
-// import { CSSPlugin } from 'gsap/dist/CSSPlugin'; // CSSPlugin not exported as ES5?
 import SvgDrawPlugin from './plugins/PlugInSvgDraw';
 import CountPlugin from './plugins/PlugInCount';
 
-// gsap.registerPlugin(CSSPlugin);
+// @ts-ignore
 gsap.registerPlugin(SvgDrawPlugin);
+
+// @ts-ignore
 gsap.registerPlugin(CountPlugin);
 
 type StaggerFunction = (index: number, target: any, list: any) => number;

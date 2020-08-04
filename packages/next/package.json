@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "gsap": "^3.2.6",
-    "next": "latest",
+    "next": "^9.5.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-gsap": "2.2.1"

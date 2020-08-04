@@ -7,7 +7,8 @@ import React, {
   useState,
 } from 'react';
 import styled from 'styled-components';
-import { Tween, Timeline, Scroller, SplitChars, SplitWords } from 'react-gsap';
+import { Tween, Timeline, SplitChars, SplitWords } from 'react-gsap';
+// import { Scroller } from 'react-gsap';
 import { gsap } from 'gsap';
 import { CutText } from './Animation';
 
@@ -54,9 +55,9 @@ const RevealStyled = styled.div`
 
 const ScrollerComponent = () => (
   <RevealStyled>
-    <Scroller heightVh={200} resolution={20}>
+    {/*<Scroller heightVh={200} resolution={20}>
       {(progress: number) => <div className="fixed">{progress}</div>}
-    </Scroller>
+    </Scroller>*/}
     {/*
     <Scroller height="100vh">
       {(progress: number) => (

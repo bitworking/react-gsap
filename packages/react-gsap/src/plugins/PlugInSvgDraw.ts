@@ -16,25 +16,25 @@ function getDistance(p1: DOMPoint | Point, p2: DOMPoint | Point) {
 }
 
 function getCircleLength(el: SVGCircleElement) {
-  return 2 * Math.PI * parseFloat(nullishCoalescing(el.getAttribute('r'), '1'));
+  return 2 * Math.PI * parseFloat(nullishCoalescing(el.getAttribute('r'), '1') || '0');
 }
 
 function getRectLength(el: SVGRectElement) {
   return (
-    parseFloat(nullishCoalescing(el.getAttribute('width'), '1')) * 2 +
-    parseFloat(nullishCoalescing(el.getAttribute('height'), '1')) * 2
+    parseFloat(nullishCoalescing(el.getAttribute('width'), '1') || '0') * 2 +
+    parseFloat(nullishCoalescing(el.getAttribute('height'), '1') || '0') * 2
   );
 }
 
 function getLineLength(el: SVGLineElement) {
   return getDistance(
     {
-      x: parseFloat(nullishCoalescing(el.getAttribute('x1'), '1')),
-      y: parseFloat(nullishCoalescing(el.getAttribute('y1'), '1')),
+      x: parseFloat(nullishCoalescing(el.getAttribute('x1'), '1') || '0'),
+      y: parseFloat(nullishCoalescing(el.getAttribute('y1'), '1') || '0'),
     },
     {
-      x: parseFloat(nullishCoalescing(el.getAttribute('x2'), '1')),
-      y: parseFloat(nullishCoalescing(el.getAttribute('y2'), '1')),
+      x: parseFloat(nullishCoalescing(el.getAttribute('x2'), '1') || '0'),
+      y: parseFloat(nullishCoalescing(el.getAttribute('y2'), '1') || '0'),
     }
   );
 }
