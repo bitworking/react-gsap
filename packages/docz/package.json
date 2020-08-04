@@ -23,7 +23,7 @@
     "gsap": "^3.2.6",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-gsap": "2.0.0"
+    "react-gsap": "2.2.1"
   },
   "devDependencies": {
     "@types/react": "^16.8.23",
