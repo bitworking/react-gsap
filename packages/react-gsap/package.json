@@ -4,7 +4,10 @@
   "description": "React components for GSAP",
   "author": "bitworking",
   "license": "MIT",
-  "repository": "bitworking/react-gsap",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bitworking/react-gsap.git"
+  },
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "module": "dist/react-gsap.esm.js",
@@ -55,5 +58,13 @@
   },
   "dependencies": {
     "react-is": "^16.13.1"
+  },
+  "bugs": {
+    "url": "https://github.com/bitworking/react-gsap/issues"
+  },
+  "homepage": "https://github.com/bitworking/react-gsap#readme",
+  "directories": {
+    "example": "example",
+    "test": "test"
   }
 }
