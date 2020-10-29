@@ -38,7 +38,7 @@ export const SplitWords = React.forwardRef<any, SplitWordsProps>(
 
 export const SplitChars = React.forwardRef<any, SplitCharsProps>(({ children, wrapper }, ref) => {
   if (typeof children !== 'string') {
-    throw new Error('SplitLetters only accepts a string as child.');
+    throw new Error('SplitChars only accepts a string as child.');
   }
   return (
     <>
