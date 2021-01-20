@@ -20,7 +20,7 @@
     "@emotion/core": "^10.0.14",
     "@emotion/styled": "^10.0.14",
     "docz": "latest",
-    "gsap": "^3.2.6",
+    "gsap": "^3.6.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-gsap": "2.2.1"

@@ -8,7 +8,7 @@
     "type-check": "tsc"
   },
   "dependencies": {
-    "gsap": "^3.2.6",
+    "gsap": "^3.6.0",
     "next": "^9.5.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",

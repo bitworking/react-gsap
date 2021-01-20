@@ -14,7 +14,7 @@
     "@types/react-transition-group": "^4.2.4",
     "@types/styled-components": "^5.1.0",
     "@types/uuid": "^7.0.3",
-    "gsap": "^3.2.6",
+    "gsap": "^3.6.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-gsap": "2.2.2",

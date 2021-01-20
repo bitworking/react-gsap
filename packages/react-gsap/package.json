@@ -45,7 +45,7 @@
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.7",
     "@types/react-is": "^16.7.1",
-    "gsap": "^3.2.6",
+    "gsap": "^3.6.0",
     "husky": "^4.2.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
