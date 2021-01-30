@@ -44,7 +44,7 @@
   "devDependencies": {
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.7",
-    "@types/react-is": "^16.7.1",
+    "@types/react-is": "^17.0.0",
     "gsap": "^3.2.6",
     "husky": "^4.2.5",
     "react": "^16.13.1",
