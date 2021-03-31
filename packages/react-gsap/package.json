@@ -1,6 +1,6 @@
 {
   "name": "react-gsap",
-  "version": "2.2.2",
+  "version": "2.3.0",
   "description": "React components for GSAP",
   "author": "bitworking",
   "license": "MIT",
@@ -25,8 +25,8 @@
   },
   "peerDependencies": {
     "gsap": ">=3",
-    "react": ">=16.6",
-    "react-dom": ">=16.6"
+    "react": "^16.0.0-0 || ^17.0.0-0",
+    "react-dom": "^16.0.0-0 || ^17.0.0-0"
   },
   "husky": {
     "hooks": {
