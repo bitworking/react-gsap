@@ -24,6 +24,9 @@ To use them with `react-gsap` you first have to register them.
     import { gsap } from 'gsap';
     import { TextPlugin } from 'gsap/TextPlugin';
 
+    # if your build step doesn't transpile inside node_modules you can try this import:
+    import { TextPlugin } from 'gsap/dist/TextPlugin';
+
     gsap.registerPlugin(TextPlugin);
 
 ### And use it:
