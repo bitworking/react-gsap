@@ -17,7 +17,7 @@
     "gsap": "^3.2.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-gsap": "2.3.0",
+    "react-gsap": "3.0.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "4.0.1",
     "react-transition-group": "^4.3.0",
