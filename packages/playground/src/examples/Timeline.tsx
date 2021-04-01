@@ -148,21 +148,57 @@ const TimelineTargets = () => {
 
 //export default TimelineTargets;
 
-const Component = forwardRef(({ className = '', children }, targets) => {
+const Component = forwardRef(({ children }, targets) => {
   return (
-    <div className={`component ${className}`}>
-      <div ref={div => targets && targets.set('div', div)} className="someClass">
+    <div>
+      <div ref={div => targets?.set && targets.set('div1', div)}>
         <span>{children}</span>
       </div>
+      <div ref={div => targets?.set && targets.set('div2', div)}>Div 2</div>
     </div>
   );
 });
 
-const AnimatedComponent = ({ children, ...props }) => (
-  <Timeline target={<Component {...props}>{children}</Component>}>
-    <Tween target="div" from={{ opacity: 0 }} to={{ opacity: 1 }} duration={3} />
-  </Timeline>
-);
+const Component2 = forwardRef(({ children }, ref?) => {
+  const div1 = useRef(null);
+  const div2 = useRef(null);
+  useImperativeHandle(ref, () => ({
+    div1,
+    div2,
+    test: () => {
+      console.log('run test');
+    },
+  }));
+  return (
+    <div>
+      <div ref={div1}>
+        <span>{children}</span>
+      </div>
+      <div ref={div2}>Div 2</div>
+    </div>
+  );
+});
+
+const AnimatedComponent = ({ children, ...props }) => {
+  const component = useRef(null);
+
+  useEffect(() => {
+    console.log('component', component);
+  }, []);
+
+  return (
+    <Timeline
+      target={
+        <Component ref={component} {...props}>
+          {children}
+        </Component>
+      }
+    >
+      <Tween target="div1" from={{ opacity: 0 }} to={{ opacity: 1 }} duration={1} />
+      <Tween target="div2" from={{ opacity: 0 }} to={{ opacity: 1 }} duration={1} />
+    </Timeline>
+  );
+};
 
 // const Out = () => {
 //   return (
@@ -172,7 +208,6 @@ const AnimatedComponent = ({ children, ...props }) => (
 //     </>
 //   );
 // };
-//
 
 const Out = () => {
   const divRef1 = useCallback(ref => {

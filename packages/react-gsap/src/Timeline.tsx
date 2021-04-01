@@ -1,8 +1,14 @@
-import React, { Fragment, ReactNode, ReactElement, forwardRef } from 'react';
+import React, { Fragment, ReactNode, ReactElement } from 'react';
 import { gsap } from 'gsap';
 import { isForwardRef, isFragment } from 'react-is';
 import { PlayState } from './types';
-import { getTweenFunction, setPlayState, refOrInnerRef, nullishCoalescing } from './helper';
+import {
+  getTweenFunction,
+  setPlayState,
+  nullishCoalescing,
+  getRefProp,
+  getTargetRefProp,
+} from './helper';
 import Provider, { Context } from './Provider';
 import { TweenProps } from './Tween';
 
@@ -43,6 +49,7 @@ class Timeline extends Provider<TimelineProps> {
   constructor(props: TimelineProps) {
     super(props);
 
+    this.addTarget = this.addTarget.bind(this);
     this.setTarget = this.setTarget.bind(this);
   }
 
@@ -119,6 +126,7 @@ class Timeline extends Provider<TimelineProps> {
 
     // add tweens or nested timelines to timeline
     this.consumers.forEach(consumer => {
+      // Tween with no children -> control Timeline target
       if (consumer.tween && !consumer.props.children) {
         const { position, target, stagger, ...vars } = consumer.props as TweenProps;
 
@@ -128,6 +136,7 @@ class Timeline extends Provider<TimelineProps> {
           targets = this.targets.get(target);
         }
 
+        // if no target found -> take all Timeline targets as target
         const tween = getTweenFunction(
           // @ts-ignore
           nullishCoalescing(targets, Array.from(this.targets.values())),
@@ -193,18 +202,8 @@ class Timeline extends Provider<TimelineProps> {
   }
 
   cloneElement(child: any) {
-    return React.cloneElement(child, {
-      // // @ts-ignore
-      // [refOrInnerRef(child)]: target => this.addTarget(target),
-      // TODO: we need innerRef?
-      ref: (target: any) => {
-        this.addTarget(target);
-        // @ts-ignore
-        const { ref } = child;
-        if (typeof ref === 'function') ref(target);
-        else if (ref) ref.current = target;
-      },
-    });
+    // @ts-ignore
+    return React.cloneElement(child, getRefProp(child, this.addTarget));
   }
 
   renderTarget(target?: Target): ReactNode {
@@ -214,7 +213,8 @@ class Timeline extends Provider<TimelineProps> {
 
     // if is forwardRef clone and pass targets as ref
     if (isForwardRef(target)) {
-      return <target.type {...target.props} ref={{ set: this.setTarget }} />;
+      // @ts-ignore
+      return React.cloneElement(target, getTargetRefProp(target, this.setTarget));
     }
 
     // else iterate the first level of children and set targets
