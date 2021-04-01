@@ -194,8 +194,16 @@ class Timeline extends Provider<TimelineProps> {
 
   cloneElement(child: any) {
     return React.cloneElement(child, {
-      // @ts-ignore
-      [refOrInnerRef(child)]: target => this.addTarget(target),
+      // // @ts-ignore
+      // [refOrInnerRef(child)]: target => this.addTarget(target),
+      // TODO: we need innerRef?
+      ref: (target: any) => {
+        this.addTarget(target);
+        // @ts-ignore
+        const { ref } = child;
+        if (typeof ref === 'function') ref(target);
+        else if (ref) ref.current = target;
+      },
     });
   }
 
@@ -206,7 +214,7 @@ class Timeline extends Provider<TimelineProps> {
 
     // if is forwardRef clone and pass targets as ref
     if (isForwardRef(target)) {
-      return <target.type ref={{ set: this.setTarget }} />;
+      return <target.type {...target.props} ref={{ set: this.setTarget }} />;
     }
 
     // else iterate the first level of children and set targets

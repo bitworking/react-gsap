@@ -5,6 +5,8 @@ import React, {
   useImperativeHandle,
   ReactElement,
   ReactHTMLElement,
+  useCallback,
+  useEffect,
 } from 'react';
 import styled from 'styled-components';
 import { Tween, Timeline, SplitWords, SplitChars, Controls, PlayState } from 'react-gsap';
@@ -144,4 +146,66 @@ const TimelineTargets = () => {
   );
 };
 
-export default TimelineTargets;
+//export default TimelineTargets;
+
+const Component = forwardRef(({ className = '', children }, targets) => {
+  return (
+    <div className={`component ${className}`}>
+      <div ref={div => targets && targets.set('div', div)} className="someClass">
+        <span>{children}</span>
+      </div>
+    </div>
+  );
+});
+
+const AnimatedComponent = ({ children, ...props }) => (
+  <Timeline target={<Component {...props}>{children}</Component>}>
+    <Tween target="div" from={{ opacity: 0 }} to={{ opacity: 1 }} duration={3} />
+  </Timeline>
+);
+
+// const Out = () => {
+//   return (
+//     <>
+//       <Component>Not animated</Component>
+//       <AnimatedComponent>Animated</AnimatedComponent>
+//     </>
+//   );
+// };
+//
+
+const Out = () => {
+  const divRef1 = useCallback(ref => {
+    if (ref !== null) {
+      // Ref never updates
+      console.log(ref);
+    }
+  }, []);
+
+  const divRef2 = useRef(null);
+
+  useEffect(() => {
+    // Ref never updates
+    console.log(divRef2.current);
+  }, []);
+
+  return (
+    <div className="App">
+      <Timeline target={<TargetWithNames />}>
+        <Tween from={{ x: -100 }} to={{ x: 100 }}>
+          <div ref={divRef1} style={{ width: 200, height: 200, background: 'rebeccapurple' }} />
+        </Tween>
+
+        <Tween from={{ x: -100 }} to={{ x: 100 }}>
+          <div ref={divRef2} style={{ width: 200, height: 200, background: 'fuchsia' }} />
+        </Tween>
+
+        <Tween to={{ x: '200px' }} target="div2" position="0" />
+        <Tween to={{ x: '200px' }} target="div1" position="0.5" />
+        <Tween to={{ x: '200px' }} target="div3" position="1" stagger={0.1} />
+      </Timeline>
+    </div>
+  );
+};
+
+export default Out;

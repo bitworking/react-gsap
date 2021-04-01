@@ -202,11 +202,24 @@ class Tween extends React.Component<TweenProps, {}> {
 
     const output = (
       <Fragment>
-        {React.Children.map(children, child =>
-          React.cloneElement(child as any, {
-            [refOrInnerRef(child)]: (target: any) => this.addTarget(target),
-          })
-        )}
+        {React.Children.map(children, child => {
+          // @ts-ignore
+          return React.cloneElement(child, {
+            // TODO: we need innerRef?
+            ref: (target: any) => {
+              this.addTarget(target);
+              // @ts-ignore
+              const { ref } = child;
+              if (typeof ref === 'function') ref(target);
+              else if (ref) ref.current = target;
+            },
+            // // @ts-ignore
+            // [refOrInnerRef(child)]: child?.props?.ref
+            //   ? // @ts-ignore
+            //     mergeRefs([addTarget, child?.props?.ref])
+            //   : addTarget,
+          });
+        })}
       </Fragment>
     );
 
