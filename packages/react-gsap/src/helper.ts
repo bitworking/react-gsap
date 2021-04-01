@@ -160,24 +160,26 @@ const getRefProp = (child: any, addTarget: (target: any) => void) => {
 
 const getTargetRefProp = (child: any, setTarget: (key: string, target: any) => void) => {
   return {
-    // ref: (target: any) => {
-    //   const { ref } = child;
-    //
-    //   if (target) {
-    //     Object.keys(target).forEach(key => {
-    //       const elementRef = target[key];
-    //       if (typeof elementRef === 'object' && elementRef.current) {
-    //         setTarget(key, elementRef.current);
-    //       }
-    //     });
-    //   }
-    //
-    //   if (typeof ref === 'function') ref(target);
-    //   else if (ref) ref.current = target;
-    // },
-    // Old version: Can we make it work for both variants?
-    ref: {
-      set: setTarget,
+    ref: (target: any) => {
+      const { ref } = child;
+
+      if (target) {
+        Object.keys(target).forEach(key => {
+          const elementRef = target[key];
+          if (typeof elementRef === 'object' && elementRef.current) {
+            if (Array.isArray(elementRef.current)) {
+              elementRef.current.forEach((singleRef: React.RefObject<any>) => {
+                setTarget(key, singleRef);
+              });
+            } else {
+              setTarget(key, elementRef.current);
+            }
+          }
+        });
+      }
+
+      if (typeof ref === 'function') ref(target);
+      else if (ref) ref.current = target;
     },
   };
 };

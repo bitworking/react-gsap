@@ -7,6 +7,7 @@ import React, {
   ReactHTMLElement,
   useCallback,
   useEffect,
+  MutableRefObject,
 } from 'react';
 import styled from 'styled-components';
 import { Tween, Timeline, SplitWords, SplitChars, Controls, PlayState } from 'react-gsap';
@@ -123,18 +124,28 @@ const TimelineComponent = () => (
   </TimelineStyled>
 );
 
-const TargetWithNames = forwardRef((props, targets: any) => (
-  <div>
-    <div ref={div => targets.set('div1', div)}>first</div>
-    <SplitChars
-      ref={(div: ReactElement) => targets.set('div2', [div])}
-      wrapper={<span style={{ display: 'inline-block' }} />}
-    >
-      second
-    </SplitChars>
-    <div ref={div => targets.set('div3', div)}>third</div>
-  </div>
-));
+const TargetWithNames = forwardRef((props, ref: any) => {
+  const div1 = useRef(null);
+  const div2 = useRef<MutableRefObject<any>[]>([]);
+  const div3 = useRef(null);
+  useImperativeHandle(ref, () => ({
+    div1,
+    div2,
+    div3,
+  }));
+  return (
+    <div>
+      <div ref={div1}>first</div>
+      <SplitChars
+        ref={(charRef: MutableRefObject<any>) => div2.current.push(charRef)}
+        wrapper={<span style={{ display: 'inline-block' }} />}
+      >
+        second
+      </SplitChars>
+      <div ref={div3}>third</div>
+    </div>
+  );
+});
 
 const TimelineTargets = () => {
   return (
@@ -148,18 +159,7 @@ const TimelineTargets = () => {
 
 //export default TimelineTargets;
 
-const Component = forwardRef(({ children }, targets) => {
-  return (
-    <div>
-      <div ref={div => targets?.set && targets.set('div1', div)}>
-        <span>{children}</span>
-      </div>
-      <div ref={div => targets?.set && targets.set('div2', div)}>Div 2</div>
-    </div>
-  );
-});
-
-const Component2 = forwardRef(({ children }, ref?) => {
+const Component = forwardRef(({ children }, ref?) => {
   const div1 = useRef(null);
   const div2 = useRef(null);
   useImperativeHandle(ref, () => ({
@@ -235,9 +235,9 @@ const Out = () => {
           <div ref={divRef2} style={{ width: 200, height: 200, background: 'fuchsia' }} />
         </Tween>
 
-        <Tween to={{ x: '200px' }} target="div2" position="0" />
+        <Tween to={{ x: '200px' }} target="div3" position="0" />
         <Tween to={{ x: '200px' }} target="div1" position="0.5" />
-        <Tween to={{ x: '200px' }} target="div3" position="1" stagger={0.1} />
+        <Tween to={{ x: '200px' }} target="div2" position="1" stagger={0.1} />
       </Timeline>
     </div>
   );

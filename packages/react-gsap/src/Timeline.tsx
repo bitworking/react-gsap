@@ -185,11 +185,13 @@ class Timeline extends Provider<TimelineProps> {
       if (this.targets.has(key)) {
         const targets = this.targets.get(key);
         if (Array.isArray(targets)) {
-          this.targets.set(key, [...targets, ...target]);
-          return;
+          this.targets.set(key, [...targets, target]);
+        } else {
+          this.targets.set(key, [targets, target]);
         }
+      } else {
+        this.targets.set(key, target);
       }
-      this.targets.set(key, target);
     }
   }
 

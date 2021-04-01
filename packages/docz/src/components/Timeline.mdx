@@ -80,6 +80,40 @@ If you don't add a target you transform all target components.
 
 ## Advanced multiple targets
 
+If you need to target individual elements you can use a special forwardRef component with useImperativeHandle hook.
+
+In this way these component can be better reused and the refs not only work in a Timeline target context.
+
+You can also pass an array ref like seen with div2. In this way you can use the `stagger` prop.
+
+```javascript
+const TargetWithNames = forwardRef((props, ref: any) => {
+  const div1 = useRef(null);
+  const div2 = useRef([]);
+  const div3 = useRef(null);
+  useImperativeHandle(ref, () => ({
+    div1,
+    div2,
+    div3,
+  }));
+  return (
+    <div style={{ textAlign: 'center' }}>
+      <h3 ref={div1}>THIS</h3>
+      <SplitChars
+        ref={charRef => div2.current.push(charRef)}
+        wrapper={<h3 style={{ display: 'inline-block' }} />}
+      >
+        TEST
+      </SplitChars>
+      <h3 ref={div3}>IS A</h3>
+    </div>
+  );
+});
+
+```
+
+For version < 3:
+
 If you need to target individual elements you can use a special forwardRef function.
 The `targets` parameter provide the `set` function, which you can use to set a ref to a certain key.
 
