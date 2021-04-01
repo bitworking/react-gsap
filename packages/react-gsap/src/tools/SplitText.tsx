@@ -38,7 +38,7 @@ export const SplitWords = React.forwardRef<any, SplitWordsProps>(
 
 export const SplitChars = React.forwardRef<any, SplitCharsProps>(({ children, wrapper }, ref) => {
   if (typeof children !== 'string') {
-    throw new Error('SplitLetters only accepts a string as child.');
+    throw new Error('SplitChars only accepts a string as child.');
   }
   return (
     <>
@@ -58,6 +58,6 @@ export const SplitChars = React.forwardRef<any, SplitCharsProps>(({ children, wr
 });
 
 export const SplitLetters = React.forwardRef((props: any, ref) => {
-  console.log('Deprecation warning: Use SplitChars instead of SplitLetters');
+  console.warn('Deprecation warning: Use SplitChars instead of SplitLetters');
   return <SplitChars {...props} ref={ref} />;
 });

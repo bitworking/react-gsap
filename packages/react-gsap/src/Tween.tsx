@@ -1,7 +1,7 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, ReactElement } from 'react';
 import { gsap } from 'gsap';
 import { PlayState } from './types';
-import { getTweenFunction, setPlayState, isEqual, refOrInnerRef } from './helper';
+import { getTweenFunction, setPlayState, isEqual, getRefProp } from './helper';
 import { Context } from './Provider';
 
 import SvgDrawPlugin from './plugins/PlugInSvgDraw';
@@ -60,6 +60,12 @@ class Tween extends React.Component<TweenProps, {}> {
 
   tween: any;
   targets: any[] = [];
+
+  constructor(props: TweenProps) {
+    super(props);
+
+    this.addTarget = this.addTarget.bind(this);
+  }
 
   setPlayState(playState: PlayState) {
     const { playState: previousPlayState } = this.props;
@@ -203,22 +209,7 @@ class Tween extends React.Component<TweenProps, {}> {
     const output = (
       <Fragment>
         {React.Children.map(children, child => {
-          // @ts-ignore
-          return React.cloneElement(child, {
-            // TODO: we need innerRef?
-            ref: (target: any) => {
-              this.addTarget(target);
-              // @ts-ignore
-              const { ref } = child;
-              if (typeof ref === 'function') ref(target);
-              else if (ref) ref.current = target;
-            },
-            // // @ts-ignore
-            // [refOrInnerRef(child)]: child?.props?.ref
-            //   ? // @ts-ignore
-            //     mergeRefs([addTarget, child?.props?.ref])
-            //   : addTarget,
-          });
+          return React.cloneElement(child as ReactElement, getRefProp(child, this.addTarget));
         })}
       </Fragment>
     );

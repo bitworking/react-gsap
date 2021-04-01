@@ -136,6 +136,52 @@ const refOrInnerRef = (child: any) => {
   return 'ref';
 };
 
+const getRefProp = (child: any, addTarget: (target: any) => void) => {
+  if (child.props.innerRef) {
+    return {
+      innerRef: (target: any) => {
+        addTarget(target);
+        const { innerRef } = child.props;
+        if (typeof innerRef === 'function') innerRef(target);
+        else if (innerRef) innerRef.current = target;
+      },
+    };
+  }
+
+  return {
+    ref: (target: any) => {
+      addTarget(target);
+      const { ref } = child;
+      if (typeof ref === 'function') ref(target);
+      else if (ref) ref.current = target;
+    },
+  };
+};
+
+const getTargetRefProp = (child: any, setTarget: (key: string, target: any) => void) => {
+  return {
+    // ref: (target: any) => {
+    //   const { ref } = child;
+    //
+    //   if (target) {
+    //     Object.keys(target).forEach(key => {
+    //       const elementRef = target[key];
+    //       if (typeof elementRef === 'object' && elementRef.current) {
+    //         setTarget(key, elementRef.current);
+    //       }
+    //     });
+    //   }
+    //
+    //   if (typeof ref === 'function') ref(target);
+    //   else if (ref) ref.current = target;
+    // },
+    // Old version: Can we make it work for both variants?
+    ref: {
+      set: setTarget,
+    },
+  };
+};
+
 const nullishCoalescing = <T, R>(value: T, ifNullish: R): T | R => {
   if (value === null || typeof value === 'undefined') {
     return ifNullish;
@@ -149,5 +195,7 @@ export {
   setPlayState,
   isEqual,
   refOrInnerRef,
+  getRefProp,
+  getTargetRefProp,
   nullishCoalescing,
 };
