@@ -14,6 +14,22 @@ import { Tween, Timeline, SplitWords, SplitChars, Controls, PlayState } from 're
 
 const TimelineStyled = styled.div``;
 
+const StyledTarget1 = styled.div`
+  height: 200px;
+  background-color: #accef7;
+`;
+
+const StyledTarget2 = styled.div`
+  height: 50px;
+  background-color: #ff4757;
+  padding: 50px;
+`;
+
+const Inline = styled.div`
+  display: inline-block;
+  font-size: 40px;
+`;
+
 const TimelinePlayState = () => {
   const [playing, setPlaying] = React.useState(false);
   const [progress, setProgress] = React.useState(0);
@@ -147,6 +163,44 @@ const TargetWithNames = forwardRef((props, ref: any) => {
   );
 });
 
+const TargetWithNames2 = forwardRef((props, ref: any) => {
+  const div4 = useRef(null);
+  const div5 = useRef<MutableRefObject<any>[]>([]);
+  const div6 = useRef(null);
+  useImperativeHandle(ref, () => ({
+    div4,
+    div5,
+    div6,
+  }));
+  return (
+    <div>
+      <div ref={div4}>first</div>
+      <SplitChars
+        ref={(charRef: MutableRefObject<any>) => div5.current.push(charRef)}
+        wrapper={<span style={{ display: 'inline-block' }} />}
+      >
+        second
+      </SplitChars>
+      <div ref={div6}>third</div>
+    </div>
+  );
+});
+
+const TargetWithNamesCombined = forwardRef((props, ref: any) => {
+  const target1 = useRef({});
+  const target2 = useRef({});
+  useImperativeHandle(ref, () => ({
+    ...target1.current,
+    ...target2.current,
+  }));
+  return (
+    <>
+      <TargetWithNames ref={target1} />
+      <TargetWithNames2 ref={target2} />
+    </>
+  );
+});
+
 const TimelineTargets = () => {
   return (
     <Timeline target={<TargetWithNames />}>
@@ -158,6 +212,16 @@ const TimelineTargets = () => {
 };
 
 //export default TimelineTargets;
+
+const ForwardRefComponent = forwardRef(({ children }, ref: any) => {
+  return (
+    <div>
+      <StyledTarget1 ref={ref}>
+        <span>{children}</span>
+      </StyledTarget1>
+    </div>
+  );
+});
 
 const Component = forwardRef(({ children }, ref?) => {
   const div1 = useRef(null);
@@ -213,7 +277,7 @@ const Out = () => {
   const divRef1 = useCallback(ref => {
     if (ref !== null) {
       // Ref never updates
-      console.log(ref);
+      // console.log(ref);
     }
   }, []);
 
@@ -221,26 +285,90 @@ const Out = () => {
 
   useEffect(() => {
     // Ref never updates
-    console.log(divRef2.current);
+    // console.log(divRef2.current);
   }, []);
 
   return (
     <div className="App">
-      <Timeline target={<TargetWithNames />}>
-        <Tween from={{ x: -100 }} to={{ x: 100 }}>
-          <div ref={divRef1} style={{ width: 200, height: 200, background: 'rebeccapurple' }} />
-        </Tween>
+      <Timeline
+        // target={
+        //   <>
+        //     <StyledTarget1>
+        //       <StyledTarget2 />
+        //     </StyledTarget1>
+        //     <StyledTarget1>
+        //       <StyledTarget2 />
+        //     </StyledTarget1>
+        //   </>
+        // }
+        // target={<div style={{ height: '300px', backgroundColor: '#ccc' }} />}
+        // target={<TargetWithNames />}
+        target={
+          <>
+            <TargetWithNames />
+            <TargetWithNames2 />
+          </>
+        }
+        // target={<TargetWithNamesCombined />}
+        // target={
+        //   <>
+        //     <TargetWithNames />
+        //     <ForwardRefComponent>ForwardRefComponent 1</ForwardRefComponent>
+        //     <ForwardRefComponent>ForwardRefComponent 2</ForwardRefComponent>
+        //   </>
+        // }
+      >
+        {/*<Tween from={{ x: -100 }} to={{ x: 100 }}>*/}
+        {/*  <div ref={divRef1} style={{ width: 200, height: 200, background: 'rebeccapurple' }} />*/}
+        {/*</Tween>*/}
 
-        <Tween from={{ x: -100 }} to={{ x: 100 }}>
-          <div ref={divRef2} style={{ width: 200, height: 200, background: 'fuchsia' }} />
-        </Tween>
+        {/*<Tween from={{ x: -100 }} to={{ x: 100 }}>*/}
+        {/*  <div ref={divRef2} style={{ width: 200, height: 200, background: 'fuchsia' }} />*/}
+        {/*</Tween>*/}
 
         <Tween to={{ x: '200px' }} target="div3" position="0" />
         <Tween to={{ x: '200px' }} target="div1" position="0.5" />
         <Tween to={{ x: '200px' }} target="div2" position="1" stagger={0.1} />
+
+        <Tween to={{ x: '200px' }} target="div6" position="2" />
+        <Tween to={{ x: '200px' }} target="div4" position="2.5" />
+        <Tween to={{ x: '200px' }} target="div5" position="3" stagger={0.1} />
+
+        {/*<Tween to={{ x: '200px' }} target={3} />*/}
+        {/*<Tween to={{ x: '200px' }} target={4} />*/}
       </Timeline>
     </div>
   );
 };
 
-export default Out;
+//export default Out;
+
+const Test = () => {
+  // the array gets filled up with every new render!
+  // can SplitWords outputs it's refs as array, so that we don't need to push into?
+  const ref = useRef<MutableRefObject<any>[]>([]);
+
+  useEffect(() => {
+    console.log(ref);
+  }, []);
+
+  return (
+    <Controls playState={PlayState.stop}>
+      <Timeline
+        target={
+          <Fragment>
+            <SplitWords ref={(charRef: any) => ref.current.push(charRef)} wrapper={<Inline />}>
+              This text gets splitted by words.
+            </SplitWords>
+          </Fragment>
+        }
+      >
+        <Tween to={{ y: '-20px' }} position={0.5} duration={0.1} target={1} />
+        <Tween to={{ y: '-20px' }} position="+=0.5" duration={0.1} target={3} />
+        <Tween to={{ y: '-20px' }} position="+=0.5" duration={0.1} target={5} />
+      </Timeline>
+    </Controls>
+  );
+};
+
+export default Test;

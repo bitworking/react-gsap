@@ -17,6 +17,7 @@ const escapeRegExp = (regExp: string) => {
   return regExp.replace(regex, '\\$1');
 };
 
+// TODO: possible or better to output all the refs as one array?
 export const SplitWords = React.forwardRef<any, SplitWordsProps>(
   ({ children, wrapper, delimiter = ' ' }, ref) => {
     if (typeof children !== 'string') {
@@ -36,6 +37,7 @@ export const SplitWords = React.forwardRef<any, SplitWordsProps>(
   }
 );
 
+// TODO: possible or better to output all the refs as one array?
 export const SplitChars = React.forwardRef<any, SplitCharsProps>(({ children, wrapper }, ref) => {
   if (typeof children !== 'string') {
     throw new Error('SplitChars only accepts a string as child.');

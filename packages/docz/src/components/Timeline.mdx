@@ -87,7 +87,7 @@ In this way these component can be better reused and the refs not only work in a
 You can also pass an array ref like seen with div2. In this way you can use the `stagger` prop.
 
 ```javascript
-const TargetWithNames = forwardRef((props, ref: any) => {
+const TargetWithNames = forwardRef((props, ref) => {
   const div1 = useRef(null);
   const div2 = useRef([]);
   const div3 = useRef(null);
@@ -107,6 +107,26 @@ const TargetWithNames = forwardRef((props, ref: any) => {
       </SplitChars>
       <h3 ref={div3}>IS A</h3>
     </div>
+  );
+});
+
+```
+
+If you want to combine multiple of those named components, you can do it like this:
+
+```javascript
+const TargetWithNamesCombined = forwardRef((props, ref) => {
+  const target1 = useRef({});
+  const target2 = useRef({});
+  useImperativeHandle(ref, () => ({
+    ...target1.current,
+    ...target2.current,
+  }));
+  return (
+    <>
+      <TargetWithNames1 ref={target1} />
+      <TargetWithNames2 ref={target2} />
+    </>
   );
 });
 

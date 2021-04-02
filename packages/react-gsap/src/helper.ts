@@ -1,5 +1,13 @@
 import { gsap } from 'gsap';
+import React from 'react';
 import { PlayState } from './types';
+
+if (!String.prototype.startsWith) {
+  String.prototype.startsWith = function(searchString, position) {
+    position = position || 0;
+    return this.indexOf(searchString, position) === position;
+  };
+}
 
 const setPlayState = (
   playState?: PlayState,
@@ -136,7 +144,52 @@ const refOrInnerRef = (child: any) => {
   return 'ref';
 };
 
+function isElement(element: any) {
+  return React.isValidElement(element);
+}
+
+function isDOMTypeElement(element: any) {
+  return isElement(element) && typeof element.type === 'string';
+}
+
+// https://stackoverflow.com/a/39165137
+function getReactNode(dom: any, traverseUp = 0) {
+  const key = Object.keys(dom ?? {}).find(key => key.startsWith('__reactInternalInstance$'));
+
+  const domFiber = key && dom[key];
+  if (!domFiber) return null;
+
+  // react <16
+  if (domFiber._currentElement) {
+    let compFiber = domFiber._currentElement._owner;
+    for (let i = 0; i < traverseUp; i++) {
+      compFiber = compFiber._currentElement._owner;
+    }
+    return compFiber._instance;
+  }
+
+  // react 16+
+  if (domFiber.stateNode) {
+    return domFiber.stateNode;
+  }
+
+  const getCompFiber = (fiber: any) => {
+    //return fiber._debugOwner; // this also works, but is __DEV__ only
+    let parentFiber = fiber.return;
+    while (typeof parentFiber.type == 'string') {
+      parentFiber = parentFiber.return;
+    }
+    return parentFiber;
+  };
+  let compFiber = getCompFiber(domFiber);
+  for (let i = 0; i < traverseUp; i++) {
+    compFiber = getCompFiber(compFiber);
+  }
+  return compFiber.stateNode;
+}
+
 const getRefProp = (child: any, addTarget: (target: any) => void) => {
+  // has to be tested if it works, which lib does still use innerRef?
   if (child.props.innerRef) {
     return {
       innerRef: (target: any) => {
@@ -158,26 +211,54 @@ const getRefProp = (child: any, addTarget: (target: any) => void) => {
   };
 };
 
-const getTargetRefProp = (child: any, setTarget: (key: string, target: any) => void) => {
+const setOrAddTarget = (
+  target: any,
+  setTarget: (key: string, target: any) => void,
+  addTarget: (target: any) => void
+) => {
+  const reactNode = getReactNode(target);
+
+  if (reactNode) {
+    addTarget(reactNode);
+  } else if (target) {
+    Object.keys(target).forEach(key => {
+      const elementRef = target[key];
+      if (typeof elementRef === 'object' && elementRef.current) {
+        if (Array.isArray(elementRef.current)) {
+          elementRef.current.forEach((singleRef: React.RefObject<any>) => {
+            setTarget(key, singleRef);
+          });
+        } else {
+          setTarget(key, elementRef.current);
+        }
+      }
+    });
+  }
+};
+
+const getTargetRefProp = (
+  child: any,
+  setTarget: (key: string, target: any) => void,
+  addTarget: (target: any) => void
+) => {
+  // has to be tested if it works, which lib does still use innerRef?
+  if (child.props.innerRef) {
+    return {
+      innerRef: (target: any) => {
+        setOrAddTarget(target, setTarget, addTarget);
+        // merge refs
+        const { innerRef } = child.props;
+        if (typeof innerRef === 'function') innerRef(target);
+        else if (innerRef) innerRef.current = target;
+      },
+    };
+  }
+
   return {
     ref: (target: any) => {
+      setOrAddTarget(target, setTarget, addTarget);
+      // merge refs
       const { ref } = child;
-
-      if (target) {
-        Object.keys(target).forEach(key => {
-          const elementRef = target[key];
-          if (typeof elementRef === 'object' && elementRef.current) {
-            if (Array.isArray(elementRef.current)) {
-              elementRef.current.forEach((singleRef: React.RefObject<any>) => {
-                setTarget(key, singleRef);
-              });
-            } else {
-              setTarget(key, elementRef.current);
-            }
-          }
-        });
-      }
-
       if (typeof ref === 'function') ref(target);
       else if (ref) ref.current = target;
     },

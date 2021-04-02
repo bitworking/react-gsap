@@ -2,13 +2,7 @@ import React, { Fragment, ReactNode, ReactElement } from 'react';
 import { gsap } from 'gsap';
 import { isForwardRef, isFragment } from 'react-is';
 import { PlayState } from './types';
-import {
-  getTweenFunction,
-  setPlayState,
-  nullishCoalescing,
-  getRefProp,
-  getTargetRefProp,
-} from './helper';
+import { getTweenFunction, setPlayState, nullishCoalescing, getTargetRefProp } from './helper';
 import Provider, { Context } from './Provider';
 import { TweenProps } from './Tween';
 
@@ -205,7 +199,7 @@ class Timeline extends Provider<TimelineProps> {
 
   cloneElement(child: any) {
     // @ts-ignore
-    return React.cloneElement(child, getRefProp(child, this.addTarget));
+    return React.cloneElement(child, getTargetRefProp(child, this.setTarget, this.addTarget));
   }
 
   renderTarget(target?: Target): ReactNode {
@@ -215,8 +209,7 @@ class Timeline extends Provider<TimelineProps> {
 
     // if is forwardRef clone and pass targets as ref
     if (isForwardRef(target)) {
-      // @ts-ignore
-      return React.cloneElement(target, getTargetRefProp(target, this.setTarget));
+      return this.cloneElement(target);
     }
 
     // else iterate the first level of children and set targets
