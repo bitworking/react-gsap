@@ -7,6 +7,7 @@ import Svg from './examples/Svg';
 import Transition from './examples/Transition';
 import Reveal from './examples/Reveal';
 import ScrollTrigger from './examples/ScrollTrigger';
+import ManualControl from './examples/ManualControl';
 // import Scroller from './examples/Scroller';
 
 function App() {
@@ -34,6 +35,9 @@ function App() {
               <li>
                 <Link to="/scroll-trigger">ScrollTrigger</Link>
               </li>
+              <li>
+                <Link to="/manual-control">ManualControl</Link>
+              </li>
               {/*<li>
                 <Link to="/scroller">Scroller</Link>
               </li>*/}
@@ -48,6 +52,7 @@ function App() {
           <Route exact path="/transition" component={Transition} />
           <Route exact path="/reveal" component={Reveal} />
           <Route exact path="/scroll-trigger" component={ScrollTrigger} />
+          <Route exact path="/manual-control" component={ManualControl} />
           {/*<Route exact path="/scroller" component={Scroller} />*/}
         </div>
       </Router>

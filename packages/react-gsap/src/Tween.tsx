@@ -1,7 +1,14 @@
 import React, { Fragment, ReactElement } from 'react';
 import { gsap } from 'gsap';
 import { PlayState } from './types';
-import { getTweenFunction, setPlayState, isEqual, getRefProp } from './helper';
+import {
+  getTweenFunction,
+  setPlayState,
+  isEqual,
+  getRefProp,
+  setProps,
+  setInitialPlayState,
+} from './helper';
 import { Context } from './Provider';
 
 import SvgDrawPlugin from './plugins/PlugInSvgDraw';
@@ -67,13 +74,14 @@ class Tween extends React.Component<TweenProps, {}> {
     this.addTarget = this.addTarget.bind(this);
   }
 
-  setPlayState(playState: PlayState) {
-    const { playState: previousPlayState } = this.props;
-    setPlayState(playState, previousPlayState, this.tween);
-  }
-
   componentDidMount() {
     this.createTween();
+
+    // props at mount
+    setProps(this.tween, this.props);
+    setInitialPlayState(this.tween, this.props);
+
+    this.context.registerConsumer(this);
   }
 
   componentWillUnmount() {
@@ -125,15 +133,8 @@ class Tween extends React.Component<TweenProps, {}> {
     }
 
     // execute function calls
-    if (progress !== prevProps.progress) {
-      this.tween.progress(progress);
-    }
-    if (totalProgress !== prevProps.totalProgress) {
-      this.tween.totalProgress(totalProgress);
-    }
-    if (duration !== prevProps.duration) {
-      this.tween.duration(duration);
-    }
+    setProps(this.tween, this.props, prevProps);
+
     // if "to" props are changed: reinit and restart tween
     if (!isEqual(to, prevProps.to)) {
       // is Tween
@@ -180,8 +181,6 @@ class Tween extends React.Component<TweenProps, {}> {
       // why this is needed?
       this.tween = () => {};
     }
-
-    this.context.registerConsumer(this);
   }
 
   getGSAP() {

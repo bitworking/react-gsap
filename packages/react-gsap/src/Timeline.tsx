@@ -1,8 +1,16 @@
-import React, { Fragment, ReactNode, ReactElement } from 'react';
+import React, { Fragment, ReactElement, ReactNode } from 'react';
 import { gsap } from 'gsap';
 import { isForwardRef, isFragment } from 'react-is';
 import { PlayState } from './types';
-import { getTweenFunction, setPlayState, nullishCoalescing, getTargetRefProp } from './helper';
+import {
+  getInitialPaused,
+  getTargetRefProp,
+  getTweenFunction,
+  nullishCoalescing,
+  setInitialPlayState,
+  setPlayState,
+  setProps,
+} from './helper';
 import Provider, { Context } from './Provider';
 import { TweenProps } from './Tween';
 
@@ -40,6 +48,10 @@ class Timeline extends Provider<TimelineProps> {
   timeline: any;
   targets: Targets = new Map();
 
+  static defaultProps = {
+    playState: PlayState.play,
+  };
+
   constructor(props: TimelineProps) {
     super(props);
 
@@ -47,13 +59,14 @@ class Timeline extends Provider<TimelineProps> {
     this.setTarget = this.setTarget.bind(this);
   }
 
-  setPlayState(playState: PlayState) {
-    const { playState: previousPlayState } = this.props;
-    setPlayState(playState, previousPlayState, this.timeline);
-  }
-
   componentDidMount() {
     this.createTimeline();
+
+    // props at mount
+    setProps(this.timeline, this.props);
+    setInitialPlayState(this.timeline, this.props);
+
+    this.context.registerConsumer(this);
   }
 
   componentWillUnmount() {
@@ -66,7 +79,7 @@ class Timeline extends Provider<TimelineProps> {
   }
 
   componentDidUpdate(prevProps: TimelineProps) {
-    const { children, duration, progress, totalProgress, playState } = this.props;
+    const { children, duration, progress, totalProgress, playState, target } = this.props;
 
     // if children change create a new timeline
     // TODO: replace easy length check with fast equal check
@@ -76,15 +89,12 @@ class Timeline extends Provider<TimelineProps> {
     }
 
     // execute function calls
-    if (progress !== prevProps.progress) {
-      this.timeline.progress(progress);
-    }
-    if (totalProgress !== prevProps.totalProgress) {
-      this.timeline.totalProgress(totalProgress);
-    }
-    if (duration !== prevProps.duration) {
-      this.timeline.duration(duration);
-    }
+    setProps(this.timeline, this.props, prevProps);
+
+    // TODO: need rerender or something if target change?
+    // if (target !== prevProps.target) {
+    //   this.forceUpdate();
+    // }
 
     setPlayState(playState, prevProps.playState, this.timeline);
   }
@@ -109,6 +119,7 @@ class Timeline extends Provider<TimelineProps> {
     // init timeline
     this.timeline = gsap.timeline({
       smoothChildTiming: true,
+      paused: getInitialPaused(playState),
       ...vars,
     });
 
@@ -146,22 +157,6 @@ class Timeline extends Provider<TimelineProps> {
         this.timeline.add(consumer.getGSAP(), nullishCoalescing(position, '+=0'));
       }
     });
-
-    // props at mount
-    if (duration) {
-      this.timeline.duration(duration);
-    }
-    if (progress) {
-      this.timeline.progress(progress);
-    }
-    if (totalProgress) {
-      this.timeline.totalProgress(totalProgress);
-    }
-    if (playState) {
-      this.setPlayState(playState);
-    }
-
-    this.context.registerConsumer(this);
   }
 
   getGSAP() {

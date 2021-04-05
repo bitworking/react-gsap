@@ -1,6 +1,8 @@
 import { gsap } from 'gsap';
 import React from 'react';
 import { PlayState } from './types';
+import { TimelineProps } from 'Timeline';
+import { TweenProps } from 'Tween';
 
 if (!String.prototype.startsWith) {
   String.prototype.startsWith = function(searchString, position) {
@@ -16,26 +18,46 @@ const setPlayState = (
 ) => {
   if (tween && playState && playState !== prevPlayState) {
     if (playState === PlayState.play) {
-      if (prevPlayState === PlayState.pause || prevPlayState === PlayState.reverse) {
-        tween.play();
-      } else {
-        tween.restart(true);
-      }
+      tween.play();
+    } else if (playState === PlayState.restart) {
+      tween.restart(true);
     } else if (playState === PlayState.reverse) {
-      if (prevPlayState === PlayState.pause || prevPlayState === PlayState.play) {
-        tween.reverse();
-      } else {
-        tween.reverse(0);
-      }
+      tween.reverse();
+    } else if (playState === PlayState.restartReverse) {
+      tween.reverse(0);
     } else if (playState === PlayState.stop) {
       tween.pause(0);
+    } else if (playState === PlayState.stopEnd) {
+      tween.reverse(0);
+      tween.pause();
     } else if (playState === PlayState.pause) {
       tween.pause();
+    } else if (playState === PlayState.resume) {
+      tween.resume();
     }
   }
 };
 
-const getTweenFunction = (targets: any, props: any): gsap.core.Tween | gsap.core.Timeline => {
+const setInitialPlayState = (tweenOrTimeline: any, props: TimelineProps | TweenProps) => {
+  const { playState } = props;
+  if (playState) {
+    setPlayState(playState, PlayState.play, tweenOrTimeline);
+  }
+};
+
+const getInitialPaused = (playState?: PlayState) => {
+  return (
+    playState &&
+    (playState === PlayState.stop ||
+      playState === PlayState.stopEnd ||
+      playState === PlayState.pause)
+  );
+};
+
+const getTweenFunction = (
+  targets: any,
+  props: TweenProps | TimelineProps
+): gsap.core.Tween | gsap.core.Timeline => {
   const {
     children,
     wrapper,
@@ -64,13 +86,21 @@ const getTweenFunction = (targets: any, props: any): gsap.core.Tween | gsap.core
   } = props;
 
   let tweenFunction: gsap.core.Tween | gsap.core.Timeline;
+  const paused = getInitialPaused(playState);
 
   if (from && to) {
-    tweenFunction = gsap.fromTo(targets, from, { stagger, duration, ...to, ...vars });
+    // special props like paused always go in the toVars parameter
+    tweenFunction = gsap.fromTo(targets, from, {
+      stagger,
+      duration,
+      paused,
+      ...to,
+      ...vars,
+    });
   } else if (to) {
-    tweenFunction = gsap.to(targets, { stagger, duration, ...to, ...vars });
+    tweenFunction = gsap.to(targets, { stagger, duration, paused, ...to, ...vars });
   } else {
-    tweenFunction = gsap.from(targets, { stagger, duration, ...from, ...vars });
+    tweenFunction = gsap.from(targets, { stagger, duration, paused, ...from, ...vars });
   }
 
   // if multiple tweens (stagger), wrap them in a timeline
@@ -88,17 +118,6 @@ const getTweenFunction = (targets: any, props: any): gsap.core.Tween | gsap.core
       onCompleteScope: onCompleteAllScope,
       onStart: onStartAll,
     });
-  }
-
-  // props at mount
-  if (progress) {
-    tweenFunction.progress(progress);
-  }
-  if (totalProgress) {
-    tweenFunction.totalProgress(totalProgress);
-  }
-  if (playState) {
-    setPlayState(playState, null, tweenFunction);
   }
 
   return tweenFunction;
@@ -272,6 +291,26 @@ const nullishCoalescing = <T, R>(value: T, ifNullish: R): T | R => {
   return value;
 };
 
+const setProps = (
+  tweenOrTimeline: any,
+  props: TimelineProps | TweenProps,
+  prevProps?: TimelineProps | TweenProps
+) => {
+  if (props.progress !== undefined && props.progress !== prevProps?.progress) {
+    tweenOrTimeline.progress(props.progress);
+  }
+  if (props.totalProgress !== undefined && props.totalProgress !== prevProps?.totalProgress) {
+    tweenOrTimeline.totalProgress(props.totalProgress);
+  }
+  if (
+    tweenOrTimeline.duration !== undefined &&
+    props.duration &&
+    props.duration !== prevProps?.duration
+  ) {
+    tweenOrTimeline.duration(props.duration);
+  }
+};
+
 export {
   getTweenFunction,
   callTweenFunction,
@@ -281,4 +320,7 @@ export {
   getRefProp,
   getTargetRefProp,
   nullishCoalescing,
+  setProps,
+  setInitialPlayState,
+  getInitialPaused,
 };
