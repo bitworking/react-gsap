@@ -88,31 +88,6 @@ More info: https://greensock.com/docs/v3/Staggers
   </Controls>
 </Playground>
 
-## Use playState and totalProgress props
-
-With the playState and progress/totalProgress props you can control the Tween.
-So you don't need low-level access to play/reverse/pause/stop or seek to a position.
-
-<Playground>
-  {() => {
-    const [playing, setPlaying] = React.useState(false)
-    const [progress, setProgress] = React.useState(0)
-    return (
-      <Fragment>
-        <Tween to={{ x: '200px' }} duration={2} playState={playing ? PlayState.play : PlayState.pause} totalProgress={progress}>
-          <div style={{ width: '100px', height: '100px', background: '#ccc' }} />
-        </Tween>
-        <button onClick={() => setPlaying(!playing)}>
-          {playing ? 'Pause' : 'Play'}
-        </button>
-        <div>
-          <input type="range" max="1" step="0.001" value={progress} onChange={(event) => setProgress(event.target.value)} />
-        </div>
-      </Fragment>
-    )
-  }}
-</Playground>
-
 ## Props
 
 The question mark means it's an optional prop.
@@ -159,6 +134,10 @@ More info: https://greensock.com/docs/v3/Staggers
 | Field | As string |
 | :-- | :-- |
 | play | "play" |
+| restart | "restart" |
 | reverse | "reverse" |
+| restartReverse | "restartReverse" |
 | stop | "stop" |
+| stopEnd | "stopEnd" |
 | pause | "pause" |
+| resume | "resume" |

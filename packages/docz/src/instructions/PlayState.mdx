@@ -1,0 +1,63 @@
+---
+name: Use "playState" prop
+menu: Instructions
+---
+
+import { Fragment } from 'react';
+import { Playground } from 'docz'
+import { PlayState, Tween } from './../../../react-gsap/src/'
+
+# Use playState and totalProgress props
+
+With the playState and progress/totalProgress props you can control a Tween or a Timeline.
+So you don't need low-level access to play/reverse/pause/stop or seek to a position.
+
+From version 3.2.0 on the `playState` prop also works for the initial state and the following states were added:
+`restartReverse`, `stopEnd`, `resume`.
+
+The following gsap functions are called internally, if the `playState` prop change:
+
+    if (playState === PlayState.play) {
+      gsap.play();
+    } else if (playState === PlayState.restart) {
+      gsap.restart(true);
+    } else if (playState === PlayState.reverse) {
+      gsap.reverse();
+    } else if (playState === PlayState.restartReverse) {
+      gsap.reverse(0);
+    } else if (playState === PlayState.stop) {
+      gsap.pause(0);
+    } else if (playState === PlayState.stopEnd) {
+      gsap.reverse(0);
+      gsap.pause();
+    } else if (playState === PlayState.pause) {
+      gsap.pause();
+    } else if (playState === PlayState.resume) {
+      gsap.resume();
+    }
+
+<Playground>
+  {() => {
+    const [playState, setPlayState] = React.useState(PlayState.pause);
+    const [totalProgress, setTotalProgress] = React.useState(0)
+    return (
+      <Fragment>
+        <Tween to={{ x: '300px' }} duration={2} playState={playState} totalProgress={totalProgress}>
+          <div style={{ width: '100px', height: '100px', background: '#ccc' }} />
+        </Tween>
+        <button onClick={() => setPlayState(PlayState.play)}>play</button>
+        <button onClick={() => setPlayState(PlayState.restart)}>restart</button>
+        <button onClick={() => setPlayState(PlayState.reverse)}>reverse</button>
+        <button onClick={() => setPlayState(PlayState.restartReverse)}>restartReverse</button>
+        <button onClick={() => setPlayState(PlayState.stop)}>stop</button>
+        <button onClick={() => setPlayState(PlayState.stopEnd)}>stopEnd</button>
+        <button onClick={() => setPlayState(PlayState.pause)}>pause</button>
+        <button onClick={() => setPlayState(PlayState.resume)}>resume</button>
+        <div>
+          <input type="range" max="1" step="0.001" value={totalProgress} onChange={(event) => setTotalProgress(event.target.value)} />
+        </div>
+      </Fragment>
+    )
+  }}
+</Playground>
+

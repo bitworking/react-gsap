@@ -15,14 +15,14 @@ Just wrap it around a Tween or Timeline component and you'll get control buttons
 
 With the optional `playState` prop you can set an initial play state.
 
-You can use the `PlayState` enum/object or just the strings "play", "reverse", "stop" or "pause".
+You can use the `PlayState` enum/object or just the strings "play", "restart", "reverse", "restartReverse", "stop", "stopEnd", "pause" or "resume".
 
     import { Controls, PlayState, Tween } from 'react-gsap';
 
 ### Usage with Tween
 
 <Playground>
-  <Controls playState={PlayState.reverse}>
+  <Controls playState={PlayState.restartReverse}>
     <Tween to={{ x: '200px', rotation: 180 }} duration={2} ease="back.out(1.7)">
       <div style={{ width: '100px', height: '100px', background: '#ccc' }} />
     </Tween>

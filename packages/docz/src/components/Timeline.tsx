@@ -16,13 +16,15 @@ const TargetWithNames = forwardRef((props, ref: any) => {
   const div1 = useRef(null);
   const div2 = useRef<MutableRefObject<any>[]>([]);
   const div3 = useRef(null);
+  const trigger = useRef(null);
   useImperativeHandle(ref, () => ({
     div1,
     div2,
     div3,
+    trigger,
   }));
   return (
-    <div style={{ textAlign: 'center' }}>
+    <div ref={trigger} style={{ textAlign: 'center' }}>
       <h3 ref={div1}>THIS</h3>
       <SplitChars
         ref={(charRef: MutableRefObject<any>) => div2.current.push(charRef)}

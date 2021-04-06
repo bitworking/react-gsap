@@ -9,7 +9,15 @@ export default {
     'Introduction',
     {
       name: 'Components',
-      menu: ['Tween', 'Timeline', 'Reveal', 'SplitChars', 'SplitWords', 'Controls'],
+      menu: [
+        'Tween',
+        'Timeline',
+        'ScrollTrigger',
+        'Reveal',
+        'SplitChars',
+        'SplitWords',
+        'Controls',
+      ],
     },
     { name: 'Plugins', menu: ['GSAP Plugins', 'CountPlugin', 'SvgDrawPlugin'] },
     'Instructions',

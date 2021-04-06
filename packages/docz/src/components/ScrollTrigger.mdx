@@ -1,0 +1,193 @@
+---
+name: ScrollTrigger
+menu: Components
+---
+
+import { Fragment } from 'react';
+import { Playground, Props } from 'docz'
+import { Controls, PlayState, ScrollTrigger } from './../../../react-gsap/src/'
+import { Tween } from './Tween'
+import { Timeline, TargetWithNames } from './Timeline'
+
+# ScrollTrigger
+
+The ScrollTrigger component is a small helper for the ScrollTrigger plugin.
+
+Read the official documentation: https://greensock.com/docs/v3/Plugins/ScrollTrigger
+
+It's available since version 3.2.0.
+Before you also could use the ScrollTrigger plugin by importing/registering and using it in a Tween or Timeline by yourself:
+
+    import { Tween } from 'react-gsap';
+
+    import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
+    gsap.registerPlugin(ScrollTrigger);
+
+    <Tween
+      to={{
+        x: '300px',
+        scrollTrigger: {
+          trigger: '.square',
+          start: '-200px center',
+          end: '200px center',
+          scrub: 0.5,
+          markers: true,
+        },
+      }}
+    >
+      <div className="square" style={{ width: '100px', height: '100px', background: '#ccc' }} />
+    </Tween>
+
+## Basic usage
+
+With the ScrollTrigger component, it looks like the following. If you don't add a trigger prop, it will use the ref from the Tween target.
+
+<Playground>
+  <ScrollTrigger
+    start="-200px center"
+    end="200px center"
+    scrub={0.5}
+    markers
+  >
+    <Tween
+      to={{
+        x: '300px',
+      }}
+    >
+      <div style={{ width: '100px', height: '100px', background: '#ccc' }} />
+    </Tween>
+    <Tween
+      to={{
+        x: '300px',
+      }}
+    >
+      <div style={{ width: '100px', height: '100px', background: '#999' }} />
+    </Tween>
+  </ScrollTrigger>
+</Playground>
+
+## Use "trigger" prop
+
+Currently it's not possible to change the props on the fly. **So this will not work for the `trigger` prop**:
+
+    const triggerRef = useRef(null);
+    const [trigger, setTrigger] = useState(triggerRef.current);
+
+    useEffect(() => {
+      setTrigger(triggerRef.current);
+    }, []);
+
+    return (
+      <>
+        <ScrollTrigger trigger={trigger}>
+          <Tween
+            to={{
+              x: '500px',
+            }}
+          >
+            <div>This element gets not tweened by ref</div>
+          </Tween>
+        </ScrollTrigger>
+
+        <Square ref={triggerRef}>
+          This element is the trigger
+        </Square>
+      </>
+    );
+
+If you want to target a ref directly instead of using a CSS selector you can use a Timeline with a forwardRef target:
+
+    // This is the target component which "exports" 4 refs
+    const TargetWithNames = forwardRef((props, ref: any) => {
+      const div1 = useRef(null);
+      const div2 = useRef<MutableRefObject<any>[]>([]);
+      const div3 = useRef(null);
+      const trigger = useRef(null);
+
+      useImperativeHandle(ref, () => ({
+        div1,
+        div2,
+        div3,
+        trigger,
+      }));
+
+      return (
+        <div ref={trigger} style={{ textAlign: 'center' }}>
+          <h3 ref={div1}>THIS</h3>
+          <SplitChars
+            ref={(charRef: MutableRefObject<any>) => div2.current.push(charRef)}
+            wrapper={<h3 style={{ display: 'inline-block' }} />}
+          >
+            TEST
+          </SplitChars>
+          <h3 ref={div3}>IS A</h3>
+        </div>
+      );
+    });
+
+You can then use the key of the exported refs in the `trigger` or `target` props.
+If it doesn't find a ref with this key it will use the `trigger` string as CSS selector.
+
+<Playground>
+  <ScrollTrigger
+    trigger="trigger"
+    start="top center"
+    end="400px center"
+    scrub={0.5}
+    markers={true}
+    pin={true}
+  >
+    <Timeline target={<TargetWithNames />}>
+      <Tween
+        from={{
+          x: '-100vw',
+        }}
+        target="div1"
+      />
+      <Tween
+        from={{
+          x: '-100vw',
+        }}
+        target="div3"
+      />
+      <Tween
+        from={{
+          x: '-100vw',
+        }}
+        stagger={0.5}
+        target="div2"
+      />
+    </Timeline>
+  </ScrollTrigger>
+</Playground>
+
+## Standalone
+
+If you don't pass children to the component a GSAP ScrollTrigger instance will be created and can be used standalone.
+
+You can get the instance by calling `getGSAP()` on the ref.
+
+<Playground>
+  {() => {
+    const scrollTrigger = React.useRef(null);
+    return (
+      <Fragment>
+        <div id="id" style={{width: '100px', height: '100px', background: '#ccc'}}/>
+        <div id="otherID" style={{width: '100px', height: '100px', background: '#999'}}/>
+        <ScrollTrigger
+          ref={scrollTrigger}
+          trigger="#id"
+          start="top top"
+          endTrigger="#otherID"
+          end="bottom 50%+=100px"
+          markers
+          onToggle={self => console.log("toggled, isActive:", self.isActive)}
+          onUpdate={self => {
+            console.log("progress:", self.progress.toFixed(3), "direction:", self.direction, "velocity", self.getVelocity());
+          }}
+        />
+        <button onClick={() => scrollTrigger.current.getGSAP().disable()}>Disable ScrollTrigger</button>
+      </Fragment>
+    )
+  }}
+</Playground>
