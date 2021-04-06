@@ -176,7 +176,7 @@ class Tween extends React.Component<TweenProps, {}> {
     }
 
     if (this.props.children) {
-      this.tween = getTweenFunction(this.targets, this.props);
+      this.tween = getTweenFunction(this.targets, this.props, this.context);
     } else {
       // why this is needed?
       this.tween = () => {};

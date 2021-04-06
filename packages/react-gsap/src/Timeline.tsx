@@ -43,7 +43,6 @@ export type TimelineProps = {
 
 class Timeline extends Provider<TimelineProps> {
   static displayName = 'Timeline';
-  static contextType = Context;
 
   timeline: any;
   targets: Targets = new Map();
@@ -116,11 +115,14 @@ class Timeline extends Provider<TimelineProps> {
       this.timeline.kill();
     }
 
+    const plugins = this.context?.getPlugins(this.context?.plugins, this.targets) ?? {};
+
     // init timeline
     this.timeline = gsap.timeline({
       smoothChildTiming: true,
       paused: getInitialPaused(playState),
       ...vars,
+      ...plugins,
     });
 
     if (labels) {

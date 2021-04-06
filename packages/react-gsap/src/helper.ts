@@ -3,6 +3,7 @@ import React from 'react';
 import { PlayState } from './types';
 import { TimelineProps } from 'Timeline';
 import { TweenProps } from 'Tween';
+import { ContextProps } from 'Provider';
 
 if (!String.prototype.startsWith) {
   String.prototype.startsWith = function(searchString, position) {
@@ -56,7 +57,8 @@ const getInitialPaused = (playState?: PlayState) => {
 
 const getTweenFunction = (
   targets: any,
-  props: TweenProps | TimelineProps
+  props: TweenProps | TimelineProps,
+  context?: ContextProps
 ): gsap.core.Tween | gsap.core.Timeline => {
   const {
     children,
@@ -87,6 +89,7 @@ const getTweenFunction = (
 
   let tweenFunction: gsap.core.Tween | gsap.core.Timeline;
   const paused = getInitialPaused(playState);
+  const plugins = context?.getPlugins(context?.plugins, targets) ?? {};
 
   if (from && to) {
     // special props like paused always go in the toVars parameter
@@ -96,11 +99,12 @@ const getTweenFunction = (
       paused,
       ...to,
       ...vars,
+      ...plugins,
     });
   } else if (to) {
-    tweenFunction = gsap.to(targets, { stagger, duration, paused, ...to, ...vars });
+    tweenFunction = gsap.to(targets, { stagger, duration, paused, ...to, ...vars, ...plugins });
   } else {
-    tweenFunction = gsap.from(targets, { stagger, duration, paused, ...from, ...vars });
+    tweenFunction = gsap.from(targets, { stagger, duration, paused, ...from, ...vars, ...plugins });
   }
 
   // if multiple tweens (stagger), wrap them in a timeline
