@@ -177,7 +177,9 @@ function isDOMTypeElement(element: any) {
 
 // https://stackoverflow.com/a/39165137
 function getReactNode(dom: any, traverseUp = 0) {
-  const key = Object.keys(dom ?? {}).find(key => key.startsWith('__reactInternalInstance$'));
+  const key = Object.keys(dom ?? {}).find(
+    key => key.startsWith('__reactInternalInstance$') || key.startsWith('__reactFiber$')
+  );
 
   const domFiber = key && dom[key];
   if (!domFiber) return null;

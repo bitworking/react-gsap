@@ -134,12 +134,12 @@ class Scroller extends Provider<ScrollerProps, ScrollerState> {
 
       let progress = 0;
 
-      if (triggerPosition == TriggerPosition.top) {
+      if (triggerPosition === TriggerPosition.top) {
         const height = entry.boundingClientRect.height;
         const top = entry.boundingClientRect.top;
         const position = top <= 0 ? -top : 0;
         progress = position / height;
-      } else if (triggerPosition == TriggerPosition.bottom) {
+      } else if (triggerPosition === TriggerPosition.bottom) {
         const height = entry.boundingClientRect.height;
         const position = height - Math.max(Math.min(entry.boundingClientRect.top, height), 0);
         progress = position / height;
@@ -168,7 +168,7 @@ class Scroller extends Provider<ScrollerProps, ScrollerState> {
   };
 
   getTotalProgress(progresses: number[]) {
-    const length = progresses.length;
+    // const length = progresses.length;
     return progresses.reduceRight((previousValue, currentValue) => {
       if (previousValue) {
         return Math.min(currentValue || 1, 1) + previousValue;

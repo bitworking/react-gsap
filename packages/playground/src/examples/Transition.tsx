@@ -36,9 +36,9 @@ const TransitionItem = ({
           paused={true}
           playState={
             state === 'entering'
-              ? PlayState.reverse
+              ? PlayState.restartReverse
               : state === 'exiting'
-              ? PlayState.play
+              ? PlayState.restart
               : undefined
           }
           ease="Back.easeInOut"
