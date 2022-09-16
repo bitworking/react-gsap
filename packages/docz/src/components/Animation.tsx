@@ -22,7 +22,7 @@ export const FadeInLeft = ({
   [key: string]: any;
 }) => (
   <Tween
-    from={{ opacity: 0, transform: 'translate3d(-100vw, 0, 0)' }}
+    from={{ opacity: 0, x: '-100vw' }}
     ease="back.out(1.4)"
     {...rest}
   >
