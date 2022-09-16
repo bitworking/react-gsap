@@ -18,6 +18,7 @@ export const Context = React.createContext<ContextProps>({
 
 abstract class Provider<T, S = {}> extends React.Component<T, S> {
   static contextType = Context;
+  declare context: React.ContextType<typeof Context>;
 
   consumers: any[];
   plugins?: Plugins;

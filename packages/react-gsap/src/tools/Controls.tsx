@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import { PlayState } from './../types';
 import { setPlayState } from './../helper';
 import Provider from '../Provider';
 
 type ControlsProps = {
   playState?: PlayState;
+  children: ReactNode;
 };
 
 type ControlsState = {

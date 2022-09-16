@@ -64,6 +64,7 @@ export type TweenProps = {
 class Tween extends React.Component<TweenProps, {}> {
   static displayName = 'Tween';
   static contextType = Context;
+  declare context: React.ContextType<typeof Context>;
 
   tween: any;
   targets: any[] = [];

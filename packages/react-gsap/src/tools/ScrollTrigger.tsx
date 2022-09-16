@@ -11,7 +11,6 @@ export type ScrollTriggerProps = {
 
 class ScrollTrigger extends Provider<ScrollTriggerProps> {
   static displayName = 'ScrollTrigger';
-  static contextType = Context;
 
   scrollTrigger: any | null = null;
   targets: any = {};
