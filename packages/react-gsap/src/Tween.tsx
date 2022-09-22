@@ -124,11 +124,12 @@ class Tween extends React.Component<TweenProps, {}> {
     } = this.props;
 
     // if children change create a new tween
-    // TODO: replace easy length check with fast equal check
-    if (React.Children.count(prevProps.children) !== React.Children.count(children)) {
+    const previousChildren = React.Children.map(prevProps.children, (c: any) => c.key);
+    const currentChildren = React.Children.map(children, (c: any) => c.key);
+    if (!isEqual(previousChildren, currentChildren)) {
       this.createTween();
     }
-
+    
     if (disabled) {
       return;
     }
