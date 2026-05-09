@@ -6,6 +6,9 @@
 ![npm type definitions](https://img.shields.io/npm/types/react-gsap)
 ![npm bundle size (version)](https://img.shields.io/bundlephobia/minzip/react-gsap/^2)
 
+> [!CAUTION]
+> This library hasn't been updated in quite some time. It should work with React 19 if you ignore the package warnings, but it doesn't use the latest GSAP APIs, particularly `gsap.context()`. There is now also a `useGSAP` hook available directly from GSAP, which you might want to consider if you don't need a strictly declarative approach. Please contact me, if you want to work on the next version, which uses all modern features of GSAP.
+
 # Introduction
 
 `react-gsap` lets you use the GreenSock Animation Platform (GSAP) in React in a fully declarative way.
