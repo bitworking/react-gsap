@@ -1,5 +1,6 @@
 import React, { Fragment, ReactElement } from 'react';
 import { gsap } from 'gsap';
+import TweenVars = gsap.TweenVars;
 import { PlayState } from './types';
 import {
   getTweenFunction,
@@ -46,8 +47,8 @@ export type TweenProps = {
   target?: number | string;
   position?: string | number;
 
-  from?: any;
-  to?: any;
+  from?: TweenVars;
+  to?: TweenVars;
   stagger?: Stagger;
 
   duration?: number;
